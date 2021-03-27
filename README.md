@@ -2,7 +2,7 @@
 
 The Novellia SDK exposes language specific service layers for interacting with [Novellia](https://github.com/RektangularStudios/novellia). The service layers are simple wrappers over HTTP networking calls.
 
-Languages to be supported:
+Client languages to be supported:
 - Unity / C#
 - TypeScript
 
