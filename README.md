@@ -1,6 +1,6 @@
 # Novellia SDK
 
-The Novellia SDK exposes language specific service layers for interacting with the [novellia](https://github.com/RektangularStudios/novellia) microservice. The service layers are simple wrappers over HTTP networking calls.
+The Novellia SDK exposes language specific service layers for interacting with [Novellia](https://github.com/RektangularStudios/novellia). The service layers are simple wrappers over HTTP networking calls.
 
 Languages to be supported:
 - Unity
@@ -11,7 +11,7 @@ More will be added as demand increases. Since the SDK is a simple HTTP wrapper, 
 ## Who is the Novellia SDK for?
 
 This SDK is for developers who need to interact with the Novellia Platform's features:
-- rolling out your own replacement to the `novellia-dashboard`
+- rolling out your own replacement to the Novellia Dashboard
 - interacting with the Novellia DAO
   - submitting proposals
   - voting on proposals
