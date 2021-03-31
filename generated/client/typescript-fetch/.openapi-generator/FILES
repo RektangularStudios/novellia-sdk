@@ -1,0 +1,10 @@
+.openapi-generator-ignore
+apis/DefaultApi.ts
+apis/index.ts
+index.ts
+models/CardanoTransaction.ts
+models/MinterInfo.ts
+models/Token.ts
+models/WorkflowInformation.ts
+models/index.ts
+runtime.ts
