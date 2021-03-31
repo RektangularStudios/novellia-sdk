@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: novellia-api
+  version: '1.0'
+  license:
+    url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-api/main/LICENSE'
+    name: MIT
+  contact:
+    email: contact@rektangularstudios.com
+    url: 'https://rektangularstudios.com'
+    name: Rektangular Studios
+  termsOfService: TODO
+servers:
+  - url: 'http://localhost:3555'
+paths:
+  '/wallet/{wallet_address}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of tokens held by Cardano wallet
+                items:
+                  $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request
+      operationId: get-wallet
+      description: Returns the tokens held in a wallet address
+    parameters:
+      - schema:
+          type: string
+        name: wallet_address
+        in: path
+        required: true
+        description: Address of Cardano wallet to use
+  /workflow/minter/nvla:
+    post:
+      summary: ''
+      operationId: post-workflow-minter-nvla
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoTransaction'
+        '400':
+          description: Bad Request
+      description: Returns a transaction to mint NVLA and deposit it to a specified address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MinterInfo'
+    get:
+      summary: ''
+      operationId: get-workflow-minter-nvla
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowInformation'
+          headers: {}
+      description: Returns execution information such as transaction cost
+  /cardano/transaction:
+    post:
+      summary: ''
+      operationId: post-cardano-transaction
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      description: Submits a transaction to Cardano
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardanoTransaction'
+        description: ''
+    parameters: []
+components:
+  schemas:
+    Token:
+      title: Token
+      type: object
+      description: Generalizes the data required to describe a token in a Cardano wallet.
+      properties:
+        policy_id:
+          type: string
+          description: Token policy ID registered on Cardano
+        amount:
+          type: number
+          description: Amount of token held in Cardano wallet
+        ticker:
+          type: string
+          description: 'Ticker as interpreted by Novellia (e.g. NVLA, ADA)'
+        description:
+          type: string
+          description: Short description of token as interpreted by Novellia
+      required:
+        - policy_id
+        - amount
+    CardanoTransaction:
+      title: CardanoTransaction
+      type: object
+      description: A Cardano transaction to be signed and submitted.
+      properties:
+        transaction:
+          type: string
+          description: text of transaction file
+        fee_lovelace:
+          type: integer
+          description: 'Cost to submit TX in lovelace (1 ADA = 1,000,000 lovelace)'
+        signed:
+          type: boolean
+          description: Indicates if the transaction is signed or raw
+      required:
+        - transaction
+        - fee_lovelace
+        - signed
+    MinterInfo:
+      title: MinterInfo
+      type: object
+      description: Generic information required for minter workflows.
+      properties:
+        wallet_address:
+          type: string
+          description: Wallet that pays transaction fee
+        minter_deposit_address:
+          type: string
+          description: Wallet that received minted tokens
+      required:
+        - wallet_address
+        - minter_deposit_address
+    WorkflowInformation:
+      title: WorkflowInformation
+      type: object
+      description: Returns preconditions relevant to a user wanting to execute a workflow. I.e. costs.
+      properties:
+        fee_lovelace:
+          type: integer
+          description: The lovelace cost to execute the workflow
