@@ -32,7 +32,7 @@ We have chosen to use a REST API to maximize compatibility with client code. Thi
 
 ## Tooling
 
-We are using [Spotlight](https://stoplight.io/) to create an OpenAPI specification. We recommend pulling this repo locally and using [Stoplight Studio](https://stoplight.io/studio/) to make changes, committing to Git manually.
+We are using [Stoplight](https://stoplight.io/) to create an OpenAPI specification. We recommend pulling this repo locally and using [Stoplight Studio](https://stoplight.io/studio/) to make changes, committing to Git manually.
 
 Boilerplate is generated using [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
@@ -56,7 +56,7 @@ What goes in this repository?
 
 ### Manual testing of API
 
-We recommend importing the OpenAPI file `stoplight/reference/novellia-api.v1.yaml` into [Insomnia](https://insomnia.rest/) to issue HTTP requests.
+We recommend importing the OpenAPI file `api/reference/novellia-api.v1.yaml` into [Insomnia](https://insomnia.rest/) to issue HTTP requests.
 
 ## Generating Client Code
 
@@ -68,7 +68,7 @@ Use the [csharp](https://github.com/OpenAPITools/openapi-generator/blob/master/d
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./stoplight/reference/novellia-api.v1.yaml \
+  -i ./api/reference/novellia-api.v1.yaml \
   -g csharp \
   --additional-properties targetFramework=v4.5 \
   -o ./generated/client/csharp
@@ -82,7 +82,7 @@ Use the [typescript-fetch](https://github.com/OpenAPITools/openapi-generator/blo
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./stoplight/reference/novellia-api.v1.yaml \
+  -i ./api/reference/novellia-api.v1.yaml \
   -g typescript-fetch \
   --additional-properties typescriptThreePlus=true \
   --additional-properties supportsES6=true \
@@ -111,7 +111,7 @@ Use the [go-server](https://github.com/OpenAPITools/openapi-generator/blob/maste
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./stoplight/reference/novellia-api.v1.yaml \
+  -i ./api/reference/novellia-api.v1.yaml \
   --additional-properties packageName=novellia_api \
   --additional-properties featureCORS=true \
   -g go-server \
