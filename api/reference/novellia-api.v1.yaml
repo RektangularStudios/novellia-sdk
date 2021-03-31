@@ -3,7 +3,7 @@ info:
   title: novellia-api
   version: '1.0'
   license:
-    url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-api/main/LICENSE'
+    url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
     name: MIT
   contact:
     email: contact@rektangularstudios.com
