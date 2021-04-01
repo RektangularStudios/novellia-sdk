@@ -23,3 +23,99 @@ This SDK is for developers who need to interact with the Novellia Platform's fea
 - storing decentralized data on IPFS or similar technology (without needing to care about how it works)
 
 Our goal is to expose a simple interface that allows developers to take advantage of the blockchain features they require, without taking a walled garden approach.
+
+# Novellia API
+
+The API specification for communication between the client code using the Novellia SDK and [Novellia](https://github.com/RektangularStudios/novellia).
+
+We have chosen to use a REST API to maximize compatibility with client code. This communication protocol nicely emulates the RPC nature of smart contracts. Unfortunately, gRPC has poor support in Unity, so we have foregone it. As querying needs expand, we may also investigate GraphQL, but there is no present need for it.
+
+## Tooling
+
+We are using [Stoplight](https://stoplight.io/) to create an OpenAPI specification. We recommend pulling this repo locally and using [Stoplight Studio](https://stoplight.io/studio/) to make changes, committing to Git manually.
+
+Boilerplate is generated using [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
+
+What goes in this repository?
+- The OpenAPI specification
+- Generated code. This ensures the OpenAPI specification isn't broken, or if it is, one doesn't need to fix it before they can use the boilerplate.
+
+### Dependencies
+
+- Install the JRE
+`sudo apt install default-jre`
+
+- Get the [OpenAPI Generator CLI](https://github.com/OpenAPITools/openapi-generator)
+`wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.1/openapi-generator-cli-5.0.1.jar -O openapi-generator-cli.jar`
+
+- to list commands
+`java -jar openapi-generator-cli.jar help`
+
+- to list available generators
+`java -jar openapi-generator-cli.jar list`
+
+### Manual testing of API
+
+We recommend importing the OpenAPI file `api/reference/novellia-api.v1.yaml` into [Insomnia](https://insomnia.rest/) to issue HTTP requests.
+
+## Generating Client Code
+
+### Unity / C#
+
+Rektangular uses this for [Occulta Novellia](https://rektangularstudios.com/occulta-novellia/)
+
+Use the [csharp](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/csharp.md) generator.
+
+```
+java -jar openapi-generator-cli.jar generate \
+  -i ./api/reference/novellia-api.v1.yaml \
+  -g csharp \
+  --additional-properties targetFramework=v4.5 \
+  -o ./generated/client/csharp
+```
+
+### TypeScript
+
+Rektangular uses this for the [Novellia Dashboard](https://rektangularstudios.com/).
+
+Use the [typescript-fetch](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/typescript-fetch.md) generator.
+
+```
+java -jar openapi-generator-cli.jar generate \
+  -i ./api/reference/novellia-api.v1.yaml \
+  -g typescript-fetch \
+  --additional-properties typescriptThreePlus=true \
+  --additional-properties supportsES6=true \
+  -o ./generated/client/typescript-fetch
+```
+
+This is for TypeScript 3+ with ES6 support.
+
+### Why isn't language XYZ listed?
+
+If we've yet to implement your language of choice into the Novellia SDK, you'll have to generate the code yourself and create a service layer.
+
+Consider making a PR so others can benefit from your work. Rektangular will not typically provide ongoing support for community rolled languages, however.
+
+[The full list of generators can be found here.](https://github.com/OpenAPITools/openapi-generator/tree/master/docs/generators)
+
+There's quite a few, with varying degrees of quality. Likely, you'll be able to get the boilerplate you need with minimal effort.
+
+## Generating Server Code
+
+This is not relevant for clients using the Novellia SDK. It pertains only to generating the server boilerplate for Novellia.
+
+### Generating Golang
+
+Use the [go-server](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/go-server.md) generator.
+
+```
+java -jar openapi-generator-cli.jar generate \
+  -i ./api/reference/novellia-api.v1.yaml \
+  --additional-properties packageName=novellia_api \
+  --additional-properties featureCORS=true \
+  -g go-server \
+  -o ./generated/server/go-server
+```
+
+Note that the code may be slightly broken upon regeneration.
