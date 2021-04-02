@@ -1,0 +1,25 @@
+{
+  "name": "novellia-sdk",
+  "version": "0.1.1",
+  "description": "Easily interact with the Novellia Platform to integrate the Cardano blockchain into games",
+  "main": "src/_generated/index.ts",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RektangularStudios/novellia-sdk.git"
+  },
+  "keywords": [
+    "Novellia",
+    "Novellia Platform",
+    "Occulta Novellia",
+    "Cardano",
+    "Blockchain"
+  ],
+  "author": "Rektangular Studios",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RektangularStudios/novellia-sdk/issues"
+  },
+  "homepage": "https://rektangularstudios.com"
+}

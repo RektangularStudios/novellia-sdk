@@ -24,6 +24,23 @@ This SDK is for developers who need to interact with the Novellia Platform's fea
 
 Our goal is to expose a simple interface that allows developers to take advantage of the blockchain features they require, without taking a walled garden approach.
 
+## How do I use the Novellia SDK?
+
+# TypeScript
+
+Install the [NPM package](https://www.npmjs.com/package/novellia-sdk)
+- `npm install novellia-sdk`
+
+# Go (Server)
+
+Install with Go modules
+
+```
+go get github.com/RektangularStudios/novellia-sdk/sdk/server/go
+go mod tidy
+go mod vendor
+```
+
 # Novellia API
 
 The API specification for communication between the client code using the Novellia SDK and [Novellia](https://github.com/RektangularStudios/novellia).
