@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 Dockerfile
 README.md
 api/openapi.yaml
@@ -10,6 +9,7 @@ go/helpers.go
 go/impl.go
 go/logger.go
 go/model_cardano_status.go
+go/model_cardano_tip.go
 go/model_cardano_transaction.go
 go/model_minter_info.go
 go/model_token.go

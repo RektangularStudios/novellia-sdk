@@ -94,6 +94,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/CardanoStatus'
           description: OK
+        "500":
+          description: Internal Server Error
+      summary: Your GET endpoint
+      tags: []
+  /cardano/tip:
+    get:
+      description: Returns Cardano's latest block and epoch
+      operationId: get-cardano-tip
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoTip'
+          description: OK
       summary: Your GET endpoint
       tags: []
 components:
@@ -102,26 +117,27 @@ components:
       description: Generalizes the data required to describe a token in a Cardano
         wallet.
       example:
-        amount: 0.8008281904610115
-        ticker: ticker
-        policy_id: policy_id
+        amount: 0
+        name: name
         description: description
+        asset_id: asset_id
       properties:
-        policy_id:
-          description: Token policy ID registered on Cardano
+        asset_id:
+          description: Token asset ID registered on Cardano
           type: string
         amount:
-          description: Amount of token held in Cardano wallet
-          type: number
-        ticker:
-          description: Ticker as interpreted by Novellia (e.g. NVLA, ADA)
+          description: Amount of token held in Cardano wallet (in discrete units,
+            i.e. lovelace)
+          type: integer
+        name:
+          description: Name or ticker as interpreted by Novellia (e.g. NVLA, ADA)
           type: string
         description:
           description: Short description of token as interpreted by Novellia
           type: string
       required:
       - amount
-      - policy_id
+      - asset_id
       title: Token
       type: object
     CardanoTransaction:
@@ -190,4 +206,21 @@ components:
       - initialized
       - sync_percentage
       title: CardanoStatus
+      type: object
+    CardanoTip:
+      description: Cardano chain tip information
+      example:
+        block: 0
+        epoch: 6
+      properties:
+        block:
+          description: Latest Cardano block
+          type: integer
+        epoch:
+          description: Latest Cardano epoch
+          type: integer
+      required:
+      - block
+      - epoch
+      title: CardanoTip
       type: object
