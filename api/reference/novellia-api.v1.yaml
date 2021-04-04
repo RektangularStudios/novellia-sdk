@@ -86,6 +86,19 @@ paths:
               $ref: '#/components/schemas/CardanoTransaction'
         description: ''
     parameters: []
+  /cardano/status:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoStatus'
+      operationId: get-cardano-status
+      description: Information regarding availability of Cardano APIs
 components:
   schemas:
     Token:
@@ -148,3 +161,17 @@ components:
         fee_lovelace:
           type: integer
           description: The lovelace cost to execute the workflow
+    CardanoStatus:
+      title: CardanoStatus
+      type: object
+      description: Status of Cardano for determining availability of other endpoints
+      properties:
+        initialized:
+          type: boolean
+          description: Whether Cardano APIs are available / Cardano is fully synced
+        sync_percentage:
+          type: number
+          description: Cardano sync percentage for progress estimation
+      required:
+        - initialized
+        - sync_percentage
