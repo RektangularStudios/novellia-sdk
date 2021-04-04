@@ -20,23 +20,23 @@ import { exists, mapValues } from '../runtime';
  */
 export interface Token {
     /**
-     * Token policy ID registered on Cardano
+     * Token asset ID registered on Cardano
      * @type {string}
      * @memberof Token
      */
-    policyId: string;
+    assetId: string;
     /**
-     * Amount of token held in Cardano wallet
+     * Amount of token held in Cardano wallet (in discrete units, i.e. lovelace)
      * @type {number}
      * @memberof Token
      */
     amount: number;
     /**
-     * Ticker as interpreted by Novellia (e.g. NVLA, ADA)
+     * Name or ticker as interpreted by Novellia (e.g. NVLA, ADA)
      * @type {string}
      * @memberof Token
      */
-    ticker?: string;
+    name?: string;
     /**
      * Short description of token as interpreted by Novellia
      * @type {string}
@@ -55,9 +55,9 @@ export function TokenFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tok
     }
     return {
         
-        'policyId': json['policy_id'],
+        'assetId': json['asset_id'],
         'amount': json['amount'],
-        'ticker': !exists(json, 'ticker') ? undefined : json['ticker'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
     };
 }
@@ -71,9 +71,9 @@ export function TokenToJSON(value?: Token | null): any {
     }
     return {
         
-        'policy_id': value.policyId,
+        'asset_id': value.assetId,
         'amount': value.amount,
-        'ticker': value.ticker,
+        'name': value.name,
         'description': value.description,
     };
 }
