@@ -27,6 +27,17 @@ func NewDefaultApiService() DefaultApiServicer {
 	return &DefaultApiService{}
 }
 
+// GetCardanoStatus - Your GET endpoint
+func (s *DefaultApiService) GetCardanoStatus(ctx context.Context) (ImplResponse, error) {
+	// TODO - update GetCardanoStatus with the required logic for this service method.
+	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+
+	//TODO: Uncomment the next line to return response Response(200, CardanoStatus{}) or use other options such as http.Ok ...
+	//return Response(200, CardanoStatus{}), nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetCardanoStatus method not implemented")
+}
+
 // GetWallet - Your GET endpoint
 func (s *DefaultApiService) GetWallet(ctx context.Context, walletAddress string) (ImplResponse, error) {
 	// TODO - update GetWallet with the required logic for this service method.

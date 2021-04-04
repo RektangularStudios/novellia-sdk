@@ -32,6 +32,12 @@ func NewDefaultApiController(s DefaultApiServicer) Router {
 func (c *DefaultApiController) Routes() Routes {
 	return Routes{ 
 		{
+			"GetCardanoStatus",
+			strings.ToUpper("Get"),
+			"/cardano/status",
+			c.GetCardanoStatus,
+		},
+		{
 			"GetWallet",
 			strings.ToUpper("Get"),
 			"/wallet/{wallet_address}",
@@ -56,6 +62,19 @@ func (c *DefaultApiController) Routes() Routes {
 			c.PostWorkflowMinterNvla,
 		},
 	}
+}
+
+// GetCardanoStatus - Your GET endpoint
+func (c *DefaultApiController) GetCardanoStatus(w http.ResponseWriter, r *http.Request) { 
+	result, err := c.service.GetCardanoStatus(r.Context())
+	//If an error occured, encode the error with the status code
+	if err != nil {
+		EncodeJSONResponse(err.Error(), &result.Code, w)
+		return
+	}
+	//If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+	
 }
 
 // GetWallet - Your GET endpoint

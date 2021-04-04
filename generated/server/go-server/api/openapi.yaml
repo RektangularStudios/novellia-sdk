@@ -6,7 +6,7 @@ info:
     url: https://rektangularstudios.com
   license:
     name: MIT
-    url: https://raw.githubusercontent.com/RektangularStudios/novellia-api/main/LICENSE
+    url: https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE
   termsOfService: TODO
   title: novellia-api
   version: "1.0"
@@ -83,6 +83,19 @@ paths:
           description: OK
         "400":
           description: Bad Request
+  /cardano/status:
+    get:
+      description: Information regarding availability of Cardano APIs
+      operationId: get-cardano-status
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoStatus'
+          description: OK
+      summary: Your GET endpoint
+      tags: []
 components:
   schemas:
     Token:
@@ -160,4 +173,21 @@ components:
           description: The lovelace cost to execute the workflow
           type: integer
       title: WorkflowInformation
+      type: object
+    CardanoStatus:
+      description: Status of Cardano for determining availability of other endpoints
+      example:
+        initialized: true
+        sync_percentage: 0.8008281904610115
+      properties:
+        initialized:
+          description: Whether Cardano APIs are available / Cardano is fully synced
+          type: boolean
+        sync_percentage:
+          description: Cardano sync percentage for progress estimation
+          type: number
+      required:
+      - initialized
+      - sync_percentage
+      title: CardanoStatus
       type: object
