@@ -97,8 +97,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CardanoStatus'
+        '500':
+          description: Internal Server Error
       operationId: get-cardano-status
       description: Information regarding availability of Cardano APIs
+  /cardano/tip:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoTip'
+      operationId: get-cardano-tip
+      description: Returns Cardano's latest block and epoch
 components:
   schemas:
     Token:
@@ -106,20 +121,20 @@ components:
       type: object
       description: Generalizes the data required to describe a token in a Cardano wallet.
       properties:
-        policy_id:
+        asset_id:
           type: string
-          description: Token policy ID registered on Cardano
+          description: Token asset ID registered on Cardano
         amount:
-          type: number
-          description: Amount of token held in Cardano wallet
-        ticker:
+          description: 'Amount of token held in Cardano wallet (in discrete units, i.e. lovelace)'
+          type: integer
+        name:
           type: string
-          description: 'Ticker as interpreted by Novellia (e.g. NVLA, ADA)'
+          description: 'Name or ticker as interpreted by Novellia (e.g. NVLA, ADA)'
         description:
           type: string
           description: Short description of token as interpreted by Novellia
       required:
-        - policy_id
+        - asset_id
         - amount
     CardanoTransaction:
       title: CardanoTransaction
@@ -175,3 +190,17 @@ components:
       required:
         - initialized
         - sync_percentage
+    CardanoTip:
+      title: CardanoTip
+      type: object
+      description: Cardano chain tip information
+      properties:
+        block:
+          description: Latest Cardano block
+          type: integer
+        epoch:
+          type: integer
+          description: Latest Cardano epoch
+      required:
+        - block
+        - epoch
