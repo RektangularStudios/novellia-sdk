@@ -129,7 +129,7 @@ Use the [go-server](https://github.com/OpenAPITools/openapi-generator/blob/maste
 ```
 java -jar openapi-generator-cli.jar generate \
   -i ./api/reference/novellia-api.v1.yaml \
-  --additional-properties packageName=novellia_api \
+  --additional-properties packageName=novellia_sdk \
   --additional-properties featureCORS=true \
   -g go-server \
   -o ./generated/server/go-server

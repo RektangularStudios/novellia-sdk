@@ -14,16 +14,16 @@ import (
 	"log"
 	"net/http"
 
-	novellia_api "github.com/GIT_USER_ID/GIT_REPO_ID/go"
+	novellia_sdk "github.com/GIT_USER_ID/GIT_REPO_ID/go"
 )
 
 func main() {
 	log.Printf("Server started")
 
-	DefaultApiService := novellia_api.NewDefaultApiService()
-	DefaultApiController := novellia_api.NewDefaultApiController(DefaultApiService)
+	DefaultApiService := novellia_sdk.NewDefaultApiService()
+	DefaultApiController := novellia_sdk.NewDefaultApiController(DefaultApiService)
 
-	router := novellia_api.NewRouter(DefaultApiController)
+	router := novellia_sdk.NewRouter(DefaultApiController)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

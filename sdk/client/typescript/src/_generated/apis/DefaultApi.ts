@@ -15,6 +15,12 @@
 
 import * as runtime from '../runtime';
 import {
+    CardanoStatus,
+    CardanoStatusFromJSON,
+    CardanoStatusToJSON,
+    CardanoTip,
+    CardanoTipFromJSON,
+    CardanoTipToJSON,
     CardanoTransaction,
     CardanoTransactionFromJSON,
     CardanoTransactionToJSON,
@@ -45,6 +51,62 @@ export interface PostWorkflowMinterNvlaRequest {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
+
+    /**
+     * Information regarding availability of Cardano APIs
+     * Your GET endpoint
+     */
+    async getCardanoStatusRaw(): Promise<runtime.ApiResponse<CardanoStatus>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/cardano/status`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CardanoStatusFromJSON(jsonValue));
+    }
+
+    /**
+     * Information regarding availability of Cardano APIs
+     * Your GET endpoint
+     */
+    async getCardanoStatus(): Promise<CardanoStatus> {
+        const response = await this.getCardanoStatusRaw();
+        return await response.value();
+    }
+
+    /**
+     * Returns Cardano\'s latest block and epoch
+     * Your GET endpoint
+     */
+    async getCardanoTipRaw(): Promise<runtime.ApiResponse<CardanoTip>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/cardano/tip`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CardanoTipFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns Cardano\'s latest block and epoch
+     * Your GET endpoint
+     */
+    async getCardanoTip(): Promise<CardanoTip> {
+        const response = await this.getCardanoTipRaw();
+        return await response.value();
+    }
 
     /**
      * Returns the tokens held in a wallet address

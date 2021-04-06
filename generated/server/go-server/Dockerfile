@@ -6,9 +6,9 @@ COPY main.go .
 ENV CGO_ENABLED=0
 RUN go get -d -v ./...
 
-RUN go build -a -installsuffix cgo -o novellia_api .
+RUN go build -a -installsuffix cgo -o novellia_sdk .
 
 FROM scratch AS runtime
-COPY --from=build /go/src/novellia_api ./
+COPY --from=build /go/src/novellia_sdk ./
 EXPOSE 8080/tcp
-ENTRYPOINT ["./novellia_api"]
+ENTRYPOINT ["./novellia_sdk"]

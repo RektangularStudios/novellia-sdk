@@ -14,3 +14,4 @@ package novellia_sdk
 func Response(code int, body interface{}) ImplResponse {
 	return ImplResponse{Code: code, Body: body}
 }
+
