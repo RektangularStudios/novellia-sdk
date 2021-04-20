@@ -130,13 +130,18 @@ paths:
         - schema:
             type: string
           in: query
-          name: market
+          name: market_id
           description: Filter product results by market
         - schema:
             type: string
           in: query
-          name: organization
+          name: organization_id
           description: Filter product results by organization
+        - schema:
+            type: string
+          in: query
+          name: product_id
+          description: Get specific product
       description: Returns a list of products to list
     parameters: []
   /orders:
@@ -157,6 +162,23 @@ paths:
         - schema:
             type: string
           in: query
+          name: product_id
+          description: Filter by product
+        - schema:
+            type: string
+          in: query
+          name: market_id
+          description: Filter by market
+        - schema:
+            type: string
+          in: query
+          name: organization_id
+          description: Filter by organization
+        - schema:
+            type: string
+          in: query
+          name: count
+          description: How many orders to return
       description: Gets recent orders
 components:
   schemas:
