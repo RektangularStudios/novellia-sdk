@@ -17,6 +17,7 @@ Initial publish, supports wallet token query.
   - add maintenance switch
   - generalize for multiple service statuses
 
-# v0.3.1
+# v0.3.4
 
 - Change gateway
+- No CORS

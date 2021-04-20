@@ -11,8 +11,8 @@ info:
     name: Rektangular Studios
   termsOfService: TODO
 servers:
-  - url: api.rektangularstudios.com
-    description: ''
+  - url: api.rektangularstudios.com/novellia
+    description: API Gateway
 paths:
   '/wallet/{wallet_address}':
     get:
