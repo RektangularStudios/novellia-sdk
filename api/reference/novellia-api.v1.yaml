@@ -11,7 +11,6 @@ info:
     name: Rektangular Studios
   termsOfService: TODO
 servers:
-  - url: 'http://localhost:3555'
   - url: api.rektangularstudios.com
     description: ''
 paths:

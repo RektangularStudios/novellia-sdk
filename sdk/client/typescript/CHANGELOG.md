@@ -16,3 +16,7 @@ Initial publish, supports wallet token query.
 - Rename `/cardano/status` to `/status`
   - add maintenance switch
   - generalize for multiple service statuses
+
+# v0.3.1
+
+- Change gateway
