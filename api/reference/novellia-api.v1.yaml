@@ -12,6 +12,8 @@ info:
   termsOfService: TODO
 servers:
   - url: 'http://localhost:3555'
+  - url: api.rektangularstudios.com
+    description: ''
 paths:
   '/wallet/{wallet_address}':
     get:

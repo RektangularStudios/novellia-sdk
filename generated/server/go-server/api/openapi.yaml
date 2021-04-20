@@ -12,6 +12,7 @@ info:
   version: "1.0"
 servers:
 - url: http://localhost:3555
+- url: api.rektangularstudios.com
 paths:
   /wallet/{wallet_address}:
     get:
@@ -83,21 +84,6 @@ paths:
           description: OK
         "400":
           description: Bad Request
-  /cardano/status:
-    get:
-      description: Information regarding availability of Cardano APIs
-      operationId: get-cardano-status
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CardanoStatus'
-          description: OK
-        "500":
-          description: Internal Server Error
-      summary: Your GET endpoint
-      tags: []
   /cardano/tip:
     get:
       description: Returns Cardano's latest block and epoch
@@ -108,6 +94,107 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CardanoTip'
+          description: OK
+      summary: Your GET endpoint
+      tags: []
+  /status:
+    get:
+      description: Information regarding availability of Novellia APIs
+      operationId: get-status
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: OK
+      summary: Your GET endpoint
+      tags: []
+  /products:
+    get:
+      description: Returns a list of products to list
+      operationId: get-products
+      parameters:
+      - description: Filter product results by market
+        explode: true
+        in: query
+        name: market_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter product results by organization
+        explode: true
+        in: query
+        name: organization_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Get specific product
+        explode: true
+        in: query
+        name: product_id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Product'
+                type: array
+          description: OK
+      summary: Your GET endpoint
+      tags: []
+  /orders:
+    get:
+      description: Gets recent orders
+      operationId: get-orders
+      parameters:
+      - description: Filter by product
+        explode: true
+        in: query
+        name: product_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by market
+        explode: true
+        in: query
+        name: market_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by organization
+        explode: true
+        in: query
+        name: organization_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: How many orders to return
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Order'
+                type: array
           description: OK
       summary: Your GET endpoint
       tags: []
@@ -190,23 +277,6 @@ components:
           type: integer
       title: WorkflowInformation
       type: object
-    CardanoStatus:
-      description: Status of Cardano for determining availability of other endpoints
-      example:
-        initialized: true
-        sync_percentage: 0.8008281904610115
-      properties:
-        initialized:
-          description: Whether Cardano APIs are available / Cardano is fully synced
-          type: boolean
-        sync_percentage:
-          description: Cardano sync percentage for progress estimation
-          type: number
-      required:
-      - initialized
-      - sync_percentage
-      title: CardanoStatus
-      type: object
     CardanoTip:
       description: Cardano chain tip information
       example:
@@ -223,4 +293,314 @@ components:
       - block
       - epoch
       title: CardanoTip
+      type: object
+    Status:
+      description: Status of Novellia microservice, indicating service availabilities
+      example:
+        cardano:
+          initialized: true
+          sync_percentage: 0.8008281904610115
+        maintenance: true
+      properties:
+        cardano:
+          $ref: '#/components/schemas/Status_cardano'
+        maintenance:
+          description: kill-switch to tell users that the backend is not working correctly
+            / is under maintenance
+          type: boolean
+      required:
+      - cardano
+      - maintenance
+      title: Status
+      type: object
+    Product:
+      description: A product to display for sale
+      example:
+        market:
+          name: name
+          market_id: 5
+        metadata:
+          date_listed: date_listed
+          tags:
+          - tags
+          - tags
+        product:
+          token_policy_id: token_policy_id
+          overview_image_urls:
+          - overview_image_urls
+          - overview_image_urls
+          product_id: 7
+          name: name
+          description: description
+        artist:
+          urls:
+          - urls
+          - urls
+          name: name
+        organization:
+          organization_id: 1
+          name: name
+        asset:
+          urls:
+          - urls
+          - urls
+          loader: loader
+        stock:
+          total_supply: 2
+          available: 5
+        pricing:
+          max_order_size: 6
+          currency_policy_id: currency_policy_id
+          purchase_address: purchase_address
+          unit_price: 0
+          date_available: date_available
+      properties:
+        asset:
+          $ref: '#/components/schemas/Product_asset'
+        pricing:
+          $ref: '#/components/schemas/Product_pricing'
+        organization:
+          $ref: '#/components/schemas/Product_organization'
+        market:
+          $ref: '#/components/schemas/Product_market'
+        stock:
+          $ref: '#/components/schemas/Product_stock'
+        metadata:
+          $ref: '#/components/schemas/Product_metadata'
+        artist:
+          $ref: '#/components/schemas/Product_artist'
+        product:
+          $ref: '#/components/schemas/Product_product'
+      required:
+      - asset
+      - market
+      - metadata
+      - organization
+      - pricing
+      - product
+      - stock
+      title: Product
+      type: object
+    OccultaNovelliaCharacter:
+      description: Model for an Occulta Novellia character
+      properties:
+        id:
+          type: string
+      title: OccultaNovelliaCharacter
+      type: object
+    Order:
+      description: Describes a single order / transaction
+      example:
+        product_id: 0
+        order_size: 6
+        currency_policy_id: currency_policy_id
+        unit_price: 1
+      properties:
+        product_id:
+          description: Unique identifier of product
+          type: integer
+        order_size:
+          description: Number of product purchased in order
+          type: integer
+        currency_policy_id:
+          description: Currency product is priced with
+          type: string
+        unit_price:
+          description: Price for a single item of product type
+          type: integer
+      required:
+      - currency_policy_id
+      - order_size
+      - product_id
+      - unit_price
+      title: Order
+      type: object
+    Status_cardano:
+      example:
+        initialized: true
+        sync_percentage: 0.8008281904610115
+      properties:
+        initialized:
+          description: whether cardano-graphql is initialized
+          type: boolean
+        sync_percentage:
+          description: cardano-graphql sync percentage, used to gauge when APIs will
+            be available
+          type: number
+      required:
+      - initialized
+      - sync_percentage
+      type: object
+    Product_asset:
+      description: Resources for detailed view asset with specific loader
+      example:
+        urls:
+        - urls
+        - urls
+        loader: loader
+      properties:
+        urls:
+          description: URLs pointing to detailed asset for detailed view. Each link
+            should point to the same file.
+          items:
+            type: string
+          type: array
+        loader:
+          description: Asset loader for linked assets file
+          type: string
+      required:
+      - loader
+      - urls
+      type: object
+    Product_pricing:
+      description: Pricing information for making a purchase
+      example:
+        max_order_size: 6
+        currency_policy_id: currency_policy_id
+        purchase_address: purchase_address
+        unit_price: 0
+        date_available: date_available
+      properties:
+        currency_policy_id:
+          description: Currency product is priced with
+          type: string
+        unit_price:
+          description: Price for a single item of product type
+          type: integer
+        max_order_size:
+          description: Maximum units purchasable in a single transaction
+          type: integer
+        purchase_address:
+          description: Address to send funds to purchase token. Leave empty if token
+            is not yet for sale.
+          type: string
+        date_available:
+          description: When the product is becoming available for sale. Leave empty
+            if this is undetermined.
+          type: string
+      required:
+      - currency_policy_id
+      - max_order_size
+      - unit_price
+      type: object
+    Product_organization:
+      description: Organization listing the product
+      example:
+        organization_id: 1
+        name: name
+      properties:
+        name:
+          description: Readable name of organization
+          type: string
+        organization_id:
+          description: Unique identifier for organization
+          type: integer
+      required:
+      - name
+      - organization_id
+      type: object
+    Product_market:
+      description: Market for the product, under the organization
+      example:
+        name: name
+        market_id: 5
+      properties:
+        name:
+          description: Readable name of market
+          type: string
+        market_id:
+          description: Unique identifier of market
+          type: integer
+      required:
+      - market_id
+      - name
+      type: object
+    Product_stock:
+      description: Availability of product
+      example:
+        total_supply: 2
+        available: 5
+      properties:
+        available:
+          description: Tokens available to be sold
+          type: integer
+        total_supply:
+          description: Total number of tokens in existence (scarcity). Leave empty
+            for infinite supply.
+          type: integer
+      required:
+      - available
+      type: object
+    Product_metadata:
+      description: Filterable data regarding product
+      example:
+        date_listed: date_listed
+        tags:
+        - tags
+        - tags
+      properties:
+        tags:
+          description: Filterable tags describing the token
+          items:
+            type: string
+          type: array
+        date_listed:
+          description: When the token was listed
+          type: string
+      required:
+      - date_listed
+      type: object
+    Product_artist:
+      description: Artist attribution
+      example:
+        urls:
+        - urls
+        - urls
+        name: name
+      properties:
+        name:
+          description: Name of artist for token asset
+          type: string
+        urls:
+          description: URLs to learn more about artist (e.g. portfolio). These can
+            point to different places.
+          items:
+            type: string
+          type: array
+      type: object
+    Product_product:
+      description: Details for generic products, standalone without asset resource
+        or specific loader
+      example:
+        token_policy_id: token_policy_id
+        overview_image_urls:
+        - overview_image_urls
+        - overview_image_urls
+        product_id: 7
+        name: name
+        description: description
+      properties:
+        overview_image_urls:
+          description: URLs to image to display on overview
+          items:
+            type: string
+          type: array
+        token_policy_id:
+          description: Token policy ID to refer to blockchain
+          type: string
+        description:
+          description: Short description of token
+          type: string
+        name:
+          description: Readable name of product
+          type: string
+        product_id:
+          description: Unique identifier of product
+          type: integer
+      required:
+      - description
+      - name
+      - overview_image_urls
+      - product_id
+      - token_policy_id
       type: object
