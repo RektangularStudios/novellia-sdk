@@ -86,21 +86,6 @@ paths:
               $ref: '#/components/schemas/CardanoTransaction'
         description: ''
     parameters: []
-  /cardano/status:
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CardanoStatus'
-        '500':
-          description: Internal Server Error
-      operationId: get-cardano-status
-      description: Information regarding availability of Cardano APIs
   /cardano/tip:
     get:
       summary: Your GET endpoint
@@ -152,8 +137,27 @@ paths:
           in: query
           name: organization
           description: Filter product results by organization
-      description: Returns a list of products to display
+      description: Returns a list of products to list
     parameters: []
+  /orders:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+      operationId: get-orders
+      parameters:
+        - schema:
+            type: string
+          in: query
+      description: Gets recent orders
 components:
   schemas:
     Token:
@@ -258,28 +262,12 @@ components:
       type: object
       description: A product to display for sale
       properties:
-        name:
-          type: string
-          description: Name of product to display
-        metadata:
-          type: object
-          required:
-            - market
-            - organization
-          description: Metadata for filtering and sorting product
-          properties:
-            market:
-              type: string
-              description: 'Market to list product under (e.g. Games, NFTs)'
-            organization:
-              type: string
-              description: Organization product is listed under (e.g. Rektangular)
-        assets:
+        asset:
           type: object
           required:
             - urls
             - loader
-          description: Resources for detailed view asset
+          description: Resources for detailed view asset with specific loader
           properties:
             urls:
               type: array
@@ -289,13 +277,154 @@ components:
             loader:
               type: string
               description: Asset loader for linked assets file
-        image_urls:
-          type: array
-          description: URLs pointing to image to display on product overview. Each link should point to the same file.
-          items:
-            type: string
+        pricing:
+          type: object
+          required:
+            - currency_policy_id
+            - unit_price
+            - max_order_size
+          description: Pricing information for making a purchase
+          properties:
+            currency_policy_id:
+              type: string
+              description: Currency product is priced with
+            unit_price:
+              type: integer
+              description: Price for a single item of product type
+            max_order_size:
+              type: integer
+              description: Maximum units purchasable in a single transaction
+            purchase_address:
+              type: string
+              description: Address to send funds to purchase token. Leave empty if token is not yet for sale.
+            date_available:
+              type: string
+              description: When the product is becoming available for sale. Leave empty if this is undetermined.
+        organization:
+          type: object
+          required:
+            - name
+            - organization_id
+          description: Organization listing the product
+          properties:
+            name:
+              type: string
+              description: Readable name of organization
+            organization_id:
+              description: Unique identifier for organization
+              type: integer
+        market:
+          type: object
+          required:
+            - name
+            - market_id
+          description: 'Market for the product, under the organization'
+          properties:
+            name:
+              type: string
+              description: Readable name of market
+            market_id:
+              description: Unique identifier of market
+              type: integer
+        stock:
+          type: object
+          description: Availability of product
+          required:
+            - available
+          properties:
+            available:
+              type: integer
+              description: Tokens available to be sold
+            total_supply:
+              type: integer
+              description: Total number of tokens in existence (scarcity). Leave empty for infinite supply.
+        metadata:
+          type: object
+          description: Filterable data regarding product
+          required:
+            - date_listed
+          properties:
+            tags:
+              type: array
+              description: Filterable tags describing the token
+              items:
+                type: string
+            date_listed:
+              type: string
+              description: When the token was listed
+        artist:
+          type: object
+          description: Artist attribution
+          properties:
+            name:
+              type: string
+              description: Name of artist for token asset
+            urls:
+              type: array
+              description: URLs to learn more about artist (e.g. portfolio). These can point to different places.
+              items:
+                type: string
+        product:
+          type: object
+          description: 'Details for generic products, standalone without asset resource or specific loader'
+          required:
+            - overview_image_urls
+            - token_policy_id
+            - description
+            - name
+            - product_id
+          properties:
+            overview_image_urls:
+              type: array
+              description: URLs to image to display on overview
+              items:
+                type: string
+            token_policy_id:
+              type: string
+              description: Token policy ID to refer to blockchain
+            description:
+              type: string
+              description: Short description of token
+            name:
+              type: string
+              description: Readable name of product
+            product_id:
+              description: Unique identifier of product
+              type: integer
       required:
-        - name
+        - asset
+        - pricing
+        - organization
+        - market
+        - stock
         - metadata
-        - assets
-        - image_urls
+        - product
+    OccultaNovelliaCharacter:
+      title: OccultaNovelliaCharacter
+      type: object
+      properties:
+        id:
+          type: string
+      description: Model for an Occulta Novellia character
+    Order:
+      title: Order
+      type: object
+      properties:
+        product_id:
+          type: integer
+          description: Unique identifier of product
+        order_size:
+          type: integer
+          description: Number of product purchased in order
+        currency_policy_id:
+          type: string
+          description: Currency product is priced with
+        unit_price:
+          type: integer
+          description: Price for a single item of product type
+      required:
+        - product_id
+        - order_size
+        - currency_policy_id
+        - unit_price
+      description: Describes a single order / transaction
