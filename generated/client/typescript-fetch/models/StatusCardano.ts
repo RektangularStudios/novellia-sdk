@@ -14,30 +14,30 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Status of Cardano for determining availability of other endpoints
+ * 
  * @export
- * @interface CardanoStatus
+ * @interface StatusCardano
  */
-export interface CardanoStatus {
+export interface StatusCardano {
     /**
-     * Whether Cardano APIs are available / Cardano is fully synced
+     * whether cardano-graphql is initialized
      * @type {boolean}
-     * @memberof CardanoStatus
+     * @memberof StatusCardano
      */
     initialized: boolean;
     /**
-     * Cardano sync percentage for progress estimation
+     * cardano-graphql sync percentage, used to gauge when APIs will be available
      * @type {number}
-     * @memberof CardanoStatus
+     * @memberof StatusCardano
      */
     syncPercentage: number;
 }
 
-export function CardanoStatusFromJSON(json: any): CardanoStatus {
-    return CardanoStatusFromJSONTyped(json, false);
+export function StatusCardanoFromJSON(json: any): StatusCardano {
+    return StatusCardanoFromJSONTyped(json, false);
 }
 
-export function CardanoStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean): CardanoStatus {
+export function StatusCardanoFromJSONTyped(json: any, ignoreDiscriminator: boolean): StatusCardano {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -48,7 +48,7 @@ export function CardanoStatusFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function CardanoStatusToJSON(value?: CardanoStatus | null): any {
+export function StatusCardanoToJSON(value?: StatusCardano | null): any {
     if (value === undefined) {
         return undefined;
     }

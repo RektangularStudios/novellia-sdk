@@ -15,9 +15,6 @@
 
 import * as runtime from '../runtime';
 import {
-    CardanoStatus,
-    CardanoStatusFromJSON,
-    CardanoStatusToJSON,
     CardanoTip,
     CardanoTipFromJSON,
     CardanoTipToJSON,
@@ -27,6 +24,15 @@ import {
     MinterInfo,
     MinterInfoFromJSON,
     MinterInfoToJSON,
+    Order,
+    OrderFromJSON,
+    OrderToJSON,
+    Product,
+    ProductFromJSON,
+    ProductToJSON,
+    Status,
+    StatusFromJSON,
+    StatusToJSON,
     Token,
     TokenFromJSON,
     TokenToJSON,
@@ -34,6 +40,19 @@ import {
     WorkflowInformationFromJSON,
     WorkflowInformationToJSON,
 } from '../models';
+
+export interface GetOrdersRequest {
+    productId?: string;
+    marketId?: string;
+    organizationId?: string;
+    count?: string;
+}
+
+export interface GetProductsRequest {
+    marketId?: string;
+    organizationId?: string;
+    productId?: string;
+}
 
 export interface GetWalletRequest {
     walletAddress: string;
@@ -51,34 +70,6 @@ export interface PostWorkflowMinterNvlaRequest {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
-
-    /**
-     * Information regarding availability of Cardano APIs
-     * Your GET endpoint
-     */
-    async getCardanoStatusRaw(): Promise<runtime.ApiResponse<CardanoStatus>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/cardano/status`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CardanoStatusFromJSON(jsonValue));
-    }
-
-    /**
-     * Information regarding availability of Cardano APIs
-     * Your GET endpoint
-     */
-    async getCardanoStatus(): Promise<CardanoStatus> {
-        const response = await this.getCardanoStatusRaw();
-        return await response.value();
-    }
 
     /**
      * Returns Cardano\'s latest block and epoch
@@ -105,6 +96,118 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getCardanoTip(): Promise<CardanoTip> {
         const response = await this.getCardanoTipRaw();
+        return await response.value();
+    }
+
+    /**
+     * Gets recent orders
+     * Your GET endpoint
+     */
+    async getOrdersRaw(requestParameters: GetOrdersRequest): Promise<runtime.ApiResponse<Array<Order>>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.productId !== undefined) {
+            queryParameters['product_id'] = requestParameters.productId;
+        }
+
+        if (requestParameters.marketId !== undefined) {
+            queryParameters['market_id'] = requestParameters.marketId;
+        }
+
+        if (requestParameters.organizationId !== undefined) {
+            queryParameters['organization_id'] = requestParameters.organizationId;
+        }
+
+        if (requestParameters.count !== undefined) {
+            queryParameters['count'] = requestParameters.count;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/orders`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OrderFromJSON));
+    }
+
+    /**
+     * Gets recent orders
+     * Your GET endpoint
+     */
+    async getOrders(requestParameters: GetOrdersRequest): Promise<Array<Order>> {
+        const response = await this.getOrdersRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Returns a list of products to list
+     * Your GET endpoint
+     */
+    async getProductsRaw(requestParameters: GetProductsRequest): Promise<runtime.ApiResponse<Array<Product>>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.marketId !== undefined) {
+            queryParameters['market_id'] = requestParameters.marketId;
+        }
+
+        if (requestParameters.organizationId !== undefined) {
+            queryParameters['organization_id'] = requestParameters.organizationId;
+        }
+
+        if (requestParameters.productId !== undefined) {
+            queryParameters['product_id'] = requestParameters.productId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/products`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProductFromJSON));
+    }
+
+    /**
+     * Returns a list of products to list
+     * Your GET endpoint
+     */
+    async getProducts(requestParameters: GetProductsRequest): Promise<Array<Product>> {
+        const response = await this.getProductsRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Information regarding availability of Novellia APIs
+     * Your GET endpoint
+     */
+    async getStatusRaw(): Promise<runtime.ApiResponse<Status>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/status`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => StatusFromJSON(jsonValue));
+    }
+
+    /**
+     * Information regarding availability of Novellia APIs
+     * Your GET endpoint
+     */
+    async getStatus(): Promise<Status> {
+        const response = await this.getStatusRaw();
         return await response.value();
     }
 
