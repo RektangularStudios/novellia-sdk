@@ -17,3 +17,20 @@ Some features will include:
   - storing decentralized data on IPFS or similar technology (without needing to care about how it works)
 
 Our goal is to expose a simple interface that allows developers to take advantage of the blockchain features they require, without taking a walled garden approach.
+
+## Usage
+
+Import the Novellia service from the SDK, initialize an instance with a backend URL. That's it, proceed to call the service layer.
+
+```
+import { NovelliaService, GetProductsRequest } from "novellia-sdk";
+
+const novelliaService = new NovelliaService({
+  basePath: "http://localhost:3555",
+});
+novelliaService.products({}).then(resp => {
+  console.log(resp);
+}).catch(e => {
+  console.log(e);
+});
+```
