@@ -32,12 +32,6 @@ export interface ProductProduct {
      */
     tokenPolicyId: string;
     /**
-     * Short description of token
-     * @type {string}
-     * @memberof ProductProduct
-     */
-    description: string;
-    /**
      * Readable name of product
      * @type {string}
      * @memberof ProductProduct
@@ -49,6 +43,18 @@ export interface ProductProduct {
      * @memberof ProductProduct
      */
     productId: number;
+    /**
+     * Short description of product
+     * @type {string}
+     * @memberof ProductProduct
+     */
+    descriptionShort?: string;
+    /**
+     * Long description of product
+     * @type {string}
+     * @memberof ProductProduct
+     */
+    descriptionLong?: string;
 }
 
 export function ProductProductFromJSON(json: any): ProductProduct {
@@ -63,9 +69,10 @@ export function ProductProductFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'overviewImageUrls': json['overview_image_urls'],
         'tokenPolicyId': json['token_policy_id'],
-        'description': json['description'],
         'name': json['name'],
         'productId': json['product_id'],
+        'descriptionShort': !exists(json, 'description_short') ? undefined : json['description_short'],
+        'descriptionLong': !exists(json, 'description_long') ? undefined : json['description_long'],
     };
 }
 
@@ -80,9 +87,10 @@ export function ProductProductToJSON(value?: ProductProduct | null): any {
         
         'overview_image_urls': value.overviewImageUrls,
         'token_policy_id': value.tokenPolicyId,
-        'description': value.description,
         'name': value.name,
         'product_id': value.productId,
+        'description_short': value.descriptionShort,
+        'description_long': value.descriptionLong,
     };
 }
 

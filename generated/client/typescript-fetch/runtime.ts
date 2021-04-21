@@ -13,7 +13,7 @@
  */
 
 
-export const BASE_PATH = "http://localhost:3555".replace(/\/+$/, "");
+export const BASE_PATH = "http://api.rektangularstudios.com/novellia".replace(/\/+$/, "");
 
 const isBlob = (value: any) => typeof Blob !== 'undefined' && value instanceof Blob;
 

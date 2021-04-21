@@ -13,7 +13,7 @@
  */
 
 
-export const BASE_PATH = "https://api.rektangularstudios.com/novellia".replace(/\/+$/, "");
+export const BASE_PATH = "http://api.rektangularstudios.com/novellia".replace(/\/+$/, "");
 
 const isBlob = (value: any) => typeof Blob !== 'undefined' && value instanceof Blob;
 
@@ -69,7 +69,6 @@ export class BaseAPI {
         const init = {
             method: context.method,
             headers: headers,
-            mode: "no-cors",
             body,
             credentials: this.configuration.credentials
         };
