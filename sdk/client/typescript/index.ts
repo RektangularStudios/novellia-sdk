@@ -1,4 +1,4 @@
-export { NovelliaService } from './novellia.service.ts';
+export { NovelliaService } from './novellia.service';
 export { 
   DefaultApi,
   GetOrdersRequest,
