@@ -287,10 +287,10 @@ components:
       properties:
         asset:
           type: object
+          description: Resources for detailed view asset with specific loader
           required:
             - urls
             - loader
-          description: Resources for detailed view asset with specific loader
           properties:
             urls:
               type: array
@@ -302,11 +302,11 @@ components:
               description: Asset loader for linked assets file
         pricing:
           type: object
+          description: Pricing information for making a purchase
           required:
             - currency_policy_id
             - unit_price
             - max_order_size
-          description: Pricing information for making a purchase
           properties:
             currency_policy_id:
               type: string
@@ -325,10 +325,10 @@ components:
               description: When the product is becoming available for sale. Leave empty if this is undetermined.
         organization:
           type: object
+          description: Organization listing the product
           required:
             - name
             - organization_id
-          description: Organization listing the product
           properties:
             name:
               type: string
@@ -338,10 +338,10 @@ components:
               type: integer
         market:
           type: object
+          description: 'Market for the product, under the organization'
           required:
             - name
             - market_id
-          description: 'Market for the product, under the organization'
           properties:
             name:
               type: string
@@ -393,7 +393,6 @@ components:
           required:
             - overview_image_urls
             - token_policy_id
-            - description
             - name
             - product_id
           properties:
@@ -405,15 +404,20 @@ components:
             token_policy_id:
               type: string
               description: Token policy ID to refer to blockchain
-            description:
-              type: string
-              description: Short description of token
             name:
               type: string
               description: Readable name of product
             product_id:
               description: Unique identifier of product
               type: integer
+            description_short:
+              type: string
+              description: Short description of product
+              example: Occulta Novellia Character
+            description_long:
+              type: string
+              example: 'A collectible character for the surreal horror game Occult Novellia. Armed with a steampunk rifle, Iscara packs a punch at a distance. The Iscara NFT picks off enemies at distance while her squad finishes them in brutal close quarters combat.'
+              description: Long description of product
       required:
         - asset
         - pricing
