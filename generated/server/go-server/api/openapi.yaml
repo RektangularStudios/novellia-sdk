@@ -11,8 +11,8 @@ info:
   title: novellia-api
   version: "1.0"
 servers:
-- url: http://localhost:3555
-- url: api.rektangularstudios.com
+- description: API Gateway
+  url: api.rektangularstudios.com/novellia
 paths:
   /wallet/{wallet_address}:
     get:
@@ -326,12 +326,16 @@ components:
           - tags
         product:
           token_policy_id: token_policy_id
+          description_short: Occulta Novellia Character
           overview_image_urls:
           - overview_image_urls
           - overview_image_urls
           product_id: 7
           name: name
-          description: description
+          description_long: A collectible character for the surreal horror game Occult
+            Novellia. Armed with a steampunk rifle, Iscara packs a punch at a distance.
+            The Iscara NFT picks off enemies at distance while her squad finishes
+            them in brutal close quarters combat.
         artist:
           urls:
           - urls
@@ -573,12 +577,16 @@ components:
         or specific loader
       example:
         token_policy_id: token_policy_id
+        description_short: Occulta Novellia Character
         overview_image_urls:
         - overview_image_urls
         - overview_image_urls
         product_id: 7
         name: name
-        description: description
+        description_long: A collectible character for the surreal horror game Occult
+          Novellia. Armed with a steampunk rifle, Iscara packs a punch at a distance.
+          The Iscara NFT picks off enemies at distance while her squad finishes them
+          in brutal close quarters combat.
       properties:
         overview_image_urls:
           description: URLs to image to display on overview
@@ -588,17 +596,24 @@ components:
         token_policy_id:
           description: Token policy ID to refer to blockchain
           type: string
-        description:
-          description: Short description of token
-          type: string
         name:
           description: Readable name of product
           type: string
         product_id:
           description: Unique identifier of product
           type: integer
+        description_short:
+          description: Short description of product
+          example: Occulta Novellia Character
+          type: string
+        description_long:
+          description: Long description of product
+          example: A collectible character for the surreal horror game Occult Novellia.
+            Armed with a steampunk rifle, Iscara packs a punch at a distance. The
+            Iscara NFT picks off enemies at distance while her squad finishes them
+            in brutal close quarters combat.
+          type: string
       required:
-      - description
       - name
       - overview_image_urls
       - product_id
