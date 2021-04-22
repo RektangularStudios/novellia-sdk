@@ -17,8 +17,9 @@ Initial publish, supports wallet token query.
   - add maintenance switch
   - generalize for multiple service statuses
 
-# v0.3.6
+# v0.3.7
 
 - Change default baseUrl / gateway
 - add long / short product descriptions
 - service layer with configurable baseUrl
+- fix package JSON for publishing TypeScript to NPM
