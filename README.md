@@ -103,6 +103,7 @@ java -jar openapi-generator-cli.jar generate \
   -g typescript-fetch \
   --additional-properties typescriptThreePlus=true \
   --additional-properties supportsES6=true \
+  --additional-properties npmName="novellia-sdk" \
   -o ./generated/client/typescript-fetch
 ```
 
