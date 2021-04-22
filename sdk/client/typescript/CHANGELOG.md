@@ -17,7 +17,7 @@ Initial publish, supports wallet token query.
   - add maintenance switch
   - generalize for multiple service statuses
 
-# v0.3.7
+# v0.3.9
 
 - Change default baseUrl / gateway
 - add long / short product descriptions
