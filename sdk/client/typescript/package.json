@@ -1,9 +1,12 @@
 {
   "name": "novellia-sdk",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Easily interact with the Novellia Platform to integrate the Cardano blockchain into games",
-  "main": "index.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/RektangularStudios/novellia-sdk/issues"
   },
-  "homepage": "https://rektangularstudios.com"
+  "homepage": "https://rektangularstudios.com",
+  "devDependencies": {
+    "typescript": "^3.6"
+  }
 }
