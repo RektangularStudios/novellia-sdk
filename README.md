@@ -73,7 +73,7 @@ What goes in this repository?
 
 ### Manual testing of API
 
-We recommend importing the OpenAPI file `api/reference/novellia-api.v1.yaml` into [Insomnia](https://insomnia.rest/) to issue HTTP requests.
+We recommend importing the OpenAPI file `openapi/reference/novellia-api.v1.yaml` into [Insomnia](https://insomnia.rest/) to issue HTTP requests.
 
 ## Generating Client Code
 
@@ -85,7 +85,7 @@ Use the [csharp](https://github.com/OpenAPITools/openapi-generator/blob/master/d
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./api/reference/novellia-api.v1.yaml \
+  -i ./openapi/reference/novellia-api.v1.yaml \
   -g csharp \
   --additional-properties targetFramework=v4.5 \
   -o ./generated/client/csharp
@@ -99,10 +99,11 @@ Use the [typescript-fetch](https://github.com/OpenAPITools/openapi-generator/blo
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./api/reference/novellia-api.v1.yaml \
+  -i ./openapi/reference/novellia-api.v1.yaml \
   -g typescript-fetch \
   --additional-properties typescriptThreePlus=true \
   --additional-properties supportsES6=true \
+  --additional-properties npmName="novellia-sdk" \
   -o ./generated/client/typescript-fetch
 ```
 
@@ -128,7 +129,7 @@ Use the [go-server](https://github.com/OpenAPITools/openapi-generator/blob/maste
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./api/reference/novellia-api.v1.yaml \
+  -i ./openapi/reference/novellia-api.v1.yaml \
   --additional-properties packageName=novellia_sdk \
   --additional-properties featureCORS=true \
   -g go-server \

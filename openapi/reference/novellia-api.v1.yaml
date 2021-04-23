@@ -1,0 +1,457 @@
+openapi: 3.0.0
+info:
+  title: novellia-api
+  version: '1.0'
+  license:
+    url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
+    name: MIT
+  contact:
+    email: contact@rektangularstudios.com
+    url: 'https://rektangularstudios.com'
+    name: Rektangular Studios
+  termsOfService: TODO
+servers:
+  - url: api.rektangularstudios.com/novellia
+    description: API Gateway
+paths:
+  '/wallet/{wallet_address}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of tokens held by Cardano wallet
+                items:
+                  $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request
+      operationId: get-wallet
+      description: Returns the tokens held in a wallet address
+    parameters:
+      - schema:
+          type: string
+        name: wallet_address
+        in: path
+        required: true
+        description: Address of Cardano wallet to use
+  /workflow/minter/nvla:
+    post:
+      summary: ''
+      operationId: post-workflow-minter-nvla
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoTransaction'
+        '400':
+          description: Bad Request
+      description: Returns a transaction to mint NVLA and deposit it to a specified address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MinterInfo'
+    get:
+      summary: ''
+      operationId: get-workflow-minter-nvla
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowInformation'
+          headers: {}
+      description: Returns execution information such as transaction cost
+  /cardano/transaction:
+    post:
+      summary: ''
+      operationId: post-cardano-transaction
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      description: Submits a transaction to Cardano
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardanoTransaction'
+        description: ''
+    parameters: []
+  /cardano/tip:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoTip'
+      operationId: get-cardano-tip
+      description: Returns Cardano's latest block and epoch
+  /status:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+      operationId: get-status
+      description: Information regarding availability of Novellia APIs
+  /products:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      operationId: get-products
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: market_id
+          description: Filter product results by market
+        - schema:
+            type: string
+          in: query
+          name: organization_id
+          description: Filter product results by organization
+        - schema:
+            type: string
+          in: query
+          name: product_id
+          description: Get specific product
+      description: Returns a list of products to list
+    parameters: []
+  /orders:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+      operationId: get-orders
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: product_id
+          description: Filter by product
+        - schema:
+            type: string
+          in: query
+          name: market_id
+          description: Filter by market
+        - schema:
+            type: string
+          in: query
+          name: organization_id
+          description: Filter by organization
+        - schema:
+            type: string
+          in: query
+          name: count
+          description: How many orders to return
+      description: Gets recent orders
+components:
+  schemas:
+    Token:
+      title: Token
+      type: object
+      description: Generalizes the data required to describe a token in a Cardano wallet.
+      properties:
+        asset_id:
+          type: string
+          description: Token asset ID registered on Cardano
+        amount:
+          description: 'Amount of token held in Cardano wallet (in discrete units, i.e. lovelace)'
+          type: integer
+        name:
+          type: string
+          description: 'Name or ticker as interpreted by Novellia (e.g. NVLA, ADA)'
+        description:
+          type: string
+          description: Short description of token as interpreted by Novellia
+      required:
+        - asset_id
+        - amount
+    CardanoTransaction:
+      title: CardanoTransaction
+      type: object
+      description: A Cardano transaction to be signed and submitted.
+      properties:
+        transaction:
+          type: string
+          description: text of transaction file
+        fee_lovelace:
+          type: integer
+          description: 'Cost to submit TX in lovelace (1 ADA = 1,000,000 lovelace)'
+        signed:
+          type: boolean
+          description: Indicates if the transaction is signed or raw
+      required:
+        - transaction
+        - fee_lovelace
+        - signed
+    MinterInfo:
+      title: MinterInfo
+      type: object
+      description: Generic information required for minter workflows.
+      properties:
+        wallet_address:
+          type: string
+          description: Wallet that pays transaction fee
+        minter_deposit_address:
+          type: string
+          description: Wallet that received minted tokens
+      required:
+        - wallet_address
+        - minter_deposit_address
+    WorkflowInformation:
+      title: WorkflowInformation
+      type: object
+      description: Returns preconditions relevant to a user wanting to execute a workflow. I.e. costs.
+      properties:
+        fee_lovelace:
+          type: integer
+          description: The lovelace cost to execute the workflow
+    CardanoTip:
+      title: CardanoTip
+      type: object
+      description: Cardano chain tip information
+      properties:
+        block:
+          description: Latest Cardano block
+          type: integer
+        epoch:
+          type: integer
+          description: Latest Cardano epoch
+      required:
+        - block
+        - epoch
+    Status:
+      title: Status
+      type: object
+      description: 'Status of Novellia microservice, indicating service availabilities'
+      properties:
+        cardano:
+          type: object
+          required:
+            - initialized
+            - sync_percentage
+          properties:
+            initialized:
+              type: boolean
+              description: whether cardano-graphql is initialized
+            sync_percentage:
+              type: number
+              description: 'cardano-graphql sync percentage, used to gauge when APIs will be available'
+        maintenance:
+          type: boolean
+          description: kill-switch to tell users that the backend is not working correctly / is under maintenance
+      required:
+        - cardano
+        - maintenance
+    Product:
+      title: Product
+      type: object
+      description: A product to display for sale
+      properties:
+        asset:
+          type: object
+          description: Resources for detailed view asset with specific loader
+          required:
+            - urls
+            - loader
+          properties:
+            urls:
+              type: array
+              description: URLs pointing to detailed asset for detailed view. Each link should point to the same file.
+              items:
+                type: string
+            loader:
+              type: string
+              description: Asset loader for linked assets file
+        pricing:
+          type: object
+          description: Pricing information for making a purchase
+          required:
+            - currency_policy_id
+            - unit_price
+            - max_order_size
+          properties:
+            currency_policy_id:
+              type: string
+              description: Currency product is priced with
+            unit_price:
+              type: integer
+              description: Price for a single item of product type
+            max_order_size:
+              type: integer
+              description: Maximum units purchasable in a single transaction
+            purchase_address:
+              type: string
+              description: Address to send funds to purchase token. Leave empty if token is not yet for sale.
+            date_available:
+              type: string
+              description: When the product is becoming available for sale. Leave empty if this is undetermined.
+        organization:
+          type: object
+          description: Organization listing the product
+          required:
+            - name
+            - organization_id
+          properties:
+            name:
+              type: string
+              description: Readable name of organization
+            organization_id:
+              description: Unique identifier for organization
+              type: integer
+        market:
+          type: object
+          description: 'Market for the product, under the organization'
+          required:
+            - name
+            - market_id
+          properties:
+            name:
+              type: string
+              description: Readable name of market
+            market_id:
+              description: Unique identifier of market
+              type: integer
+        stock:
+          type: object
+          description: Availability of product
+          required:
+            - available
+          properties:
+            available:
+              type: integer
+              description: Tokens available to be sold
+            total_supply:
+              type: integer
+              description: Total number of tokens in existence (scarcity). Leave empty for infinite supply.
+        metadata:
+          type: object
+          description: Filterable data regarding product
+          required:
+            - date_listed
+          properties:
+            tags:
+              type: array
+              description: Filterable tags describing the token
+              items:
+                type: string
+            date_listed:
+              type: string
+              description: When the token was listed
+        artist:
+          type: object
+          description: Artist attribution
+          properties:
+            name:
+              type: string
+              description: Name of artist for token asset
+            urls:
+              type: array
+              description: URLs to learn more about artist (e.g. portfolio). These can point to different places.
+              items:
+                type: string
+        product:
+          type: object
+          description: 'Details for generic products, standalone without asset resource or specific loader'
+          required:
+            - overview_image_urls
+            - token_policy_id
+            - name
+            - product_id
+          properties:
+            overview_image_urls:
+              type: array
+              description: URLs to image to display on overview
+              items:
+                type: string
+            token_policy_id:
+              type: string
+              description: Token policy ID to refer to blockchain
+            name:
+              type: string
+              description: Readable name of product
+            product_id:
+              description: Unique identifier of product
+              type: integer
+            description_short:
+              type: string
+              description: Short description of product
+              example: Occulta Novellia Character
+            description_long:
+              type: string
+              example: 'A collectible character for the surreal horror game Occult Novellia. Armed with a steampunk rifle, Iscara packs a punch at a distance. The Iscara NFT picks off enemies at distance while her squad finishes them in brutal close quarters combat.'
+              description: Long description of product
+      required:
+        - asset
+        - pricing
+        - organization
+        - market
+        - stock
+        - metadata
+        - product
+    OccultaNovelliaCharacter:
+      title: OccultaNovelliaCharacter
+      type: object
+      properties:
+        id:
+          type: string
+      description: Model for an Occulta Novellia character
+    Order:
+      title: Order
+      type: object
+      properties:
+        product_id:
+          type: integer
+          description: Unique identifier of product
+        order_size:
+          type: integer
+          description: Number of product purchased in order
+        currency_policy_id:
+          type: string
+          description: Currency product is priced with
+        unit_price:
+          type: integer
+          description: Price for a single item of product type
+      required:
+        - product_id
+        - order_size
+        - currency_policy_id
+        - unit_price
+      description: Describes a single order / transaction
