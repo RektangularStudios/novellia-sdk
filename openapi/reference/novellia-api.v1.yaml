@@ -159,7 +159,7 @@ paths:
       operationId: get-orders
       parameters:
         - schema:
-            type: number
+            type: string
           in: query
           name: order_id
           description: Identifier for order

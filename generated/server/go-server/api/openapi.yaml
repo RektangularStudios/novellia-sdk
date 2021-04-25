@@ -161,7 +161,7 @@ paths:
         name: order_id
         required: false
         schema:
-          type: number
+          type: string
         style: form
       responses:
         "200":
