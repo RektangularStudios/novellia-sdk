@@ -152,52 +152,37 @@ paths:
       tags: []
   /orders:
     get:
-      description: Gets recent orders
+      description: Gets an order
       operationId: get-orders
       parameters:
-      - description: Filter by product
+      - description: Identifier for order
         explode: true
         in: query
-        name: product_id
+        name: order_id
         required: false
         schema:
-          type: string
-        style: form
-      - description: Filter by market
-        explode: true
-        in: query
-        name: market_id
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: Filter by organization
-        explode: true
-        in: query
-        name: organization_id
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: How many orders to return
-        explode: true
-        in: query
-        name: count
-        required: false
-        schema:
-          type: string
+          type: number
         style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Order'
-                type: array
+                $ref: '#/components/schemas/Order'
           description: OK
       summary: Your GET endpoint
       tags: []
+    post:
+      description: Creates an order
+      operationId: post-orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        "200":
+          description: OK
 components:
   schemas:
     Token:
@@ -393,30 +378,36 @@ components:
       title: OccultaNovelliaCharacter
       type: object
     Order:
-      description: Describes a single order / transaction
+      description: Describes a single order
       example:
-        product_id: 0
-        order_size: 6
-        currency_policy_id: currency_policy_id
-        unit_price: 1
+        payment:
+          payment_address: payment_address
+          price_amount: price_amount
+          price_currency_id: price_currency_id
+          status: status
+        order_id: order_id
+        products:
+        - quantity: 0
+          product_id: product_id
+        - quantity: 0
+          product_id: product_id
+        customer:
+          delivery_address: delivery_address
       properties:
-        product_id:
-          description: Unique identifier of product
-          type: integer
-        order_size:
-          description: Number of product purchased in order
-          type: integer
-        currency_policy_id:
-          description: Currency product is priced with
+        products:
+          items:
+            $ref: '#/components/schemas/Order_products'
+          type: array
+        customer:
+          $ref: '#/components/schemas/Order_customer'
+        payment:
+          $ref: '#/components/schemas/Order_payment'
+        order_id:
+          description: Order ID for future reference
           type: string
-        unit_price:
-          description: Price for a single item of product type
-          type: integer
       required:
-      - currency_policy_id
-      - order_size
-      - product_id
-      - unit_price
+      - customer
+      - products
       title: Order
       type: object
     Status_cardano:
@@ -618,4 +609,52 @@ components:
       - overview_image_urls
       - product_id
       - token_policy_id
+      type: object
+    Order_products:
+      example:
+        quantity: 0
+        product_id: product_id
+      properties:
+        product_id:
+          type: string
+        quantity:
+          type: integer
+      required:
+      - product_id
+      - quantity
+      type: object
+    Order_customer:
+      example:
+        delivery_address: delivery_address
+      properties:
+        delivery_address:
+          description: Address to deliver tokens to
+          type: string
+      required:
+      - delivery_address
+      type: object
+    Order_payment:
+      example:
+        payment_address: payment_address
+        price_amount: price_amount
+        price_currency_id: price_currency_id
+        status: status
+      properties:
+        payment_address:
+          description: Address to deposit currency
+          type: string
+        price_currency_id:
+          description: Policy ID of currency
+          type: string
+        price_amount:
+          description: Amount due in currency
+          type: string
+        status:
+          description: Payment status (i.e. received, processing, ...)
+          type: string
+      required:
+      - payment_address
+      - price_amount
+      - price_currency_id
+      - status
       type: object

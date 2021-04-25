@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 Dockerfile
 README.md
 api/openapi.yaml
@@ -13,6 +14,9 @@ go/model_cardano_transaction.go
 go/model_minter_info.go
 go/model_occulta_novellia_character.go
 go/model_order.go
+go/model_order_customer.go
+go/model_order_payment.go
+go/model_order_products.go
 go/model_product.go
 go/model_product_artist.go
 go/model_product_asset.go

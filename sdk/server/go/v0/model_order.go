@@ -10,18 +10,15 @@
 
 package novellia_sdk
 
-// Order - Describes a single order / transaction
+// Order - Describes a single order
 type Order struct {
 
-	// Unique identifier of product
-	ProductId int32 `json:"product_id"`
+	Products []OrderProducts `json:"products"`
 
-	// Number of product purchased in order
-	OrderSize int32 `json:"order_size"`
+	Customer OrderCustomer `json:"customer"`
 
-	// Currency product is priced with
-	CurrencyPolicyId string `json:"currency_policy_id"`
+	Payment OrderPayment `json:"payment,omitempty"`
 
-	// Price for a single item of product type
-	UnitPrice int32 `json:"unit_price"`
+	// Order ID for future reference
+	OrderId string `json:"order_id,omitempty"`
 }
