@@ -382,7 +382,7 @@ components:
       example:
         payment:
           payment_address: payment_address
-          price_amount: price_amount
+          price_amount: 6.027456183070403
           price_currency_id: price_currency_id
           status: status
         order_id: order_id
@@ -636,7 +636,7 @@ components:
     Order_payment:
       example:
         payment_address: payment_address
-        price_amount: price_amount
+        price_amount: 6.027456183070403
         price_currency_id: price_currency_id
         status: status
       properties:
@@ -647,8 +647,9 @@ components:
           description: Policy ID of currency
           type: string
         price_amount:
-          description: Amount due in currency
-          type: string
+          description: Amount due in currency. Use `number` for fiat, but ADA is lovelace
+            integral
+          type: number
         status:
           description: Payment status (i.e. received, processing, ...)
           type: string
