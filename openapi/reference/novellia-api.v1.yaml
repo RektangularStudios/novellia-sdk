@@ -175,7 +175,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
+              $ref: '#/components/schemas/OrderCreated'
 components:
   schemas:
     Token:
@@ -481,3 +481,13 @@ components:
       required:
         - products
         - customer
+    OrderCreated:
+      title: OrderCreated
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: ''
+      required:
+        - order_id
+      description: Response after an order is made

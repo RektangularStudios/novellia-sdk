@@ -179,7 +179,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
+              $ref: '#/components/schemas/OrderCreated'
       responses:
         "200":
           description: OK
@@ -409,6 +409,17 @@ components:
       - customer
       - products
       title: Order
+      type: object
+    OrderCreated:
+      description: Response after an order is made
+      example:
+        order_id: order_id
+      properties:
+        order_id:
+          type: string
+      required:
+      - order_id
+      title: OrderCreated
       type: object
     Status_cardano:
       example:
