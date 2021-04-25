@@ -163,6 +163,7 @@ paths:
           in: query
           name: order_id
           description: Identifier for order
+          required: true
       description: Gets an order
     post:
       summary: ''

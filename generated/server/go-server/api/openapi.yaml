@@ -159,7 +159,7 @@ paths:
         explode: true
         in: query
         name: order_id
-        required: false
+        required: true
         schema:
           type: string
         style: form
