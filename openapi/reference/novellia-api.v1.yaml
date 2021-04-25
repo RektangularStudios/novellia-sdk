@@ -155,32 +155,27 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/Order'
       operationId: get-orders
       parameters:
         - schema:
-            type: string
+            type: number
           in: query
-          name: product_id
-          description: Filter by product
-        - schema:
-            type: string
-          in: query
-          name: market_id
-          description: Filter by market
-        - schema:
-            type: string
-          in: query
-          name: organization_id
-          description: Filter by organization
-        - schema:
-            type: string
-          in: query
-          name: count
-          description: How many orders to return
-      description: Gets recent orders
+          name: order_id
+          description: Identifier for order
+      description: Gets an order
+    post:
+      summary: ''
+      operationId: post-orders
+      responses:
+        '200':
+          description: OK
+      description: Creates an order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
 components:
   schemas:
     Token:
@@ -436,22 +431,53 @@ components:
     Order:
       title: Order
       type: object
+      description: Describes a single order
       properties:
-        product_id:
-          type: integer
-          description: Unique identifier of product
-        order_size:
-          type: integer
-          description: Number of product purchased in order
-        currency_policy_id:
+        products:
+          type: array
+          description: ''
+          items:
+            type: object
+            properties:
+              product_id:
+                type: string
+              quantity:
+                type: integer
+            required:
+              - product_id
+              - quantity
+        customer:
+          type: object
+          required:
+            - delivery_address
+          description: ''
+          properties:
+            delivery_address:
+              type: string
+              description: Address to deliver tokens to
+        payment:
+          type: object
+          properties:
+            payment_address:
+              type: string
+              description: Address to deposit currency
+            price_currency_id:
+              type: string
+              description: Policy ID of currency
+            price_amount:
+              type: string
+              description: Amount due in currency
+            status:
+              type: string
+              description: 'Payment status (i.e. received, processing, ...)'
+          required:
+            - payment_address
+            - price_currency_id
+            - price_amount
+            - status
+        order_id:
           type: string
-          description: Currency product is priced with
-        unit_price:
-          type: integer
-          description: Price for a single item of product type
+          description: Order ID for future reference
       required:
-        - product_id
-        - order_size
-        - currency_policy_id
-        - unit_price
-      description: Describes a single order / transaction
+        - products
+        - customer
