@@ -13,3 +13,7 @@ Create SDK
 
 # v0.4.0
 - Update `/orders` to handle order get/create instead of recent fulfillments on-chain
+- Add support for product information given through
+  - Native Token
+  - Extended 721 Token
+  - Novellia Standard Token

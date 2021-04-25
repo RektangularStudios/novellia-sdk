@@ -349,6 +349,8 @@ components:
               $ref: '#/components/schemas/Extended721Token'
             novellia_standard_token:
               $ref: '#/components/schemas/NovelliaStandardToken'
+            native_token:
+              $ref: '#/components/schemas/NativeToken'
         product_id:
           type: string
           description: Unique identfier for product
