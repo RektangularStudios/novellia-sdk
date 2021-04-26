@@ -679,8 +679,8 @@ components:
         native_token:
           $ref: '#/components/schemas/NativeToken'
         novellia_version:
-          type: string
           description: Identifies the version of the specification in use.
+          type: integer
       required:
         - copyright
         - publisher

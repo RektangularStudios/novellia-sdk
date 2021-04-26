@@ -359,7 +359,7 @@ components:
               percent: 3.616076749251911
             id: 7
             version: 2
-            novellia_version: novellia_version
+            novellia_version: 2
           extended_721_token:
             image: image
             extension:
@@ -706,7 +706,7 @@ components:
           percent: 3.616076749251911
         id: 7
         version: 2
-        novellia_version: novellia_version
+        novellia_version: 2
       properties:
         copyright:
           description: Attribution of rights.
@@ -751,7 +751,7 @@ components:
           $ref: '#/components/schemas/NativeToken'
         novellia_version:
           description: Identifies the version of the specification in use.
-          type: string
+          type: integer
       required:
       - copyright
       - description
@@ -992,7 +992,7 @@ components:
             percent: 3.616076749251911
           id: 7
           version: 2
-          novellia_version: novellia_version
+          novellia_version: 2
         extended_721_token:
           image: image
           extension:
