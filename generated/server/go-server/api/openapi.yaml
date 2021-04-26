@@ -9,7 +9,7 @@ info:
     url: https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE
   termsOfService: TODO
   title: novellia-api
-  version: "1.0"
+  version: 0.4.0
 servers:
 - description: API Gateway
   url: api.rektangularstudios.com/novellia
@@ -152,38 +152,14 @@ paths:
       tags: []
   /orders:
     get:
-      description: Gets recent orders
+      description: Gets an order
       operationId: get-orders
       parameters:
-      - description: Filter by product
+      - description: Identifier for order
         explode: true
         in: query
-        name: product_id
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: Filter by market
-        explode: true
-        in: query
-        name: market_id
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: Filter by organization
-        explode: true
-        in: query
-        name: organization_id
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: How many orders to return
-        explode: true
-        in: query
-        name: count
-        required: false
+        name: order_id
+        required: true
         schema:
           type: string
         style: form
@@ -192,12 +168,29 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Order'
-                type: array
+                $ref: '#/components/schemas/Order'
           description: OK
       summary: Your GET endpoint
       tags: []
+    post:
+      description: Creates an order
+      operationId: post-orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/xml:
+            schema:
+              properties: {}
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCreated'
+          description: OK
 components:
   schemas:
     Token:
@@ -314,53 +307,104 @@ components:
       title: Status
       type: object
     Product:
-      description: A product to display for sale
+      description: Describes a Product served from the Novellia microservice
       example:
         market:
           name: name
-          market_id: 5
+          market_id: market_id
         metadata:
           date_listed: date_listed
+          date_available: date_available
           tags:
           - tags
           - tags
+        immutable:
+          novellia_standard_token:
+            image: image
+            copyright: copyright
+            extension:
+            - extension
+            - extension
+            resource:
+            - content_type: content_type
+              resource_id: resource_id
+              description: description
+              priority: 9
+              url:
+              - url
+              - url
+              multihash: multihash
+              hash_source_type: hash_source_type
+            - content_type: content_type
+              resource_id: resource_id
+              description: description
+              priority: 9
+              url:
+              - url
+              - url
+              multihash: multihash
+              hash_source_type: hash_source_type
+            name: name
+            publisher:
+            - publisher
+            - publisher
+            description:
+              short: short
+              long: long
+            native_token:
+              policy_id: policy_id
+              asset_id: asset_id
+            commission:
+            - address: address
+              name: name
+              percent: 3.616076749251911
+            - address: address
+              name: name
+              percent: 3.616076749251911
+            id: 7
+            version: 2
+            novellia_version: 2
+          extended_721_token:
+            image: image
+            extension:
+            - extension
+            - extension
+            name: name
+            native_token:
+              policy_id: policy_id
+              asset_id: asset_id
+            id: 5
+          native_token:
+            policy_id: policy_id
+            asset_id: asset_id
         product:
-          token_policy_id: token_policy_id
-          description_short: Occulta Novellia Character
-          overview_image_urls:
-          - overview_image_urls
-          - overview_image_urls
-          product_id: 7
+          product_id: product_id
           name: name
-          description_long: A collectible character for the surreal horror game Occult
-            Novellia. Armed with a steampunk rifle, Iscara packs a punch at a distance.
-            The Iscara NFT picks off enemies at distance while her squad finishes
-            them in brutal close quarters combat.
-        artist:
-          urls:
-          - urls
-          - urls
-          name: name
+          description:
+            short: short
+            long: long
         organization:
-          organization_id: 1
+          organization_id: organization_id
           name: name
-        asset:
-          urls:
-          - urls
-          - urls
-          loader: loader
+        attribution:
+        - author_name: author_name
+          work_attributed: work_attributed
+          url:
+          - url
+          - url
+        - author_name: author_name
+          work_attributed: work_attributed
+          url:
+          - url
+          - url
         stock:
-          total_supply: 2
-          available: 5
+          total_supply: 5
+          available: 1.4658129805029452
         pricing:
           max_order_size: 6
-          currency_policy_id: currency_policy_id
-          purchase_address: purchase_address
-          unit_price: 0
-          date_available: date_available
+          price_unit_amount: 0.8008281904610115
+          price_currency_id: price_currency_id
       properties:
-        asset:
-          $ref: '#/components/schemas/Product_asset'
         pricing:
           $ref: '#/components/schemas/Product_pricing'
         organization:
@@ -371,54 +415,452 @@ components:
           $ref: '#/components/schemas/Product_stock'
         metadata:
           $ref: '#/components/schemas/Product_metadata'
-        artist:
-          $ref: '#/components/schemas/Product_artist'
+        immutable:
+          $ref: '#/components/schemas/Product_immutable'
+        attribution:
+          description: List of entities to give attribution to for product
+          items:
+            $ref: '#/components/schemas/Attribution'
+          type: array
         product:
           $ref: '#/components/schemas/Product_product'
       required:
-      - asset
       - market
       - metadata
       - organization
       - pricing
-      - product
       - stock
-      title: Product
       type: object
+    Order:
+      description: Describes a single order
+      example:
+        payment:
+          payment_address: payment_address
+          price_amount: 6.027456183070403
+          price_currency_id: price_currency_id
+          status: status
+        order_id: order_id
+        products:
+        - quantity: 0
+          product_id: product_id
+        - quantity: 0
+          product_id: product_id
+        customer:
+          delivery_address: delivery_address
+      properties:
+        products:
+          items:
+            $ref: '#/components/schemas/Order_products'
+          type: array
+        customer:
+          $ref: '#/components/schemas/Order_customer'
+        payment:
+          $ref: '#/components/schemas/Order_payment'
+        order_id:
+          description: Order ID for future reference
+          type: string
+      required:
+      - customer
+      - products
+      title: Order
+      type: object
+      x-examples:
+        order-paid-with-ada:
+          products:
+          - product_id: PROD-01D78XYFJ1PRM1WPBAOU8JQMNV
+            quantity: 4
+          - product_id: PROD-01D78XYFJ1PRM1WPBCBT3VHMNV
+            quantity: 2
+          customer:
+            delivery_address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
+          payment:
+            payment_address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
+            price_currency_id: ada
+            price_amount: 20
+            status: AWAITING_PAYMENT
+          order_id: ORDER-01D78XYFJ1PRM1WPBCBT3VHMNV
+    OrderCreated:
+      description: Response after an order is made
+      example:
+        order_id: order_id
+      properties:
+        order_id:
+          type: string
+      required:
+      - order_id
+      title: OrderCreated
+      type: object
+      x-examples:
+        example-1:
+          order_id: ORDER-01D78XYFJ1PRM1WPBCBT3VHMNV
     OccultaNovelliaCharacter:
       description: Model for an Occulta Novellia character
       properties:
-        id:
+        occulta_novellia_version:
+          description: Specification version for parsing the resource
+          type: integer
+        name:
+          description: Character name
           type: string
+        card:
+          $ref: '#/components/schemas/OccultaNovelliaCharacter_card'
+        progression:
+          $ref: '#/components/schemas/OccultaNovelliaCharacter_progression'
+        stats:
+          $ref: '#/components/schemas/OccultaNovelliaCharacter_stats'
+        attributes:
+          description: List of attribute strings relating to character abilities,
+            faction, types, etc.
+          items:
+            type: string
+          type: array
+        description:
+          description: Description of character
+          type: string
+      required:
+      - attributes
+      - card
+      - description
+      - name
+      - occulta_novellia_version
+      - progression
+      - stats
       title: OccultaNovelliaCharacter
       type: object
-    Order:
-      description: Describes a single order / transaction
+      x-examples:
+        Iscara the Ten Thousand Guns:
+          occulta_novellia_version: 1
+          name: Iscara the Ten Thousand Guns
+          card:
+            number: 2
+            release_set: Presale 1
+          progression:
+            class: Iscara of Grevania
+            stage: 1
+          stats:
+            health: 8
+            attack: 6
+            move: 1
+            slots: 2
+          attributes:
+          - Operator's Guild
+          - Human
+          - Tainted
+          - Rifle
+          - Sure Shot
+          - Operator
+          - Ten Thousand Guns
+          description: Rumors say the leader of the Operator's Guild is possessed
+            by a demonic entity that lets her morph into monsters and spit in the
+            face of death itself. The Grevans refuse to acknowledge her humanity,
+            referring to her as Ten Thousand Guns. They hide their children at dawn,
+            hoping that the pretty woman, usually seen in a dress, won't take them.
+    OffChainResource:
+      description: Off-chain resource used in Novellia Token Standard
       example:
-        product_id: 0
-        order_size: 6
-        currency_policy_id: currency_policy_id
-        unit_price: 1
+        content_type: content_type
+        resource_id: resource_id
+        description: description
+        priority: 9
+        url:
+        - url
+        - url
+        multihash: multihash
+        hash_source_type: hash_source_type
       properties:
-        product_id:
-          description: Unique identifier of product
-          type: integer
-        order_size:
-          description: Number of product purchased in order
-          type: integer
-        currency_policy_id:
-          description: Currency product is priced with
+        resource_id:
+          description: Resource identifier interpreted by application. These may correspond
+            to specific names resources a client expects.
           type: string
-        unit_price:
-          description: Price for a single item of product type
+        description:
+          description: Short text describing resource. Helpful to know what the resource
+            should have been if the resource breaks.
+          type: string
+        priority:
+          description: Order to load resource. Lower numbers load first. Resources
+            with the same name will progressively overwrite each other.
+          type: integer
+        multihash:
+          description: The multihash of the resource. In most cases, this may be identical
+            to an IPFS hash.
+          type: string
+        hash_source_type:
+          description: Hint regarding file state prior to hashing (ipfs, direct)
+          type: string
+        url:
+          description: Redundant resource URLs. These should all point to the same
+            file on different hosts.
+          items:
+            type: string
+          type: array
+        content_type:
+          description: MIME type of resource.
+          type: string
+      required:
+      - content_type
+      - description
+      - hash_source_type
+      - multihash
+      - priority
+      - resource_id
+      - url
+      title: OffChainResource
+      type: object
+      x-examples:
+        example-1:
+          resource_id: Card
+          description: Low Resolution
+          priority: 0
+          multihash: QmSXVm14pVec78vjGgQBMygwKYvDeyKyLs4UCic7UspxEv
+          hash_source_type: ipfs
+          url:
+          - sia://nAGazETmJJBvTnz5G50vt9gla_p6vctykk7uYy7N4cbbUQ
+          - ipfs://QmSXVm14pVec78vjGgQBMygwKYvDeyKyLs4UCic7UspxEv
+          - https://rektangularstudios.com/static
+          content_type: image/png
+    DescriptionSet:
+      description: Set of descriptions
+      example:
+        short: short
+        long: long
+      properties:
+        short:
+          description: A short description makes a good header
+          type: string
+        long:
+          description: A long description makes a good paragraph body. Supports Markdown.
+          type: string
+      required:
+      - long
+      - short
+      title: DescriptionSet
+      type: object
+      x-examples:
+        example-1:
+          short: Occulta Novellia Character
+          long: |-
+            # Take back gaming!
+            A character token for the surreal horror game Occulta Novellia. This token will grant access to a playable character.
+    Commission:
+      description: A recommended commission for clients that will abide by it
+      example:
+        address: address
+        name: name
+        percent: 3.616076749251911
+      properties:
+        name:
+          description: Name of entity taking commissions
+          type: string
+        address:
+          description: Address to deposit commissions
+          type: string
+        percent:
+          description: Recommended commission percentage
+          type: number
+      required:
+      - address
+      - name
+      title: Commission
+      type: object
+      x-examples:
+        Rektangular Studios Commission:
+          name: Rektangular Studios Inc.
+          address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
+          percent: "0.03"
+    NovelliaStandardToken:
+      description: Novellia Token Standard on-chain metadata
+      example:
+        image: image
+        copyright: copyright
+        extension:
+        - extension
+        - extension
+        resource:
+        - content_type: content_type
+          resource_id: resource_id
+          description: description
+          priority: 9
+          url:
+          - url
+          - url
+          multihash: multihash
+          hash_source_type: hash_source_type
+        - content_type: content_type
+          resource_id: resource_id
+          description: description
+          priority: 9
+          url:
+          - url
+          - url
+          multihash: multihash
+          hash_source_type: hash_source_type
+        name: name
+        publisher:
+        - publisher
+        - publisher
+        description:
+          short: short
+          long: long
+        native_token:
+          policy_id: policy_id
+          asset_id: asset_id
+        commission:
+        - address: address
+          name: name
+          percent: 3.616076749251911
+        - address: address
+          name: name
+          percent: 3.616076749251911
+        id: 7
+        version: 2
+        novellia_version: 2
+      minProperties: 0
+      properties:
+        copyright:
+          description: Attribution of rights.
+          type: string
+        publisher:
+          description: List of publishers or entities involved in token creation.
+            Useful for onlookers to determine token origin.
+          items:
+            type: string
+          type: array
+        version:
+          description: Token version. May have future use such as for clients optionally
+            using later metadata iterations.
+          type: integer
+        extension:
+          description: List of extensions for parser to understand feature set. This
+            may be empty, in which case the token is interpreted as just a 721 token.
+          items:
+            type: string
+          type: array
+        id:
+          description: Token number in a set. Redundant field which makes no sense
+            for tokens without a total-order.
+          type: integer
+        name:
+          description: Display name for token.
+          type: string
+        image:
+          description: Image URL without source redundancy.
+          type: string
+        description:
+          $ref: '#/components/schemas/DescriptionSet'
+        resource:
+          items:
+            $ref: '#/components/schemas/OffChainResource'
+          type: array
+        commission:
+          items:
+            $ref: '#/components/schemas/Commission'
+          type: array
+        native_token:
+          $ref: '#/components/schemas/NativeToken'
+        novellia_version:
+          description: Identifies the version of the specification in use.
           type: integer
       required:
-      - currency_policy_id
-      - order_size
-      - product_id
-      - unit_price
-      title: Order
+      - copyright
+      - description
+      - extension
+      - id
+      - image
+      - name
+      - native_token
+      - novellia_version
+      - publisher
+      - resource
+      - version
+      title: NovelliaStandardToken
       type: object
+      x-examples: {}
+    Extended721Token:
+      description: Easily parsable data for Extended 721 Token
+      example:
+        image: image
+        extension:
+        - extension
+        - extension
+        name: name
+        native_token:
+          policy_id: policy_id
+          asset_id: asset_id
+        id: 5
+      properties:
+        native_token:
+          $ref: '#/components/schemas/NativeToken'
+        extension:
+          description: List of extensions for parser to understand feature set. This
+            may be empty, in which case the token is interpreted as just a 721 token.
+          items:
+            type: string
+          type: array
+        id:
+          description: Token number in a set. Redundant field which makes no sense
+            for tokens without a total-order.
+          type: integer
+        name:
+          description: Display name for token.
+          type: string
+        image:
+          description: Image URL without source redundancy.
+          type: string
+      required:
+      - id
+      - image
+      - name
+      title: Extended721Token
+      type: object
+    NativeToken:
+      description: Definitions required to reference a native token
+      example:
+        policy_id: policy_id
+        asset_id: asset_id
+      properties:
+        policy_id:
+          description: On-chain policy-id
+          type: string
+        asset_id:
+          description: On-chain asset-id
+          type: string
+      required:
+      - asset_id
+      - policy_id
+      title: NativeToken
+      type: object
+    Attribution:
+      description: Attribution information for artist, sculptor, whoever.
+      example:
+        author_name: author_name
+        work_attributed: work_attributed
+        url:
+        - url
+        - url
+      properties:
+        author_name:
+          description: Name to give attribution to
+          type: string
+        url:
+          description: URLs to portfolios, websites, etc.
+          items:
+            type: string
+          type: array
+        work_attributed:
+          description: Description of work attributed
+          type: string
+      required:
+      - author_name
+      - url
+      - work_attributed
+      type: object
+      x-examples:
+        example-1:
+          author_name: John Doe
+          url:
+          - https://www.artstation.com/
+          - https://www.deviantart.com/
+          work_attributed: Draculi Illustration
     Status_cardano:
       example:
         initialized: true
@@ -435,187 +877,265 @@ components:
       - initialized
       - sync_percentage
       type: object
-    Product_asset:
-      description: Resources for detailed view asset with specific loader
-      example:
-        urls:
-        - urls
-        - urls
-        loader: loader
-      properties:
-        urls:
-          description: URLs pointing to detailed asset for detailed view. Each link
-            should point to the same file.
-          items:
-            type: string
-          type: array
-        loader:
-          description: Asset loader for linked assets file
-          type: string
-      required:
-      - loader
-      - urls
-      type: object
     Product_pricing:
-      description: Pricing information for making a purchase
       example:
         max_order_size: 6
-        currency_policy_id: currency_policy_id
-        purchase_address: purchase_address
-        unit_price: 0
-        date_available: date_available
+        price_unit_amount: 0.8008281904610115
+        price_currency_id: price_currency_id
       properties:
-        currency_policy_id:
-          description: Currency product is priced with
+        price_currency_id:
           type: string
-        unit_price:
-          description: Price for a single item of product type
-          type: integer
+        price_unit_amount:
+          type: number
         max_order_size:
-          description: Maximum units purchasable in a single transaction
           type: integer
-        purchase_address:
-          description: Address to send funds to purchase token. Leave empty if token
-            is not yet for sale.
-          type: string
-        date_available:
-          description: When the product is becoming available for sale. Leave empty
-            if this is undetermined.
-          type: string
       required:
-      - currency_policy_id
       - max_order_size
-      - unit_price
+      - price_currency_id
+      - price_unit_amount
       type: object
     Product_organization:
-      description: Organization listing the product
       example:
-        organization_id: 1
+        organization_id: organization_id
         name: name
       properties:
         name:
-          description: Readable name of organization
           type: string
         organization_id:
-          description: Unique identifier for organization
-          type: integer
+          type: string
       required:
       - name
       - organization_id
       type: object
     Product_market:
-      description: Market for the product, under the organization
       example:
         name: name
-        market_id: 5
+        market_id: market_id
       properties:
         name:
-          description: Readable name of market
           type: string
         market_id:
-          description: Unique identifier of market
-          type: integer
+          type: string
       required:
       - market_id
       - name
       type: object
     Product_stock:
-      description: Availability of product
       example:
-        total_supply: 2
-        available: 5
+        total_supply: 5
+        available: 1.4658129805029452
       properties:
         available:
-          description: Tokens available to be sold
-          type: integer
+          type: number
         total_supply:
-          description: Total number of tokens in existence (scarcity). Leave empty
-            for infinite supply.
           type: integer
       required:
       - available
+      - total_supply
       type: object
     Product_metadata:
-      description: Filterable data regarding product
       example:
         date_listed: date_listed
+        date_available: date_available
         tags:
         - tags
         - tags
       properties:
         tags:
-          description: Filterable tags describing the token
           items:
             type: string
           type: array
         date_listed:
-          description: When the token was listed
+          type: string
+        date_available:
           type: string
       required:
+      - date_available
       - date_listed
+      - tags
       type: object
-    Product_artist:
-      description: Artist attribution
+    Product_immutable:
       example:
-        urls:
-        - urls
-        - urls
-        name: name
+        novellia_standard_token:
+          image: image
+          copyright: copyright
+          extension:
+          - extension
+          - extension
+          resource:
+          - content_type: content_type
+            resource_id: resource_id
+            description: description
+            priority: 9
+            url:
+            - url
+            - url
+            multihash: multihash
+            hash_source_type: hash_source_type
+          - content_type: content_type
+            resource_id: resource_id
+            description: description
+            priority: 9
+            url:
+            - url
+            - url
+            multihash: multihash
+            hash_source_type: hash_source_type
+          name: name
+          publisher:
+          - publisher
+          - publisher
+          description:
+            short: short
+            long: long
+          native_token:
+            policy_id: policy_id
+            asset_id: asset_id
+          commission:
+          - address: address
+            name: name
+            percent: 3.616076749251911
+          - address: address
+            name: name
+            percent: 3.616076749251911
+          id: 7
+          version: 2
+          novellia_version: 2
+        extended_721_token:
+          image: image
+          extension:
+          - extension
+          - extension
+          name: name
+          native_token:
+            policy_id: policy_id
+            asset_id: asset_id
+          id: 5
+        native_token:
+          policy_id: policy_id
+          asset_id: asset_id
       properties:
-        name:
-          description: Name of artist for token asset
-          type: string
-        urls:
-          description: URLs to learn more about artist (e.g. portfolio). These can
-            point to different places.
-          items:
-            type: string
-          type: array
+        extended_721_token:
+          $ref: '#/components/schemas/Extended721Token'
+        novellia_standard_token:
+          $ref: '#/components/schemas/NovelliaStandardToken'
+        native_token:
+          $ref: '#/components/schemas/NativeToken'
       type: object
     Product_product:
-      description: Details for generic products, standalone without asset resource
-        or specific loader
       example:
-        token_policy_id: token_policy_id
-        description_short: Occulta Novellia Character
-        overview_image_urls:
-        - overview_image_urls
-        - overview_image_urls
-        product_id: 7
+        product_id: product_id
         name: name
-        description_long: A collectible character for the surreal horror game Occult
-          Novellia. Armed with a steampunk rifle, Iscara packs a punch at a distance.
-          The Iscara NFT picks off enemies at distance while her squad finishes them
-          in brutal close quarters combat.
+        description:
+          short: short
+          long: long
       properties:
-        overview_image_urls:
-          description: URLs to image to display on overview
-          items:
-            type: string
-          type: array
-        token_policy_id:
-          description: Token policy ID to refer to blockchain
-          type: string
         name:
-          description: Readable name of product
+          description: Product readable name
           type: string
+        description:
+          $ref: '#/components/schemas/DescriptionSet'
         product_id:
-          description: Unique identifier of product
-          type: integer
-        description_short:
-          description: Short description of product
-          example: Occulta Novellia Character
-          type: string
-        description_long:
-          description: Long description of product
-          example: A collectible character for the surreal horror game Occult Novellia.
-            Armed with a steampunk rifle, Iscara packs a punch at a distance. The
-            Iscara NFT picks off enemies at distance while her squad finishes them
-            in brutal close quarters combat.
+          description: Unique identfier for product
           type: string
       required:
+      - description
       - name
-      - overview_image_urls
       - product_id
-      - token_policy_id
+      type: object
+    Order_products:
+      example:
+        quantity: 0
+        product_id: product_id
+      properties:
+        product_id:
+          type: string
+        quantity:
+          type: integer
+      required:
+      - product_id
+      - quantity
+      type: object
+    Order_customer:
+      example:
+        delivery_address: delivery_address
+      properties:
+        delivery_address:
+          description: Address to deliver tokens to
+          type: string
+      required:
+      - delivery_address
+      type: object
+    Order_payment:
+      example:
+        payment_address: payment_address
+        price_amount: 6.027456183070403
+        price_currency_id: price_currency_id
+        status: status
+      properties:
+        payment_address:
+          description: Address to deposit currency
+          type: string
+        price_currency_id:
+          description: Policy ID of currency
+          type: string
+        price_amount:
+          description: Amount due in currency. Use `number` for fiat, but ADA is lovelace
+            integral
+          type: number
+        status:
+          description: Payment status (i.e. received, processing, ...)
+          type: string
+      required:
+      - payment_address
+      - price_amount
+      - price_currency_id
+      - status
+      type: object
+    OccultaNovelliaCharacter_card:
+      description: Metadata relating to card / distribution
+      properties:
+        number:
+          description: The character number
+          type: integer
+        release_set:
+          description: The set this character was released in
+          type: string
+      required:
+      - number
+      - release_set
+      type: object
+    OccultaNovelliaCharacter_progression:
+      description: Character leveling progression between card variants
+      properties:
+        class:
+          description: Character progression class
+          type: string
+        stage:
+          description: Stage of character in class progression (1,2,3)
+          type: integer
+      required:
+      - class
+      - stage
+      type: object
+    OccultaNovelliaCharacter_stats:
+      description: Integer stats
+      properties:
+        health:
+          description: Damage sustained before dying
+          type: integer
+        attack:
+          description: Multiplier for damage dealt as defined by attribute moves
+          type: integer
+        move:
+          description: Action points cost per unit of movement
+          type: integer
+        slots:
+          description: Slots used by character when added to a squad
+          type: integer
+      required:
+      - attack
+      - health
+      - move
+      - slots
       type: object
