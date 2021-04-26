@@ -669,7 +669,9 @@ components:
         description:
           $ref: '#/components/schemas/DescriptionSet'
         resource:
-          $ref: '#/components/schemas/OffChainResource'
+          type: array
+          items:
+            $ref: '#/components/schemas/OffChainResource'
         commission:
           type: array
           items:

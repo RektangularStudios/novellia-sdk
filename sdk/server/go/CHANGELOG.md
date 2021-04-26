@@ -17,3 +17,5 @@ Create SDK
   - Native Token
   - Extended 721 Token
   - Novellia Standard Token
+  - Occulta Novellia Character
+  - Offchain Data (for now)

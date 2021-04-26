@@ -322,7 +322,16 @@ components:
             - extension
             - extension
             resource:
-              content_type: content_type
+            - content_type: content_type
+              resource_id: resource_id
+              description: description
+              priority: 9
+              url:
+              - url
+              - url
+              multihash: multihash
+              hash_source_type: hash_source_type
+            - content_type: content_type
               resource_id: resource_id
               description: description
               priority: 9
@@ -660,7 +669,16 @@ components:
         - extension
         - extension
         resource:
-          content_type: content_type
+        - content_type: content_type
+          resource_id: resource_id
+          description: description
+          priority: 9
+          url:
+          - url
+          - url
+          multihash: multihash
+          hash_source_type: hash_source_type
+        - content_type: content_type
           resource_id: resource_id
           description: description
           priority: 9
@@ -722,7 +740,9 @@ components:
         description:
           $ref: '#/components/schemas/DescriptionSet'
         resource:
-          $ref: '#/components/schemas/OffChainResource'
+          items:
+            $ref: '#/components/schemas/OffChainResource'
+          type: array
         commission:
           items:
             $ref: '#/components/schemas/Commission'
@@ -935,7 +955,16 @@ components:
           - extension
           - extension
           resource:
-            content_type: content_type
+          - content_type: content_type
+            resource_id: resource_id
+            description: description
+            priority: 9
+            url:
+            - url
+            - url
+            multihash: multihash
+            hash_source_type: hash_source_type
+          - content_type: content_type
             resource_id: resource_id
             description: description
             priority: 9
