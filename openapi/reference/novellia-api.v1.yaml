@@ -671,7 +671,9 @@ components:
         resource:
           $ref: '#/components/schemas/OffChainResource'
         commission:
-          $ref: '#/components/schemas/Commission'
+          type: array
+          items:
+            $ref: '#/components/schemas/Commission'
         native_token:
           $ref: '#/components/schemas/NativeToken'
         novellia_version:

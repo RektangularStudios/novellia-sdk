@@ -342,7 +342,10 @@ components:
               policy_id: policy_id
               asset_id: asset_id
             commission:
-              address: address
+            - address: address
+              name: name
+              percent: 3.616076749251911
+            - address: address
               name: name
               percent: 3.616076749251911
             id: 7
@@ -677,7 +680,10 @@ components:
           policy_id: policy_id
           asset_id: asset_id
         commission:
-          address: address
+        - address: address
+          name: name
+          percent: 3.616076749251911
+        - address: address
           name: name
           percent: 3.616076749251911
         id: 7
@@ -718,7 +724,9 @@ components:
         resource:
           $ref: '#/components/schemas/OffChainResource'
         commission:
-          $ref: '#/components/schemas/Commission'
+          items:
+            $ref: '#/components/schemas/Commission'
+          type: array
         native_token:
           $ref: '#/components/schemas/NativeToken'
         novellia_version:
@@ -947,7 +955,10 @@ components:
             policy_id: policy_id
             asset_id: asset_id
           commission:
-            address: address
+          - address: address
+            name: name
+            percent: 3.616076749251911
+          - address: address
             name: name
             percent: 3.616076749251911
           id: 7
