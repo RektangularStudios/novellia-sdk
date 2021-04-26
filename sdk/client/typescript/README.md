@@ -35,6 +35,19 @@ novelliaService.products({}).then(resp => {
 });
 ```
 
+## Publishing to NPM
+
+You'll need Rektangular's credentials for this.
+
+**Make sure to tick the version and adjust the changelog accordingly**
+
+1. `npm install`
+2. `npm run prepare`
+3. `npm publish`
+  - this will prompt for 2-factor authentication
+
+That's it! Now you can install the published version using NPM.
+
 ## Regenerating the SDK
 
 There are some minor changes that need to be made after regenerating the SDK.
