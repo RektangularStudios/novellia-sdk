@@ -351,21 +351,32 @@ components:
               $ref: '#/components/schemas/NovelliaStandardToken'
             native_token:
               $ref: '#/components/schemas/NativeToken'
-        product_id:
-          type: string
-          description: Unique identfier for product
         attribution:
           type: array
           description: List of entities to give attribution to for product
           items:
             $ref: '#/components/schemas/Attribution'
+        product:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Product readable name
+            description:
+              $ref: '#/components/schemas/DescriptionSet'
+            product_id:
+              type: string
+              description: Unique identfier for product
+          required:
+            - name
+            - description
+            - product_id
       required:
         - pricing
         - organization
         - market
         - stock
         - metadata
-        - product_id
     Order:
       title: Order
       type: object
@@ -636,10 +647,11 @@ components:
         - name
         - address
     NovelliaStandardToken:
-      description: Novellia Token Standard on-chain metadata
       type: object
+      description: Novellia Token Standard on-chain metadata
       x-examples: {}
       title: NovelliaStandardToken
+      minProperties: 0
       properties:
         copyright:
           type: string

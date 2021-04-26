@@ -34,6 +34,7 @@ go/model_product_market.go
 go/model_product_metadata.go
 go/model_product_organization.go
 go/model_product_pricing.go
+go/model_product_product.go
 go/model_product_stock.go
 go/model_status.go
 go/model_status_cardano.go

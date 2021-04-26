@@ -373,10 +373,15 @@ components:
           native_token:
             policy_id: policy_id
             asset_id: asset_id
+        product:
+          product_id: product_id
+          name: name
+          description:
+            short: short
+            long: long
         organization:
           organization_id: organization_id
           name: name
-        product_id: product_id
         attribution:
         - author_name: author_name
           work_attributed: work_attributed
@@ -408,20 +413,18 @@ components:
           $ref: '#/components/schemas/Product_metadata'
         immutable:
           $ref: '#/components/schemas/Product_immutable'
-        product_id:
-          description: Unique identfier for product
-          type: string
         attribution:
           description: List of entities to give attribution to for product
           items:
             $ref: '#/components/schemas/Attribution'
           type: array
+        product:
+          $ref: '#/components/schemas/Product_product'
       required:
       - market
       - metadata
       - organization
       - pricing
-      - product_id
       - stock
       type: object
     Order:
@@ -707,6 +710,7 @@ components:
         id: 7
         version: 2
         novellia_version: 2
+      minProperties: 0
       properties:
         copyright:
           description: Attribution of rights.
@@ -1013,6 +1017,27 @@ components:
           $ref: '#/components/schemas/NovelliaStandardToken'
         native_token:
           $ref: '#/components/schemas/NativeToken'
+      type: object
+    Product_product:
+      example:
+        product_id: product_id
+        name: name
+        description:
+          short: short
+          long: long
+      properties:
+        name:
+          description: Product readable name
+          type: string
+        description:
+          $ref: '#/components/schemas/DescriptionSet'
+        product_id:
+          description: Unique identfier for product
+          type: string
+      required:
+      - description
+      - name
+      - product_id
       type: object
     Order_products:
       example:
