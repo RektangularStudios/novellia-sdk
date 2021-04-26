@@ -171,12 +171,16 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCreated'
       description: Creates an order
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderCreated'
+              $ref: '#/components/schemas/Order'
           application/xml:
             schema:
               type: object

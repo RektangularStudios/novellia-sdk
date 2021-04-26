@@ -1,13 +1,14 @@
 import { 
   DefaultApi,
-  GetOrdersRequest,
   GetProductsRequest,
+  PostOrdersRequest,
 } from './_generated/apis';
 import {
   CardanoTip,
   CardanoTransaction,
   MinterInfo,
   Order,
+  OrderCreated,
   Product,
   Status,
   Token,
@@ -26,8 +27,14 @@ export class NovelliaService {
     return this._api.getCardanoTip();
   }
 
-  async orders(request: GetOrdersRequest): Promise<Array<Order>> {
-    return this._api.getOrders(request);
+  async getOrder(orderId: string): Promise<Order> {
+    return this._api.getOrders({
+        orderId: orderId,
+    });
+  }
+
+  async CreateOrder(request: PostOrdersRequest): Promise<OrderCreated> {
+    return this._api.postOrders(request);
   }
 
   async products(request: GetProductsRequest): Promise<Array<Product>> {
