@@ -179,13 +179,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderCreated'
+              $ref: '#/components/schemas/Order'
           application/xml:
             schema:
               properties: {}
               type: object
       responses:
         "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCreated'
           description: OK
 components:
   schemas:

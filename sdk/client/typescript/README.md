@@ -39,7 +39,7 @@ novelliaService.products({}).then(resp => {
 
 There are some minor changes that need to be made after regenerating the SDK.
 
-Import `Configuration` and expose it through the `DefaultAPI` constructor in `_generated/apis/DefaultApi.ts`
+Import `Configuration` and `ConfigurationParameters` and expose them through the `DefaultAPI` constructor in `_generated/apis/DefaultApi.ts`
 
 ```
 import { Configuration, ConfigurationParameters } from '../runtime';

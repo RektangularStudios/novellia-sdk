@@ -63,7 +63,7 @@ export interface PostCardanoTransactionRequest {
 }
 
 export interface PostOrdersRequest {
-    orderCreated?: OrderCreated;
+    order?: Order;
 }
 
 export interface PostWorkflowMinterNvlaRequest {
@@ -296,7 +296,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Creates an order
      */
-    async postOrdersRaw(requestParameters: PostOrdersRequest): Promise<runtime.ApiResponse<void>> {
+    async postOrdersRaw(requestParameters: PostOrdersRequest): Promise<runtime.ApiResponse<OrderCreated>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -308,17 +308,18 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: OrderCreatedToJSON(requestParameters.orderCreated),
+            body: OrderToJSON(requestParameters.order),
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => OrderCreatedFromJSON(jsonValue));
     }
 
     /**
      * Creates an order
      */
-    async postOrders(requestParameters: PostOrdersRequest): Promise<void> {
-        await this.postOrdersRaw(requestParameters);
+    async postOrders(requestParameters: PostOrdersRequest): Promise<OrderCreated> {
+        const response = await this.postOrdersRaw(requestParameters);
+        return await response.value();
     }
 
     /**

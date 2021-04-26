@@ -33,7 +33,7 @@ export class NovelliaService {
     });
   }
 
-  async CreateOrder(request: PostOrdersRequest): Promise<OrderCreated> {
+  async createOrder(request: PostOrdersRequest): Promise<OrderCreated> {
     return this._api.postOrders(request);
   }
 
