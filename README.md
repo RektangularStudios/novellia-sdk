@@ -137,3 +137,8 @@ java -jar openapi-generator-cli.jar generate \
 ```
 
 Note that the code may be slightly broken upon regeneration.
+
+# Developing
+
+We are using [Semantic Versioning](https://semver.org/) with some small caveats:
+- there is no stable version of the Novellia SDK yet, so we're using `minor` version for breaking changes for `major` version 0.
