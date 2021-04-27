@@ -19,3 +19,9 @@ Create SDK
   - Novellia Standard Token
   - Occulta Novellia Character
   - Offchain Data (for now)
+
+# v0.5.0
+- Update `Product` model
+  - use `product` field instead of `immutable` as some data may not be immutable
+  - add `NovelliaProduct` model for products without tokens
+  - add `tags` with "nsfw" specialization to `NovelliaStandardToken`

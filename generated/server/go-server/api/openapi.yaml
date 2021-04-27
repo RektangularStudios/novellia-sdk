@@ -318,7 +318,7 @@ components:
           tags:
           - tags
           - tags
-        immutable:
+        product:
           novellia_standard_token:
             image: image
             copyright: copyright
@@ -344,13 +344,17 @@ components:
               - url
               multihash: multihash
               hash_source_type: hash_source_type
+            description:
+              short: short
+              long: long
+            version: 2
+            tags:
+            - tags
+            - tags
             name: name
             publisher:
             - publisher
             - publisher
-            description:
-              short: short
-              long: long
             native_token:
               policy_id: policy_id
               asset_id: asset_id
@@ -362,8 +366,8 @@ components:
               name: name
               percent: 3.616076749251911
             id: 7
-            version: 2
             novellia_version: 2
+          product_id: product_id
           extended_721_token:
             image: image
             extension:
@@ -377,12 +381,33 @@ components:
           native_token:
             policy_id: policy_id
             asset_id: asset_id
-        product:
-          product_id: product_id
-          name: name
-          description:
-            short: short
-            long: long
+          novellia_product:
+            copyright: copyright
+            resource:
+              content_type: content_type
+              resource_id: resource_id
+              description: description
+              priority: 9
+              url:
+              - url
+              - url
+              multihash: multihash
+              hash_source_type: hash_source_type
+            name: name
+            publisher:
+            - publisher
+            - publisher
+            description:
+              short: short
+              long: long
+            commission:
+              address: address
+              name: name
+              percent: 3.616076749251911
+            version: 4
+            tags:
+            - tags
+            - tags
         organization:
           organization_id: organization_id
           name: name
@@ -415,15 +440,13 @@ components:
           $ref: '#/components/schemas/Product_stock'
         metadata:
           $ref: '#/components/schemas/Product_metadata'
-        immutable:
-          $ref: '#/components/schemas/Product_immutable'
+        product:
+          $ref: '#/components/schemas/Product_product'
         attribution:
           description: List of entities to give attribution to for product
           items:
             $ref: '#/components/schemas/Attribution'
           type: array
-        product:
-          $ref: '#/components/schemas/Product_product'
       required:
       - market
       - metadata
@@ -694,13 +717,17 @@ components:
           - url
           multihash: multihash
           hash_source_type: hash_source_type
+        description:
+          short: short
+          long: long
+        version: 2
+        tags:
+        - tags
+        - tags
         name: name
         publisher:
         - publisher
         - publisher
-        description:
-          short: short
-          long: long
         native_token:
           policy_id: policy_id
           asset_id: asset_id
@@ -712,7 +739,6 @@ components:
           name: name
           percent: 3.616076749251911
         id: 7
-        version: 2
         novellia_version: 2
       minProperties: 0
       properties:
@@ -721,7 +747,7 @@ components:
           type: string
         publisher:
           description: List of publishers or entities involved in token creation.
-            Useful for onlookers to determine token origin.
+            Useful for onlookers to determine token origin. These can be URLs.
           items:
             type: string
           type: array
@@ -760,6 +786,11 @@ components:
         novellia_version:
           description: Identifies the version of the specification in use.
           type: integer
+        tags:
+          description: Tags for sorting and filtering. "nsfw" indicates NSFW content
+          items:
+            type: string
+          type: array
       required:
       - copyright
       - description
@@ -771,6 +802,7 @@ components:
       - novellia_version
       - publisher
       - resource
+      - tags
       - version
       title: NovelliaStandardToken
       type: object
@@ -861,6 +893,72 @@ components:
           - https://www.artstation.com/
           - https://www.deviantart.com/
           work_attributed: Draculi Illustration
+    NovelliaProduct:
+      description: Product listed on Novelia without a token
+      example:
+        copyright: copyright
+        resource:
+          content_type: content_type
+          resource_id: resource_id
+          description: description
+          priority: 9
+          url:
+          - url
+          - url
+          multihash: multihash
+          hash_source_type: hash_source_type
+        name: name
+        publisher:
+        - publisher
+        - publisher
+        description:
+          short: short
+          long: long
+        commission:
+          address: address
+          name: name
+          percent: 3.616076749251911
+        version: 4
+        tags:
+        - tags
+        - tags
+      properties:
+        copyright:
+          description: Attribution of rights to product.
+          type: string
+        publisher:
+          description: List of publishers or entities involved in token creation.
+            Useful for onlookers to determine token origin.
+          items:
+            type: string
+          type: array
+        version:
+          description: Iteration in update sequence for product.
+          type: integer
+        name:
+          description: Display name for token.
+          type: string
+        tags:
+          description: Tags for sorting and filtering. "nsfw" indicates NSFW content
+          items:
+            type: string
+          type: array
+        commission:
+          $ref: '#/components/schemas/Commission'
+        description:
+          $ref: '#/components/schemas/DescriptionSet'
+        resource:
+          $ref: '#/components/schemas/OffChainResource'
+      required:
+      - copyright
+      - description
+      - name
+      - publisher
+      - resource
+      - tags
+      - version
+      title: NovelliaProduct
+      type: object
     Status_cardano:
       example:
         initialized: true
@@ -954,7 +1052,8 @@ components:
       - date_listed
       - tags
       type: object
-    Product_immutable:
+    Product_product:
+      description: 'Immutable '
       example:
         novellia_standard_token:
           image: image
@@ -981,13 +1080,17 @@ components:
             - url
             multihash: multihash
             hash_source_type: hash_source_type
+          description:
+            short: short
+            long: long
+          version: 2
+          tags:
+          - tags
+          - tags
           name: name
           publisher:
           - publisher
           - publisher
-          description:
-            short: short
-            long: long
           native_token:
             policy_id: policy_id
             asset_id: asset_id
@@ -999,8 +1102,8 @@ components:
             name: name
             percent: 3.616076749251911
           id: 7
-          version: 2
           novellia_version: 2
+        product_id: product_id
         extended_721_token:
           image: image
           extension:
@@ -1014,6 +1117,33 @@ components:
         native_token:
           policy_id: policy_id
           asset_id: asset_id
+        novellia_product:
+          copyright: copyright
+          resource:
+            content_type: content_type
+            resource_id: resource_id
+            description: description
+            priority: 9
+            url:
+            - url
+            - url
+            multihash: multihash
+            hash_source_type: hash_source_type
+          name: name
+          publisher:
+          - publisher
+          - publisher
+          description:
+            short: short
+            long: long
+          commission:
+            address: address
+            name: name
+            percent: 3.616076749251911
+          version: 4
+          tags:
+          - tags
+          - tags
       properties:
         extended_721_token:
           $ref: '#/components/schemas/Extended721Token'
@@ -1021,26 +1151,12 @@ components:
           $ref: '#/components/schemas/NovelliaStandardToken'
         native_token:
           $ref: '#/components/schemas/NativeToken'
-      type: object
-    Product_product:
-      example:
-        product_id: product_id
-        name: name
-        description:
-          short: short
-          long: long
-      properties:
-        name:
-          description: Product readable name
-          type: string
-        description:
-          $ref: '#/components/schemas/DescriptionSet'
+        novellia_product:
+          $ref: '#/components/schemas/NovelliaProduct'
         product_id:
-          description: Unique identfier for product
+          description: Unique identifier of product
           type: string
       required:
-      - description
-      - name
       - product_id
       type: object
     Order_products:
