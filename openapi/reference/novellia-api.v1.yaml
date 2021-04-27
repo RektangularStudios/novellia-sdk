@@ -346,8 +346,9 @@ components:
               type: string
             date_available:
               type: string
-        immutable:
+        product:
           type: object
+          description: 'Immutable '
           properties:
             extended_721_token:
               $ref: '#/components/schemas/Extended721Token'
@@ -355,26 +356,18 @@ components:
               $ref: '#/components/schemas/NovelliaStandardToken'
             native_token:
               $ref: '#/components/schemas/NativeToken'
+            novellia_product:
+              $ref: '#/components/schemas/NovelliaProduct'
+            product_id:
+              type: string
+              description: Unique identifier of product
+          required:
+            - product_id
         attribution:
           type: array
           description: List of entities to give attribution to for product
           items:
             $ref: '#/components/schemas/Attribution'
-        product:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Product readable name
-            description:
-              $ref: '#/components/schemas/DescriptionSet'
-            product_id:
-              type: string
-              description: Unique identfier for product
-          required:
-            - name
-            - description
-            - product_id
       required:
         - pricing
         - organization
@@ -662,7 +655,7 @@ components:
           description: Attribution of rights.
         publisher:
           type: array
-          description: List of publishers or entities involved in token creation. Useful for onlookers to determine token origin.
+          description: List of publishers or entities involved in token creation. Useful for onlookers to determine token origin. These can be URLs.
           items:
             type: string
         version:
@@ -697,6 +690,11 @@ components:
         novellia_version:
           description: Identifies the version of the specification in use.
           type: integer
+        tags:
+          type: array
+          description: Tags for sorting and filtering. "nsfw" indicates NSFW content
+          items:
+            type: string
       required:
         - copyright
         - publisher
@@ -709,6 +707,7 @@ components:
         - resource
         - native_token
         - novellia_version
+        - tags
     Extended721Token:
       title: Extended721Token
       type: object
@@ -775,3 +774,41 @@ components:
             - 'https://www.deviantart.com/'
           work_attributed: Draculi Illustration
       title: ''
+    NovelliaProduct:
+      title: NovelliaProduct
+      type: object
+      description: Product listed on Novelia without a token
+      properties:
+        copyright:
+          type: string
+          description: Attribution of rights to product.
+        publisher:
+          type: array
+          description: List of publishers or entities involved in token creation. Useful for onlookers to determine token origin.
+          items:
+            type: string
+        version:
+          type: integer
+          description: Iteration in update sequence for product.
+        name:
+          type: string
+          description: Display name for token.
+        tags:
+          type: array
+          description: Tags for sorting and filtering. "nsfw" indicates NSFW content
+          items:
+            type: string
+        commission:
+          $ref: '#/components/schemas/Commission'
+        description:
+          $ref: '#/components/schemas/DescriptionSet'
+        resource:
+          $ref: '#/components/schemas/OffChainResource'
+      required:
+        - copyright
+        - publisher
+        - version
+        - name
+        - tags
+        - description
+        - resource
