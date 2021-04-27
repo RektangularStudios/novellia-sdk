@@ -45,7 +45,7 @@ export interface NovelliaStandardToken {
      */
     copyright: string;
     /**
-     * List of publishers or entities involved in token creation. Useful for onlookers to determine token origin.
+     * List of publishers or entities involved in token creation. Useful for onlookers to determine token origin. These can be URLs.
      * @type {Array<string>}
      * @memberof NovelliaStandardToken
      */
@@ -110,6 +110,12 @@ export interface NovelliaStandardToken {
      * @memberof NovelliaStandardToken
      */
     novelliaVersion: number;
+    /**
+     * Tags for sorting and filtering. "nsfw" indicates NSFW content
+     * @type {Array<string>}
+     * @memberof NovelliaStandardToken
+     */
+    tags: Array<string>;
 }
 
 export function NovelliaStandardTokenFromJSON(json: any): NovelliaStandardToken {
@@ -134,6 +140,7 @@ export function NovelliaStandardTokenFromJSONTyped(json: any, ignoreDiscriminato
         'commission': !exists(json, 'commission') ? undefined : ((json['commission'] as Array<any>).map(CommissionFromJSON)),
         'nativeToken': NativeTokenFromJSON(json['native_token']),
         'novelliaVersion': json['novellia_version'],
+        'tags': json['tags'],
     };
 }
 
@@ -158,6 +165,7 @@ export function NovelliaStandardTokenToJSON(value?: NovelliaStandardToken | null
         'commission': value.commission === undefined ? undefined : ((value.commission as Array<any>).map(CommissionToJSON)),
         'native_token': NativeTokenToJSON(value.nativeToken),
         'novellia_version': value.novelliaVersion,
+        'tags': value.tags,
     };
 }
 

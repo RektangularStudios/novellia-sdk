@@ -28,3 +28,7 @@ Initial publish, supports wallet token query.
   - Novellia Standard Token
   - Occulta Novellia Character
   - Offchain Data (for now)
+
+# v0.5.0
+- added NovelliaProduct type for tokenless products
+  - breaking changes to the getProducts response

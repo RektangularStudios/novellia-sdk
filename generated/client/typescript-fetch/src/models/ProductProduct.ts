@@ -14,32 +14,56 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    DescriptionSet,
-    DescriptionSetFromJSON,
-    DescriptionSetFromJSONTyped,
-    DescriptionSetToJSON,
+    Extended721Token,
+    Extended721TokenFromJSON,
+    Extended721TokenFromJSONTyped,
+    Extended721TokenToJSON,
+    NativeToken,
+    NativeTokenFromJSON,
+    NativeTokenFromJSONTyped,
+    NativeTokenToJSON,
+    NovelliaProduct,
+    NovelliaProductFromJSON,
+    NovelliaProductFromJSONTyped,
+    NovelliaProductToJSON,
+    NovelliaStandardToken,
+    NovelliaStandardTokenFromJSON,
+    NovelliaStandardTokenFromJSONTyped,
+    NovelliaStandardTokenToJSON,
 } from './';
 
 /**
- * 
+ * Immutable 
  * @export
  * @interface ProductProduct
  */
 export interface ProductProduct {
     /**
-     * Product readable name
-     * @type {string}
+     * 
+     * @type {Extended721Token}
      * @memberof ProductProduct
      */
-    name: string;
+    extended721Token?: Extended721Token;
     /**
      * 
-     * @type {DescriptionSet}
+     * @type {NovelliaStandardToken}
      * @memberof ProductProduct
      */
-    description: DescriptionSet;
+    novelliaStandardToken?: NovelliaStandardToken;
     /**
-     * Unique identfier for product
+     * 
+     * @type {NativeToken}
+     * @memberof ProductProduct
+     */
+    nativeToken?: NativeToken;
+    /**
+     * 
+     * @type {NovelliaProduct}
+     * @memberof ProductProduct
+     */
+    novelliaProduct?: NovelliaProduct;
+    /**
+     * Unique identifier of product
      * @type {string}
      * @memberof ProductProduct
      */
@@ -56,8 +80,10 @@ export function ProductProductFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'name': json['name'],
-        'description': DescriptionSetFromJSON(json['description']),
+        'extended721Token': !exists(json, 'extended_721_token') ? undefined : Extended721TokenFromJSON(json['extended_721_token']),
+        'novelliaStandardToken': !exists(json, 'novellia_standard_token') ? undefined : NovelliaStandardTokenFromJSON(json['novellia_standard_token']),
+        'nativeToken': !exists(json, 'native_token') ? undefined : NativeTokenFromJSON(json['native_token']),
+        'novelliaProduct': !exists(json, 'novellia_product') ? undefined : NovelliaProductFromJSON(json['novellia_product']),
         'productId': json['product_id'],
     };
 }
@@ -71,8 +97,10 @@ export function ProductProductToJSON(value?: ProductProduct | null): any {
     }
     return {
         
-        'name': value.name,
-        'description': DescriptionSetToJSON(value.description),
+        'extended_721_token': Extended721TokenToJSON(value.extended721Token),
+        'novellia_standard_token': NovelliaStandardTokenToJSON(value.novelliaStandardToken),
+        'native_token': NativeTokenToJSON(value.nativeToken),
+        'novellia_product': NovelliaProductToJSON(value.novelliaProduct),
         'product_id': value.productId,
     };
 }

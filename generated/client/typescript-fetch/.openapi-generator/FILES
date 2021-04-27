@@ -14,6 +14,7 @@ src/models/DescriptionSet.ts
 src/models/Extended721Token.ts
 src/models/MinterInfo.ts
 src/models/NativeToken.ts
+src/models/NovelliaProduct.ts
 src/models/NovelliaStandardToken.ts
 src/models/OccultaNovelliaCharacter.ts
 src/models/OccultaNovelliaCharacterCard.ts
@@ -26,7 +27,6 @@ src/models/OrderCustomer.ts
 src/models/OrderPayment.ts
 src/models/OrderProducts.ts
 src/models/Product.ts
-src/models/ProductImmutable.ts
 src/models/ProductMarket.ts
 src/models/ProductMetadata.ts
 src/models/ProductOrganization.ts
