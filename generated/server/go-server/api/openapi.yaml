@@ -384,7 +384,16 @@ components:
           novellia_product:
             copyright: copyright
             resource:
-              content_type: content_type
+            - content_type: content_type
+              resource_id: resource_id
+              description: description
+              priority: 9
+              url:
+              - url
+              - url
+              multihash: multihash
+              hash_source_type: hash_source_type
+            - content_type: content_type
               resource_id: resource_id
               description: description
               priority: 9
@@ -401,7 +410,10 @@ components:
               short: short
               long: long
             commission:
-              address: address
+            - address: address
+              name: name
+              percent: 3.616076749251911
+            - address: address
               name: name
               percent: 3.616076749251911
             version: 4
@@ -898,7 +910,16 @@ components:
       example:
         copyright: copyright
         resource:
-          content_type: content_type
+        - content_type: content_type
+          resource_id: resource_id
+          description: description
+          priority: 9
+          url:
+          - url
+          - url
+          multihash: multihash
+          hash_source_type: hash_source_type
+        - content_type: content_type
           resource_id: resource_id
           description: description
           priority: 9
@@ -915,7 +936,10 @@ components:
           short: short
           long: long
         commission:
-          address: address
+        - address: address
+          name: name
+          percent: 3.616076749251911
+        - address: address
           name: name
           percent: 3.616076749251911
         version: 4
@@ -944,11 +968,15 @@ components:
             type: string
           type: array
         commission:
-          $ref: '#/components/schemas/Commission'
+          items:
+            $ref: '#/components/schemas/Commission'
+          type: array
         description:
           $ref: '#/components/schemas/DescriptionSet'
         resource:
-          $ref: '#/components/schemas/OffChainResource'
+          items:
+            $ref: '#/components/schemas/OffChainResource'
+          type: array
       required:
       - copyright
       - description
@@ -1120,7 +1148,16 @@ components:
         novellia_product:
           copyright: copyright
           resource:
-            content_type: content_type
+          - content_type: content_type
+            resource_id: resource_id
+            description: description
+            priority: 9
+            url:
+            - url
+            - url
+            multihash: multihash
+            hash_source_type: hash_source_type
+          - content_type: content_type
             resource_id: resource_id
             description: description
             priority: 9
@@ -1137,7 +1174,10 @@ components:
             short: short
             long: long
           commission:
-            address: address
+          - address: address
+            name: name
+            percent: 3.616076749251911
+          - address: address
             name: name
             percent: 3.616076749251911
           version: 4
