@@ -799,11 +799,15 @@ components:
           items:
             type: string
         commission:
-          $ref: '#/components/schemas/Commission'
+          type: array
+          items:
+            $ref: '#/components/schemas/Commission'
         description:
           $ref: '#/components/schemas/DescriptionSet'
         resource:
-          $ref: '#/components/schemas/OffChainResource'
+          type: array
+          items:
+            $ref: '#/components/schemas/OffChainResource'
       required:
         - copyright
         - publisher
