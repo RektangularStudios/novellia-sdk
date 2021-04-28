@@ -18,10 +18,6 @@ import {
     AttributionFromJSON,
     AttributionFromJSONTyped,
     AttributionToJSON,
-    ProductImmutable,
-    ProductImmutableFromJSON,
-    ProductImmutableFromJSONTyped,
-    ProductImmutableToJSON,
     ProductMarket,
     ProductMarketFromJSON,
     ProductMarketFromJSONTyped,
@@ -86,22 +82,16 @@ export interface Product {
     metadata: ProductMetadata;
     /**
      * 
-     * @type {ProductImmutable}
+     * @type {ProductProduct}
      * @memberof Product
      */
-    immutable?: ProductImmutable;
+    product?: ProductProduct;
     /**
      * List of entities to give attribution to for product
      * @type {Array<Attribution>}
      * @memberof Product
      */
     attribution?: Array<Attribution>;
-    /**
-     * 
-     * @type {ProductProduct}
-     * @memberof Product
-     */
-    product?: ProductProduct;
 }
 
 export function ProductFromJSON(json: any): Product {
@@ -119,9 +109,8 @@ export function ProductFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'market': ProductMarketFromJSON(json['market']),
         'stock': ProductStockFromJSON(json['stock']),
         'metadata': ProductMetadataFromJSON(json['metadata']),
-        'immutable': !exists(json, 'immutable') ? undefined : ProductImmutableFromJSON(json['immutable']),
-        'attribution': !exists(json, 'attribution') ? undefined : ((json['attribution'] as Array<any>).map(AttributionFromJSON)),
         'product': !exists(json, 'product') ? undefined : ProductProductFromJSON(json['product']),
+        'attribution': !exists(json, 'attribution') ? undefined : ((json['attribution'] as Array<any>).map(AttributionFromJSON)),
     };
 }
 
@@ -139,9 +128,8 @@ export function ProductToJSON(value?: Product | null): any {
         'market': ProductMarketToJSON(value.market),
         'stock': ProductStockToJSON(value.stock),
         'metadata': ProductMetadataToJSON(value.metadata),
-        'immutable': ProductImmutableToJSON(value.immutable),
-        'attribution': value.attribution === undefined ? undefined : ((value.attribution as Array<any>).map(AttributionToJSON)),
         'product': ProductProductToJSON(value.product),
+        'attribution': value.attribution === undefined ? undefined : ((value.attribution as Array<any>).map(AttributionToJSON)),
     };
 }
 
