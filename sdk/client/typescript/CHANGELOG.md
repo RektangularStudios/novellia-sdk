@@ -32,3 +32,7 @@ Initial publish, supports wallet token query.
 # v0.5.0
 - added NovelliaProduct type for tokenless products
   - breaking changes to the getProducts response
+
+# v0.6.0
+- Minor breaking changes to SDK (mostly just field names)
+  - added rarity to Occulta Novellia Character model

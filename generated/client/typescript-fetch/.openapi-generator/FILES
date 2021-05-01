@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 README.md
 package.json
 src/apis/DefaultApi.ts
@@ -24,8 +23,8 @@ src/models/OffChainResource.ts
 src/models/Order.ts
 src/models/OrderCreated.ts
 src/models/OrderCustomer.ts
+src/models/OrderItems.ts
 src/models/OrderPayment.ts
-src/models/OrderProducts.ts
 src/models/Product.ts
 src/models/ProductMarket.ts
 src/models/ProductMetadata.ts

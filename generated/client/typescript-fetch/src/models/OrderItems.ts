@@ -14,41 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Cardano chain tip information
+ * 
  * @export
- * @interface CardanoTip
+ * @interface OrderItems
  */
-export interface CardanoTip {
+export interface OrderItems {
     /**
-     * Latest Cardano block
-     * @type {number}
-     * @memberof CardanoTip
+     * 
+     * @type {string}
+     * @memberof OrderItems
      */
-    block: number;
+    productId: string;
     /**
-     * Latest Cardano epoch
+     * 
      * @type {number}
-     * @memberof CardanoTip
+     * @memberof OrderItems
      */
-    epoch: number;
+    quantity: number;
 }
 
-export function CardanoTipFromJSON(json: any): CardanoTip {
-    return CardanoTipFromJSONTyped(json, false);
+export function OrderItemsFromJSON(json: any): OrderItems {
+    return OrderItemsFromJSONTyped(json, false);
 }
 
-export function CardanoTipFromJSONTyped(json: any, ignoreDiscriminator: boolean): CardanoTip {
+export function OrderItemsFromJSONTyped(json: any, ignoreDiscriminator: boolean): OrderItems {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'block': json['block'],
-        'epoch': json['epoch'],
+        'productId': json['product_id'],
+        'quantity': json['quantity'],
     };
 }
 
-export function CardanoTipToJSON(value?: CardanoTip | null): any {
+export function OrderItemsToJSON(value?: OrderItems | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +57,8 @@ export function CardanoTipToJSON(value?: CardanoTip | null): any {
     }
     return {
         
-        'block': value.block,
-        'epoch': value.epoch,
+        'product_id': value.productId,
+        'quantity': value.quantity,
     };
 }
 

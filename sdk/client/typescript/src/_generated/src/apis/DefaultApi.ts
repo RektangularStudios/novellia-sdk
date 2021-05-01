@@ -43,6 +43,7 @@ import {
     WorkflowInformationFromJSON,
     WorkflowInformationToJSON,
 } from '../models';
+import { Configuration, ConfigurationParameters } from '../runtime';
 
 export interface GetOrdersRequest {
     orderId: string;
@@ -74,7 +75,10 @@ export interface PostWorkflowMinterNvlaRequest {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
-
+    constructor(configurationParams: ConfigurationParameters = {}) {
+        super(new Configuration(configurationParams));
+    }
+    
     /**
      * Returns Cardano\'s latest block and epoch
      * Your GET endpoint
