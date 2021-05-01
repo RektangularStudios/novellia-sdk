@@ -9,7 +9,7 @@ info:
     url: https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE
   termsOfService: TODO
   title: novellia-api
-  version: 0.4.0
+  version: 0.6.0
 servers:
 - description: API Gateway
   url: api.rektangularstudios.com/novellia
@@ -315,9 +315,6 @@ components:
         metadata:
           date_listed: date_listed
           date_available: date_available
-          tags:
-          - tags
-          - tags
         product:
           novellia_standard_token:
             image: image
@@ -435,7 +432,7 @@ components:
           - url
           - url
         stock:
-          total_supply: 5
+          total_supply: 5.962133916683182
           available: 1.4658129805029452
         pricing:
           max_order_size: 6
@@ -464,28 +461,31 @@ components:
       - metadata
       - organization
       - pricing
+      - product
       - stock
       type: object
     Order:
       description: Describes a single order
       example:
+        order_status: order_status
+        description: description
         payment:
           payment_address: payment_address
+          payment_status: payment_status
           price_amount: 6.027456183070403
           price_currency_id: price_currency_id
-          status: status
+        items:
+        - quantity: 0
+          product_id: product_id
+        - quantity: 0
+          product_id: product_id
         order_id: order_id
-        products:
-        - quantity: 0
-          product_id: product_id
-        - quantity: 0
-          product_id: product_id
         customer:
           delivery_address: delivery_address
       properties:
-        products:
+        items:
           items:
-            $ref: '#/components/schemas/Order_products'
+            $ref: '#/components/schemas/Order_items'
           type: array
         customer:
           $ref: '#/components/schemas/Order_customer'
@@ -494,9 +494,19 @@ components:
         order_id:
           description: Order ID for future reference
           type: string
+        description:
+          description: Description of order, useful metadata such as presale that
+            occurred, etc.
+          type: string
+        order_status:
+          description: Order status (i.e. awaiting payment, queued, refunded, ...)
+          type: string
       required:
       - customer
-      - products
+      - description
+      - items
+      - order_id
+      - order_status
       title: Order
       type: object
       x-examples:
@@ -1048,13 +1058,13 @@ components:
       type: object
     Product_stock:
       example:
-        total_supply: 5
+        total_supply: 5.962133916683182
         available: 1.4658129805029452
       properties:
         available:
           type: number
         total_supply:
-          type: integer
+          type: number
       required:
       - available
       - total_supply
@@ -1063,14 +1073,7 @@ components:
       example:
         date_listed: date_listed
         date_available: date_available
-        tags:
-        - tags
-        - tags
       properties:
-        tags:
-          items:
-            type: string
-          type: array
         date_listed:
           type: string
         date_available:
@@ -1078,7 +1081,6 @@ components:
       required:
       - date_available
       - date_listed
-      - tags
       type: object
     Product_product:
       description: 'Immutable '
@@ -1199,7 +1201,7 @@ components:
       required:
       - product_id
       type: object
-    Order_products:
+    Order_items:
       example:
         quantity: 0
         product_id: product_id
@@ -1225,9 +1227,9 @@ components:
     Order_payment:
       example:
         payment_address: payment_address
+        payment_status: payment_status
         price_amount: 6.027456183070403
         price_currency_id: price_currency_id
-        status: status
       properties:
         payment_address:
           description: Address to deposit currency
@@ -1239,14 +1241,14 @@ components:
           description: Amount due in currency. Use `number` for fiat, but ADA is lovelace
             integral
           type: number
-        status:
-          description: Payment status (i.e. received, processing, ...)
+        payment_status:
+          description: Payment status (i.e. waiting, received, ...)
           type: string
       required:
       - payment_address
+      - payment_status
       - price_amount
       - price_currency_id
-      - status
       type: object
     OccultaNovelliaCharacter_card:
       description: Metadata relating to card / distribution
@@ -1257,8 +1259,12 @@ components:
         release_set:
           description: The set this character was released in
           type: string
+        rarity:
+          description: Rarity of card ("Rare", "Kinda Not", "Not That Rare")
+          type: string
       required:
       - number
+      - rarity
       - release_set
       type: object
     OccultaNovelliaCharacter_progression:

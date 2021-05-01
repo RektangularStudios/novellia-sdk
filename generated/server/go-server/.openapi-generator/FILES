@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 Dockerfile
 README.md
 api/openapi.yaml
@@ -27,8 +26,8 @@ go/model_off_chain_resource.go
 go/model_order.go
 go/model_order_created.go
 go/model_order_customer.go
+go/model_order_items.go
 go/model_order_payment.go
-go/model_order_products.go
 go/model_product.go
 go/model_product_market.go
 go/model_product_metadata.go
