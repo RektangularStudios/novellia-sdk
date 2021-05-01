@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: novellia-api
-  version: 0.4.0
+  version: 0.6.0
   license:
     url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
     name: MIT
@@ -330,18 +330,13 @@ components:
             available:
               type: number
             total_supply:
-              type: integer
+              type: number
         metadata:
           type: object
           required:
-            - tags
             - date_listed
             - date_available
           properties:
-            tags:
-              type: array
-              items:
-                type: string
             date_listed:
               type: string
             date_available:
@@ -349,6 +344,8 @@ components:
         product:
           type: object
           description: 'Immutable '
+          required:
+            - product_id
           properties:
             extended_721_token:
               $ref: '#/components/schemas/Extended721Token'
@@ -361,8 +358,6 @@ components:
             product_id:
               type: string
               description: Unique identifier of product
-          required:
-            - product_id
         attribution:
           type: array
           description: List of entities to give attribution to for product
@@ -374,12 +369,28 @@ components:
         - market
         - stock
         - metadata
+        - product
     Order:
       title: Order
       type: object
       description: Describes a single order
+      x-examples:
+        order-paid-with-ada:
+          products:
+            - product_id: PROD-01D78XYFJ1PRM1WPBAOU8JQMNV
+              quantity: 4
+            - product_id: PROD-01D78XYFJ1PRM1WPBCBT3VHMNV
+              quantity: 2
+          customer:
+            delivery_address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
+          payment:
+            payment_address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
+            price_currency_id: ada
+            price_amount: 20
+            status: AWAITING_PAYMENT
+          order_id: ORDER-01D78XYFJ1PRM1WPBCBT3VHMNV
       properties:
-        products:
+        items:
           type: array
           description: ''
           items:
@@ -394,9 +405,9 @@ components:
               - quantity
         customer:
           type: object
+          description: ''
           required:
             - delivery_address
-          description: ''
           properties:
             delivery_address:
               type: string
@@ -413,35 +424,29 @@ components:
             price_amount:
               description: 'Amount due in currency. Use `number` for fiat, but ADA is lovelace integral'
               type: number
-            status:
+            payment_status:
               type: string
-              description: 'Payment status (i.e. received, processing, ...)'
+              description: 'Payment status (i.e. waiting, received, ...)'
           required:
             - payment_address
             - price_currency_id
             - price_amount
-            - status
+            - payment_status
         order_id:
           type: string
           description: Order ID for future reference
+        description:
+          type: string
+          description: 'Description of order, useful metadata such as presale that occurred, etc.'
+        order_status:
+          type: string
+          description: 'Order status (i.e. awaiting payment, queued, refunded, ...)'
       required:
-        - products
+        - items
         - customer
-      x-examples:
-        order-paid-with-ada:
-          products:
-            - product_id: PROD-01D78XYFJ1PRM1WPBAOU8JQMNV
-              quantity: 4
-            - product_id: PROD-01D78XYFJ1PRM1WPBCBT3VHMNV
-              quantity: 2
-          customer:
-            delivery_address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
-          payment:
-            payment_address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
-            price_currency_id: ada
-            price_amount: 20
-            status: AWAITING_PAYMENT
-          order_id: ORDER-01D78XYFJ1PRM1WPBCBT3VHMNV
+        - order_id
+        - description
+        - order_status
     OrderCreated:
       title: OrderCreated
       type: object
@@ -496,6 +501,7 @@ components:
           required:
             - number
             - release_set
+            - rarity
           properties:
             number:
               type: integer
@@ -503,6 +509,9 @@ components:
             release_set:
               type: string
               description: The set this character was released in
+            rarity:
+              type: string
+              description: 'Rarity of card ("Rare", "Kinda Not", "Not That Rare")'
         progression:
           type: object
           description: Character leveling progression between card variants
