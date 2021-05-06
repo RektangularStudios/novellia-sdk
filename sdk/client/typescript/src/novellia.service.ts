@@ -38,7 +38,7 @@ export class NovelliaService {
     return this._api.postOrders(request);
   }
 
-  async listProductsIDs(request: GetProductsRequest): Promise<ProductsList> {
+  async listProductIDs(request: GetProductsRequest): Promise<ProductsList> {
     return this._api.getProducts(request);
   }
 
