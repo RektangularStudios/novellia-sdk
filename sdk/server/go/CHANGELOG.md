@@ -29,3 +29,9 @@ Create SDK
 # v0.6.0
 - Minor breaking changes to SDK (mostly just field names)
   - added `rarity` to Occulta Novellia Character model
+
+# v0.7.0
+- Update `/products` to allow fetching specific products
+  - GET returns list of product IDs
+  - POST accepts list of product IDs and returns relevant details
+- Add `id` to `NovelliaProduct` to be valid for tokens that have not yet been minted, but are listed centrally
