@@ -35,3 +35,4 @@ Create SDK
   - GET returns list of product IDs
   - POST accepts list of product IDs and returns relevant details
 - Add `id` to `NovelliaProduct` to be valid for tokens that have not yet been minted, but are listed centrally
+- Handle CORS pre-flight properly
