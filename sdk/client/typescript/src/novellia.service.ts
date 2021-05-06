@@ -10,6 +10,7 @@ import {
   Order,
   OrderCreated,
   Product,
+  ProductsList,
   Status,
   Token,
   WorkflowInformation,
@@ -37,8 +38,14 @@ export class NovelliaService {
     return this._api.postOrders(request);
   }
 
-  async products(request: GetProductsRequest): Promise<Array<Product>> {
+  async listProductsIDs(request: GetProductsRequest): Promise<ProductsList> {
     return this._api.getProducts(request);
+  }
+
+  async getProductsByID(productsList: ProductsList): Promise<Array<Product>> {
+    return this._api.postProducts({
+      productsList: productsList
+    });
   }
 
   async status(): Promise<Status> {
