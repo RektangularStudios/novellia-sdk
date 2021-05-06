@@ -14,41 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Definitions required to reference a native token
+ * Light-weight list of products for further querying
  * @export
- * @interface NativeToken
+ * @interface ProductsList
  */
-export interface NativeToken {
+export interface ProductsList {
     /**
-     * On-chain policy-id
-     * @type {string}
-     * @memberof NativeToken
+     * List of available products
+     * @type {Array<string>}
+     * @memberof ProductsList
      */
-    policyId: string;
-    /**
-     * On-chain asset-id
-     * @type {string}
-     * @memberof NativeToken
-     */
-    assetId: string;
+    productId: Array<string>;
 }
 
-export function NativeTokenFromJSON(json: any): NativeToken {
-    return NativeTokenFromJSONTyped(json, false);
+export function ProductsListFromJSON(json: any): ProductsList {
+    return ProductsListFromJSONTyped(json, false);
 }
 
-export function NativeTokenFromJSONTyped(json: any, ignoreDiscriminator: boolean): NativeToken {
+export function ProductsListFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProductsList {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'policyId': json['policy_id'],
-        'assetId': json['asset_id'],
+        'productId': json['product_id'],
     };
 }
 
-export function NativeTokenToJSON(value?: NativeToken | null): any {
+export function ProductsListToJSON(value?: ProductsList | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function NativeTokenToJSON(value?: NativeToken | null): any {
     }
     return {
         
-        'policy_id': value.policyId,
-        'asset_id': value.assetId,
+        'product_id': value.productId,
     };
 }
 

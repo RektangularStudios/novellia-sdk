@@ -32,6 +32,7 @@ src/models/ProductOrganization.ts
 src/models/ProductPricing.ts
 src/models/ProductProduct.ts
 src/models/ProductStock.ts
+src/models/ProductsList.ts
 src/models/Status.ts
 src/models/StatusCardano.ts
 src/models/Token.ts

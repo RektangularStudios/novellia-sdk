@@ -25,6 +25,7 @@ export * from './ProductOrganization';
 export * from './ProductPricing';
 export * from './ProductProduct';
 export * from './ProductStock';
+export * from './ProductsList';
 export * from './Status';
 export * from './StatusCardano';
 export * from './Token';
