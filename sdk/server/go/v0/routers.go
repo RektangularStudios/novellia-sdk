@@ -45,10 +45,14 @@ func NewRouter(routers ...Router) *mux.Router {
 			var handler http.Handler
 			handler = route.HandlerFunc
 			handler = Logger(handler, route.Name)
-			handler = handlers.CORS()(handler)
+
+			headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
+			originsOk := handlers.AllowedOrigins([]string{"*"})
+			methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+			handler = handlers.CORS(headersOk, originsOk, methodsOk)(handler)
 
 			router.
-				Methods(route.Method).
+				Methods(route.Method, "OPTIONS").
 				Path(route.Pattern).
 				Name(route.Name).
 				Handler(handler)
