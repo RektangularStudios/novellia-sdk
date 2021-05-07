@@ -1,6 +1,6 @@
 {
   "name": "novellia-sdk",
-  "version": "0.6.0",
+  "version": "0.7.1",
   "description": "Easily interact with the Novellia Platform to integrate the Cardano blockchain into games",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",

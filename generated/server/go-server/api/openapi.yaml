@@ -112,7 +112,7 @@ paths:
       tags: []
   /products:
     get:
-      description: Returns a list of products to list
+      description: Returns a list of product IDs
       operationId: get-products
       parameters:
       - description: Filter product results by market
@@ -131,14 +131,23 @@ paths:
         schema:
           type: string
         style: form
-      - description: Get specific product
-        explode: true
-        in: query
-        name: product_id
-        required: false
-        schema:
-          type: string
-        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsList'
+          description: OK
+      summary: Your GET endpoint
+      tags: []
+    post:
+      description: Returns product information for a specific list of products
+      operationId: post-products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductsList'
       responses:
         "200":
           content:
@@ -148,8 +157,6 @@ paths:
                   $ref: '#/components/schemas/Product'
                 type: array
           description: OK
-      summary: Your GET endpoint
-      tags: []
   /orders:
     get:
       description: Gets an order
@@ -413,6 +420,7 @@ components:
             - address: address
               name: name
               percent: 3.616076749251911
+            id: 7
             version: 4
             tags:
             - tags
@@ -952,6 +960,7 @@ components:
         - address: address
           name: name
           percent: 3.616076749251911
+        id: 7
         version: 4
         tags:
         - tags
@@ -987,6 +996,10 @@ components:
           items:
             $ref: '#/components/schemas/OffChainResource'
           type: array
+        id:
+          description: Token number in a set. Redundant field which makes no sense
+            for tokens without a total-order.
+          type: integer
       required:
       - copyright
       - description
@@ -996,6 +1009,22 @@ components:
       - tags
       - version
       title: NovelliaProduct
+      type: object
+    ProductsList:
+      description: Light-weight list of products for further querying
+      example:
+        product_id:
+        - product_id
+        - product_id
+      properties:
+        product_id:
+          description: List of available products
+          items:
+            type: string
+          type: array
+      required:
+      - product_id
+      title: ProductsList
       type: object
     Status_cardano:
       example:
@@ -1182,6 +1211,7 @@ components:
           - address: address
             name: name
             percent: 3.616076749251911
+          id: 7
           version: 4
           tags:
           - tags

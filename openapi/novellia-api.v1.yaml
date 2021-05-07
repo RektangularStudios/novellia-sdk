@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: novellia-api
-  version: 0.6.0
+  version: 0.7.0
   license:
     url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
     name: MIT
@@ -123,9 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/ProductsList'
       operationId: get-products
       parameters:
         - schema:
@@ -138,13 +136,26 @@ paths:
           in: query
           name: organization_id
           description: Filter product results by organization
-        - schema:
-            type: string
-          in: query
-          name: product_id
-          description: Get specific product
-      description: Returns a list of products to list
+      description: Returns a list of product IDs
     parameters: []
+    post:
+      summary: ''
+      operationId: post-products
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductsList'
+      description: Returns product information for a specific list of products
   /orders:
     get:
       summary: Your GET endpoint
@@ -817,6 +828,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OffChainResource'
+        id:
+          description: Token number in a set. Redundant field which makes no sense for tokens without a total-order.
+          type: integer
       required:
         - copyright
         - publisher
@@ -825,3 +839,15 @@ components:
         - tags
         - description
         - resource
+    ProductsList:
+      title: ProductsList
+      type: object
+      description: Light-weight list of products for further querying
+      properties:
+        product_id:
+          type: array
+          description: List of available products
+          items:
+            type: string
+      required:
+        - product_id
