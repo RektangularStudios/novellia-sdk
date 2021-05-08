@@ -64,3 +64,7 @@ func NewRouter(routers ...Router) *mux.Router {
   - `NativeToken`
   - `NovelliaProduct`
   - Otherwise JSON responses will return annoying empty objects. (`omitempty` won't work)
+
+## Regenerating Order Fulfillment
+
+- Remove `"github.com/gorilla/mux"` import from `v0/api_default.go`
