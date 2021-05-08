@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: novellia
-  version: 0.7.0
+  version: 0.8.0
   license:
     url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
     name: MIT
