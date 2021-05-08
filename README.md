@@ -104,7 +104,15 @@ java -jar openapi-generator-cli.jar generate \
   --additional-properties typescriptThreePlus=true \
   --additional-properties supportsES6=true \
   --additional-properties npmName="novellia-sdk" \
-  -o ./generated/client/typescript-fetch
+  -o ./generated/client/typescript-fetch/novellia
+
+java -jar openapi-generator-cli.jar generate \
+  -i ./openapi/reference/order-fulfillment.v0.yaml \
+  -g typescript-fetch \
+  --additional-properties typescriptThreePlus=true \
+  --additional-properties supportsES6=true \
+  --additional-properties npmName="novellia-sdk" \
+  -o ./generated/client/typescript-fetch/order_fulfillment
 ```
 
 This is for TypeScript 3+ with ES6 support.
