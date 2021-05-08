@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: novellia-api
+  title: novellia
   version: 0.7.0
   license:
     url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
@@ -112,7 +112,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
       operationId: get-status
-      description: Information regarding availability of Novellia APIs
+      description: Information regarding status of microservice
   /products:
     get:
       summary: Your GET endpoint
@@ -275,7 +275,7 @@ components:
     Status:
       title: Status
       type: object
-      description: 'Status of Novellia microservice, indicating service availabilities'
+      description: 'Status of microservice, indicating service availabilities'
       properties:
         cardano:
           type: object
@@ -292,9 +292,13 @@ components:
         maintenance:
           type: boolean
           description: kill-switch to tell users that the backend is not working correctly / is under maintenance
+        status:
+          type: string
+          description: Status string. "UP" if everything is fine.
       required:
         - cardano
         - maintenance
+        - status
     Product:
       description: Describes a Product served from the Novellia microservice
       type: object
