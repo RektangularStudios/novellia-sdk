@@ -6,8 +6,6 @@ import {
   CardanoTip,
   CardanoTransaction,
   MinterInfo,
-  Order,
-  OrderCreated,
   Product,
   ProductsList,
   Status,
