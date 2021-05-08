@@ -1,8 +1,10 @@
-export { NovelliaService } from './novellia.service';
+export * from './novellia';
+export * from './order_fulfillment';
+
+export { OrderFulfillmentService } from './order_fulfillment/order_fulfillment.service';
 export { 
   DefaultApi,
-  GetProductsRequest,
   PostOrdersRequest,
-} from './_generated/apis';
-export * from './_generated/models';
-export { ConfigurationParameters } from './_generated';
+} from './order_fulfillment/_generated/apis';
+export * from './order_fulfillment/_generated/models';
+export { ConfigurationParameters } from './order_fulfillment/_generated';

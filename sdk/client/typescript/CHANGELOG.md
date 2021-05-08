@@ -42,3 +42,8 @@ Initial publish, supports wallet token query.
   - GET returns list of product IDs
   - POST accepts list of product IDs and returns relevant details
 - Add `id` to `NovelliaProduct` to be valid for tokens that have not yet been minted, but are listed centrally
+
+# v0.8.0
+- Add support for organization and market descriptions
+- Add generic `status` string to report from `/status` endpoint
+- migrate `/orders` to new `order_fulfillment` service
