@@ -73,7 +73,7 @@ What goes in this repository?
 
 ### Manual testing of API
 
-We recommend importing the OpenAPI file `openapi/reference/novellia-api.v1.yaml` into [Insomnia](https://insomnia.rest/) to issue HTTP requests.
+We recommend importing the OpenAPI file `openapi/reference/reference/novellia.v0.yaml` into [Insomnia](https://insomnia.rest/) to issue HTTP requests.
 
 ## Generating Client Code
 
@@ -85,7 +85,7 @@ Use the [csharp](https://github.com/OpenAPITools/openapi-generator/blob/master/d
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./openapi/novellia-api.v1.yaml \
+  -i ./openapi/reference/novellia.v0.yaml \
   -g csharp \
   --additional-properties targetFramework=v4.5 \
   -o ./generated/client/csharp
@@ -99,12 +99,20 @@ Use the [typescript-fetch](https://github.com/OpenAPITools/openapi-generator/blo
 
 ```
 java -jar openapi-generator-cli.jar generate \
-  -i ./openapi/novellia-api.v1.yaml \
+  -i ./openapi/reference/novellia.v0.yaml \
   -g typescript-fetch \
   --additional-properties typescriptThreePlus=true \
   --additional-properties supportsES6=true \
   --additional-properties npmName="novellia-sdk" \
-  -o ./generated/client/typescript-fetch
+  -o ./generated/client/typescript-fetch/novellia
+
+java -jar openapi-generator-cli.jar generate \
+  -i ./openapi/reference/order-fulfillment.v0.yaml \
+  -g typescript-fetch \
+  --additional-properties typescriptThreePlus=true \
+  --additional-properties supportsES6=true \
+  --additional-properties npmName="novellia-sdk" \
+  -o ./generated/client/typescript-fetch/order_fulfillment
 ```
 
 This is for TypeScript 3+ with ES6 support.
@@ -128,12 +136,21 @@ This is not relevant for clients using the Novellia SDK. It pertains only to gen
 Use the [go-server](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/go-server.md) generator.
 
 ```
+# novellia
 java -jar openapi-generator-cli.jar generate \
-  -i ./openapi/novellia-api.v1.yaml \
-  --additional-properties packageName=novellia_sdk \
+  -i ./openapi/reference/novellia.v0.yaml \
+  --additional-properties packageName=novellia \
   --additional-properties featureCORS=true \
   -g go-server \
-  -o ./generated/server/go-server
+  -o ./generated/server/go-server/novellia
+
+# order-fulfillment
+java -jar openapi-generator-cli.jar generate \
+  -i ./openapi/reference/order-fulfillment.v0.yaml \
+  --additional-properties packageName=order_fulfillment \
+  --additional-properties featureCORS=true \
+  -g go-server \
+  -o ./generated/server/go-server/order_fulfillment
 ```
 
 Note that the code may be slightly broken upon regeneration.

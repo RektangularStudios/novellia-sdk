@@ -1,18 +1,16 @@
-# Novellia SDK - Go (Server)
+# Go (Server) SDKs
 
-This Novellia SDK is for the Novellia microservice. It should not be used by clients.
+There is an SDK for each microservice's API definition:
+- `novellia`
+- `order_fulfillment`
 
-## Regenerating the SDK
+These SDKs should not be used by clients.
+
+## Regenerating SDKs (general)
 
 There are some minor changes that need to be made after regenerating the SDK.
 
 - Add the `"mime/multipart"` import to `v0/routers.go`
-- Edit `v0/model_product_product.go` to use pointer types for
-  -	`Extended721Token`
-  - `NovelliaStandardToken`
-  - `NativeToken`
-  - `NovelliaProduct`
-  - Otherwise JSON responses will return annoying empty objects. (`omitempty` won't work)
 - Replace `NewRouter` to use CORS middleware in `routers.go`
 
 ```
@@ -57,3 +55,16 @@ func NewRouter(routers ...Router) *mux.Router {
 	return router
 }
 ```
+
+### Regenerating Novellia
+
+- Edit `v0/model_product_product.go` to use pointer types for
+  -	`Extended721Token`
+  - `NovelliaStandardToken`
+  - `NativeToken`
+  - `NovelliaProduct`
+  - Otherwise JSON responses will return annoying empty objects. (`omitempty` won't work)
+
+## Regenerating Order Fulfillment
+
+- Remove `"github.com/gorilla/mux"` import from `v0/api_default.go`

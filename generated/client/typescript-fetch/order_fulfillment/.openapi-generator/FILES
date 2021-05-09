@@ -1,0 +1,17 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+README.md
+package.json
+src/apis/DefaultApi.ts
+src/apis/index.ts
+src/index.ts
+src/models/Order.ts
+src/models/OrderCreated.ts
+src/models/OrderCustomer.ts
+src/models/OrderItems.ts
+src/models/OrderPayment.ts
+src/models/Status.ts
+src/models/index.ts
+src/runtime.ts
+tsconfig.json

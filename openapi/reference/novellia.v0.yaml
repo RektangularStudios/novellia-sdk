@@ -1,0 +1,735 @@
+openapi: 3.0.0
+info:
+  title: novellia
+  version: 0.8.0
+  license:
+    url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
+    name: MIT
+  contact:
+    email: contact@rektangularstudios.com
+    url: 'https://rektangularstudios.com'
+    name: Rektangular Studios
+  termsOfService: TODO
+servers:
+  - url: api.rektangularstudios.com/novellia
+    description: API Gateway
+paths:
+  '/wallet/{wallet_address}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of tokens held by Cardano wallet
+                items:
+                  $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request
+      operationId: get-wallet
+      description: Returns the tokens held in a wallet address
+    parameters:
+      - schema:
+          type: string
+        name: wallet_address
+        in: path
+        required: true
+        description: Address of Cardano wallet to use
+  /workflow/minter/nvla:
+    post:
+      summary: ''
+      operationId: post-workflow-minter-nvla
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoTransaction'
+        '400':
+          description: Bad Request
+      description: Returns a transaction to mint NVLA and deposit it to a specified address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MinterInfo'
+    get:
+      summary: ''
+      operationId: get-workflow-minter-nvla
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowInformation'
+          headers: {}
+      description: Returns execution information such as transaction cost
+  /cardano/transaction:
+    post:
+      summary: ''
+      operationId: post-cardano-transaction
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      description: Submits a transaction to Cardano
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardanoTransaction'
+        description: ''
+    parameters: []
+  /cardano/tip:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardanoTip'
+      operationId: get-cardano-tip
+      description: Returns Cardano's latest block and epoch
+  /status:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+      operationId: get-status
+      description: Information regarding status of microservice
+  /products:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsList'
+      operationId: get-products
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: market_id
+          description: Filter product results by market
+        - schema:
+            type: string
+          in: query
+          name: organization_id
+          description: Filter product results by organization
+      description: Returns a list of product IDs
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-products
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductsList'
+      description: Returns product information for a specific list of products
+components:
+  schemas:
+    Token:
+      title: Token
+      type: object
+      description: Generalizes the data required to describe a token in a Cardano wallet.
+      properties:
+        asset_id:
+          type: string
+          description: Token asset ID registered on Cardano
+        amount:
+          description: 'Amount of token held in Cardano wallet (in discrete units, i.e. lovelace)'
+          type: integer
+        name:
+          type: string
+          description: 'Name or ticker as interpreted by Novellia (e.g. NVLA, ADA)'
+        description:
+          type: string
+          description: Short description of token as interpreted by Novellia
+      required:
+        - asset_id
+        - amount
+    CardanoTransaction:
+      title: CardanoTransaction
+      type: object
+      description: A Cardano transaction to be signed and submitted.
+      properties:
+        transaction:
+          type: string
+          description: text of transaction file
+        fee_lovelace:
+          type: integer
+          description: 'Cost to submit TX in lovelace (1 ADA = 1,000,000 lovelace)'
+        signed:
+          type: boolean
+          description: Indicates if the transaction is signed or raw
+      required:
+        - transaction
+        - fee_lovelace
+        - signed
+    MinterInfo:
+      title: MinterInfo
+      type: object
+      description: Generic information required for minter workflows.
+      properties:
+        wallet_address:
+          type: string
+          description: Wallet that pays transaction fee
+        minter_deposit_address:
+          type: string
+          description: Wallet that received minted tokens
+      required:
+        - wallet_address
+        - minter_deposit_address
+    WorkflowInformation:
+      title: WorkflowInformation
+      type: object
+      description: Returns preconditions relevant to a user wanting to execute a workflow. I.e. costs.
+      properties:
+        fee_lovelace:
+          type: integer
+          description: The lovelace cost to execute the workflow
+    CardanoTip:
+      title: CardanoTip
+      type: object
+      description: Cardano chain tip information
+      properties:
+        block:
+          description: Latest Cardano block
+          type: integer
+        epoch:
+          type: integer
+          description: Latest Cardano epoch
+      required:
+        - block
+        - epoch
+    Status:
+      title: Status
+      type: object
+      description: 'Status of microservice, indicating service availabilities'
+      properties:
+        cardano:
+          type: object
+          required:
+            - initialized
+            - sync_percentage
+          properties:
+            initialized:
+              type: boolean
+              description: whether cardano-graphql is initialized
+            sync_percentage:
+              type: number
+              description: 'cardano-graphql sync percentage, used to gauge when APIs will be available'
+        maintenance:
+          type: boolean
+          description: kill-switch to tell users that the backend is not working correctly / is under maintenance
+        status:
+          type: string
+          description: Status string. "UP" if everything is fine.
+      required:
+        - cardano
+        - maintenance
+        - status
+    Product:
+      description: Describes a Product served from the Novellia microservice
+      type: object
+      properties:
+        pricing:
+          type: object
+          required:
+            - price_currency_id
+            - price_unit_amount
+            - max_order_size
+          properties:
+            price_currency_id:
+              type: string
+            price_unit_amount:
+              type: number
+            max_order_size:
+              type: integer
+        organization:
+          type: object
+          required:
+            - name
+            - organization_id
+            - description
+          properties:
+            name:
+              type: string
+            organization_id:
+              type: string
+            description:
+              type: string
+              description: Organization description. This can be markdown.
+        market:
+          type: object
+          required:
+            - name
+            - market_id
+            - description
+          properties:
+            name:
+              type: string
+            market_id:
+              type: string
+            description:
+              type: string
+              description: Market description. This can be markdown.
+        stock:
+          type: object
+          required:
+            - available
+            - total_supply
+          properties:
+            available:
+              type: number
+            total_supply:
+              type: number
+        metadata:
+          type: object
+          required:
+            - date_listed
+            - date_available
+          properties:
+            date_listed:
+              type: string
+            date_available:
+              type: string
+        product:
+          type: object
+          description: 'Immutable '
+          required:
+            - product_id
+          properties:
+            extended_721_token:
+              $ref: '#/components/schemas/Extended721Token'
+            novellia_standard_token:
+              $ref: '#/components/schemas/NovelliaStandardToken'
+            native_token:
+              $ref: '#/components/schemas/NativeToken'
+            novellia_product:
+              $ref: '#/components/schemas/NovelliaProduct'
+            product_id:
+              type: string
+              description: Unique identifier of product
+        attribution:
+          type: array
+          description: List of entities to give attribution to for product
+          items:
+            $ref: '#/components/schemas/Attribution'
+      required:
+        - pricing
+        - organization
+        - market
+        - stock
+        - metadata
+        - product
+    OccultaNovelliaCharacter:
+      description: Model for an Occulta Novellia character
+      type: object
+      title: OccultaNovelliaCharacter
+      x-examples:
+        Iscara the Ten Thousand Guns:
+          occulta_novellia_version: 1
+          name: Iscara the Ten Thousand Guns
+          card:
+            number: 2
+            release_set: Presale 1
+          progression:
+            class: Iscara of Grevania
+            stage: 1
+          stats:
+            health: 8
+            attack: 6
+            move: 1
+            slots: 2
+          attributes:
+            - Operator's Guild
+            - Human
+            - Tainted
+            - Rifle
+            - Sure Shot
+            - Operator
+            - Ten Thousand Guns
+          description: 'Rumors say the leader of the Operator''s Guild is possessed by a demonic entity that lets her morph into monsters and spit in the face of death itself. The Grevans refuse to acknowledge her humanity, referring to her as Ten Thousand Guns. They hide their children at dawn, hoping that the pretty woman, usually seen in a dress, won''t take them.'
+      properties:
+        occulta_novellia_version:
+          description: Specification version for parsing the resource
+          type: integer
+        name:
+          type: string
+          description: Character name
+        card:
+          type: object
+          description: Metadata relating to card / distribution
+          required:
+            - number
+            - release_set
+            - rarity
+          properties:
+            number:
+              type: integer
+              description: The character number
+            release_set:
+              type: string
+              description: The set this character was released in
+            rarity:
+              type: string
+              description: 'Rarity of card ("Rare", "Kinda Not", "Not That Rare")'
+        progression:
+          type: object
+          description: Character leveling progression between card variants
+          required:
+            - class
+            - stage
+          properties:
+            class:
+              type: string
+              description: Character progression class
+            stage:
+              type: integer
+              description: 'Stage of character in class progression (1,2,3)'
+        stats:
+          type: object
+          description: Integer stats
+          required:
+            - health
+            - attack
+            - move
+            - slots
+          properties:
+            health:
+              type: integer
+              description: Damage sustained before dying
+            attack:
+              type: integer
+              description: Multiplier for damage dealt as defined by attribute moves
+            move:
+              type: integer
+              description: Action points cost per unit of movement
+            slots:
+              type: integer
+              description: Slots used by character when added to a squad
+        attributes:
+          type: array
+          description: 'List of attribute strings relating to character abilities, faction, types, etc.'
+          items:
+            type: string
+        description:
+          type: string
+          description: Description of character
+      required:
+        - occulta_novellia_version
+        - name
+        - card
+        - progression
+        - stats
+        - attributes
+        - description
+    OffChainResource:
+      title: OffChainResource
+      type: object
+      description: Off-chain resource used in Novellia Token Standard
+      properties:
+        resource_id:
+          type: string
+          description: Resource identifier interpreted by application. These may correspond to specific names resources a client expects.
+        description:
+          type: string
+          description: Short text describing resource. Helpful to know what the resource should have been if the resource breaks.
+        priority:
+          type: integer
+          description: Order to load resource. Lower numbers load first. Resources with the same name will progressively overwrite each other.
+        multihash:
+          type: string
+          description: 'The multihash of the resource. In most cases, this may be identical to an IPFS hash.'
+        hash_source_type:
+          type: string
+          description: 'Hint regarding file state prior to hashing (ipfs, direct)'
+        url:
+          type: array
+          description: Redundant resource URLs. These should all point to the same file on different hosts.
+          items:
+            type: string
+        content_type:
+          type: string
+          description: MIME type of resource.
+      required:
+        - resource_id
+        - description
+        - priority
+        - multihash
+        - hash_source_type
+        - url
+        - content_type
+      x-examples:
+        example-1:
+          resource_id: Card
+          description: Low Resolution
+          priority: 0
+          multihash: QmSXVm14pVec78vjGgQBMygwKYvDeyKyLs4UCic7UspxEv
+          hash_source_type: ipfs
+          url:
+            - 'sia://nAGazETmJJBvTnz5G50vt9gla_p6vctykk7uYy7N4cbbUQ'
+            - 'ipfs://QmSXVm14pVec78vjGgQBMygwKYvDeyKyLs4UCic7UspxEv'
+            - 'https://rektangularstudios.com/static'
+          content_type: image/png
+    DescriptionSet:
+      title: DescriptionSet
+      type: object
+      description: Set of descriptions
+      properties:
+        short:
+          type: string
+          description: A short description makes a good header
+        long:
+          type: string
+          description: A long description makes a good paragraph body. Supports Markdown.
+      required:
+        - short
+        - long
+      x-examples:
+        example-1:
+          short: Occulta Novellia Character
+          long: |-
+            # Take back gaming!
+            A character token for the surreal horror game Occulta Novellia. This token will grant access to a playable character.
+    Commission:
+      title: Commission
+      type: object
+      description: A recommended commission for clients that will abide by it
+      x-examples:
+        Rektangular Studios Commission:
+          name: Rektangular Studios Inc.
+          address: addr1q80u75kavwd5sc7j52x0k8nrqd46540vcjgsvl4fhxjqqs60vcjwf9llp7rv006f0dqyffltyyyzpzl9vct4mp7wjdaspwq39a
+          percent: '0.03'
+      properties:
+        name:
+          type: string
+          description: Name of entity taking commissions
+        address:
+          type: string
+          description: Address to deposit commissions
+        percent:
+          type: number
+          description: Recommended commission percentage
+      required:
+        - name
+        - address
+    NovelliaStandardToken:
+      type: object
+      description: Novellia Token Standard on-chain metadata
+      x-examples: {}
+      title: NovelliaStandardToken
+      minProperties: 0
+      properties:
+        copyright:
+          type: string
+          description: Attribution of rights.
+        publisher:
+          type: array
+          description: List of publishers or entities involved in token creation. Useful for onlookers to determine token origin. These can be URLs.
+          items:
+            type: string
+        version:
+          type: integer
+          description: Token version. May have future use such as for clients optionally using later metadata iterations.
+        extension:
+          type: array
+          description: 'List of extensions for parser to understand feature set. This may be empty, in which case the token is interpreted as just a 721 token.'
+          items:
+            type: string
+        id:
+          type: integer
+          description: Token number in a set. Redundant field which makes no sense for tokens without a total-order.
+        name:
+          type: string
+          description: Display name for token.
+        image:
+          type: string
+          description: Image URL without source redundancy.
+        description:
+          $ref: '#/components/schemas/DescriptionSet'
+        resource:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffChainResource'
+        commission:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commission'
+        native_token:
+          $ref: '#/components/schemas/NativeToken'
+        novellia_version:
+          description: Identifies the version of the specification in use.
+          type: integer
+        tags:
+          type: array
+          description: Tags for sorting and filtering. "nsfw" indicates NSFW content
+          items:
+            type: string
+      required:
+        - copyright
+        - publisher
+        - version
+        - extension
+        - id
+        - name
+        - image
+        - description
+        - resource
+        - native_token
+        - novellia_version
+        - tags
+    Extended721Token:
+      title: Extended721Token
+      type: object
+      description: Easily parsable data for Extended 721 Token
+      properties:
+        native_token:
+          $ref: '#/components/schemas/NativeToken'
+        extension:
+          type: array
+          description: 'List of extensions for parser to understand feature set. This may be empty, in which case the token is interpreted as just a 721 token.'
+          items:
+            type: string
+        id:
+          description: Token number in a set. Redundant field which makes no sense for tokens without a total-order.
+          type: integer
+        name:
+          type: string
+          description: Display name for token.
+        image:
+          type: string
+          description: Image URL without source redundancy.
+      required:
+        - id
+        - name
+        - image
+    NativeToken:
+      title: NativeToken
+      type: object
+      description: Definitions required to reference a native token
+      properties:
+        policy_id:
+          type: string
+          description: On-chain policy-id
+        asset_id:
+          type: string
+          description: On-chain asset-id
+      required:
+        - policy_id
+        - asset_id
+    Attribution:
+      description: 'Attribution information for artist, sculptor, whoever.'
+      type: object
+      properties:
+        author_name:
+          type: string
+          description: Name to give attribution to
+        url:
+          type: array
+          description: 'URLs to portfolios, websites, etc.'
+          items:
+            type: string
+        work_attributed:
+          type: string
+          description: Description of work attributed
+      required:
+        - author_name
+        - url
+        - work_attributed
+      x-examples:
+        example-1:
+          author_name: John Doe
+          url:
+            - 'https://www.artstation.com/'
+            - 'https://www.deviantart.com/'
+          work_attributed: Draculi Illustration
+      title: ''
+    NovelliaProduct:
+      title: NovelliaProduct
+      type: object
+      description: Product listed on Novelia without a token
+      properties:
+        copyright:
+          type: string
+          description: Attribution of rights to product.
+        publisher:
+          type: array
+          description: List of publishers or entities involved in token creation. Useful for onlookers to determine token origin.
+          items:
+            type: string
+        version:
+          type: integer
+          description: Iteration in update sequence for product.
+        name:
+          type: string
+          description: Display name for token.
+        tags:
+          type: array
+          description: Tags for sorting and filtering. "nsfw" indicates NSFW content
+          items:
+            type: string
+        commission:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commission'
+        description:
+          $ref: '#/components/schemas/DescriptionSet'
+        resource:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffChainResource'
+        id:
+          description: Token number in a set. Redundant field which makes no sense for tokens without a total-order.
+          type: integer
+      required:
+        - copyright
+        - publisher
+        - version
+        - name
+        - tags
+        - description
+        - resource
+    ProductsList:
+      title: ProductsList
+      type: object
+      description: Light-weight list of products for further querying
+      properties:
+        product_id:
+          type: array
+          description: List of available products
+          items:
+            type: string
+      required:
+        - product_id

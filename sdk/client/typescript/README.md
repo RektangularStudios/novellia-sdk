@@ -50,7 +50,11 @@ That's it! Now you can install the published version using NPM.
 
 ## Regenerating the SDK
 
-There are some minor changes that need to be made after regenerating the SDK.
+There are multiple generated APIs with their own services. You'll need to fix whichever ones you regenerate:
+- `novellia`
+- `order-fulfillment`
+
+Some minor changes that need to be made after regenerating the SDK:
 
 Import `Configuration` and `ConfigurationParameters` and expose them through the `DefaultAPI` constructor in `_generated/apis/DefaultApi.ts`
 
