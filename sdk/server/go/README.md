@@ -1,4 +1,4 @@
-# Go (Server) SDKs
+# Go (Server) SDK
 
 There is an SDK for each microservice's API definition:
 - `novellia`
