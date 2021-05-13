@@ -5,6 +5,7 @@ The Novellia SDK exposes language specific service layers for interacting with [
 Client languages to be supported:
 - Unity / C#
 - TypeScript
+- Golang
 
 More will be added as demand increases. Since the SDK is a simple HTTP wrapper, applications can also opt to make requests directly.
 
@@ -30,6 +31,9 @@ Our goal is to expose a simple interface that allows developers to take advantag
 
 Install the [NPM package](https://www.npmjs.com/package/novellia-sdk)
 - `npm install novellia-sdk`
+
+# Golang
+
 
 # Go (Server)
 
@@ -116,6 +120,19 @@ java -jar openapi-generator-cli.jar generate \
 ```
 
 This is for TypeScript 3+ with ES6 support.
+
+### Golang (Client)
+
+Use the [go](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/go.md) generator.
+
+```
+java -jar openapi-generator-cli.jar generate \
+  -i ./openapi/reference/novellia.v0.yaml \
+  -g go \
+  --additional-properties packageName=novellia \
+  --additional-properties packageVersion=0.1.0 \
+  -o ./generated/client/go/novellia
+```
 
 ### Why isn't language XYZ listed?
 
