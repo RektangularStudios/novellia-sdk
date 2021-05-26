@@ -14,5 +14,5 @@ package novellia
 type ProductsList struct {
 
 	// List of available products
-	ProductId []string `json:"product_id"`
+	Products []ProductListElement `json:"products"`
 }

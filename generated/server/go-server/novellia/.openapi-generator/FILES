@@ -24,6 +24,7 @@ go/model_occulta_novellia_character_progression.go
 go/model_occulta_novellia_character_stats.go
 go/model_off_chain_resource.go
 go/model_product.go
+go/model_product_list_element.go
 go/model_product_market.go
 go/model_product_metadata.go
 go/model_product_organization.go
@@ -34,6 +35,8 @@ go/model_products_list.go
 go/model_status.go
 go/model_status_cardano.go
 go/model_token.go
+go/model_token_list.go
+go/model_wallet.go
 go/model_workflow_information.go
 go/routers.go
 main.go

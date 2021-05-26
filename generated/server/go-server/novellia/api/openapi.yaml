@@ -14,33 +14,24 @@ servers:
 - description: API Gateway
   url: api.rektangularstudios.com/novellia
 paths:
-  /wallet/{wallet_address}:
-    get:
+  /wallet:
+    post:
       description: Returns the tokens held in a wallet address
-      operationId: get-wallet
-      parameters:
-      - description: Address of Cardano wallet to use
-        explode: false
-        in: path
-        name: wallet_address
-        required: true
-        schema:
-          type: string
-        style: simple
+      operationId: post-wallet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+        description: Wallet parameters such as stake keys and addresses
       responses:
         "200":
           content:
             application/json:
               schema:
-                description: List of tokens held by Cardano wallet
-                items:
-                  $ref: '#/components/schemas/Token'
-                type: array
+                $ref: '#/components/schemas/TokenList'
           description: OK
-        "400":
-          description: Bad Request
-      summary: Your GET endpoint
-      tags: []
+      summary: POST Wallet
   /workflow/minter/nvla:
     get:
       description: Returns execution information such as transaction cost
@@ -136,7 +127,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductsList'
+                items: {}
+                type: array
           description: OK
       summary: Your GET endpoint
       tags: []
@@ -163,12 +155,13 @@ components:
       description: Generalizes the data required to describe a token in a Cardano
         wallet.
       example:
+        native_token_id: native_token_id
         amount: 0
+        metadata: metadata
         name: name
         description: description
-        asset_id: asset_id
       properties:
-        asset_id:
+        native_token_id:
           description: Token asset ID registered on Cardano
           type: string
         amount:
@@ -181,9 +174,12 @@ components:
         description:
           description: Short description of token as interpreted by Novellia
           type: string
+        metadata:
+          description: Onchain metadata
+          type: string
       required:
       - amount
-      - asset_id
+      - native_token_id
       title: Token
       type: object
     CardanoTransaction:
@@ -260,6 +256,9 @@ components:
           initialized: true
           sync_percentage: 0.8008281904610115
         maintenance: true
+        errors:
+        - errors
+        - errors
         status: status
       properties:
         cardano:
@@ -271,6 +270,11 @@ components:
         status:
           description: Status string. "UP" if everything is fine.
           type: string
+        errors:
+          description: List of errors for bad statuses
+          items:
+            type: string
+          type: array
       required:
       - cardano
       - maintenance
@@ -905,18 +909,81 @@ components:
     ProductsList:
       description: Light-weight list of products for further querying
       example:
-        product_id:
-        - product_id
-        - product_id
+        products:
+        - native_token_id: native_token_id
+          product_id: product_id
+          modified: modified
+        - native_token_id: native_token_id
+          product_id: product_id
+          modified: modified
+      properties:
+        products:
+          description: List of available products
+          items:
+            $ref: '#/components/schemas/ProductListElement'
+          type: array
+      required:
+      - products
+      title: ProductsList
+      type: object
+    ProductListElement:
+      description: Item in an array of product IDs and metadata
+      example:
+        native_token_id: native_token_id
+        product_id: product_id
+        modified: modified
       properties:
         product_id:
-          description: List of available products
+          description: Product ID
+          type: string
+        modified:
+          description: Last modified date of the product
+          type: string
+        native_token_id:
+          description: Optional token ID returned to associate with product
+          type: string
+      required:
+      - modified
+      - product_id
+      title: ProductListElement
+      type: object
+    TokenList:
+      description: List of token information to return
+      example:
+        tokens:
+        - native_token_id: native_token_id
+          amount: 0
+          metadata: metadata
+          name: name
+          description: description
+        - native_token_id: native_token_id
+          amount: 0
+          metadata: metadata
+          name: name
+          description: description
+      properties:
+        tokens:
+          description: List of tokens returned
+          items:
+            $ref: '#/components/schemas/Token'
+          type: array
+      title: TokenList
+      type: object
+    Wallet:
+      description: Parameters identifying a wallet
+      example:
+        cardano_identifiers:
+        - cardano_identifiers
+        - cardano_identifiers
+      properties:
+        cardano_identifiers:
+          description: List of Cardano addresses and/or stake keys
           items:
             type: string
           type: array
       required:
-      - product_id
-      title: ProductsList
+      - cardano_identifiers
+      title: Wallet
       type: object
     Status_cardano:
       example:
