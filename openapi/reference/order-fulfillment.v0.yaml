@@ -80,6 +80,11 @@ components:
         status:
           type: string
           description: Status string. "UP" if everything is fine.
+        errors:
+          type: array
+          description: List of errors for bad statuses
+          items:
+            type: string
       required:
         - maintenance
         - status
@@ -140,11 +145,12 @@ components:
             payment_status:
               type: string
               description: 'Payment status (i.e. waiting, received, ...)'
+            actually_paid:
+              type: number
+              description: Actual amount paid (for partial payments)
           required:
-            - payment_address
             - price_currency_id
             - price_amount
-            - payment_status
         order_id:
           type: string
           description: Order ID for future reference
@@ -154,12 +160,13 @@ components:
         order_status:
           type: string
           description: 'Order status (i.e. awaiting payment, queued, refunded, ...)'
+        reservation_expiry:
+          type: string
+          description: Expiry time of reservation. The order will no longer be payable after this time.
       required:
         - items
         - customer
-        - order_id
         - description
-        - order_status
     OrderCreated:
       title: OrderCreated
       type: object
