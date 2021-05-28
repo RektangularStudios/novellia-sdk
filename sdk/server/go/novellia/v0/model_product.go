@@ -27,4 +27,7 @@ type Product struct {
 
 	// List of entities to give attribution to for product
 	Attribution []Attribution `json:"attribution,omitempty"`
+
+	// When the product was last modified
+	Modified string `json:"modified,omitempty"`
 }
