@@ -170,9 +170,9 @@ components:
         description:
           type: string
           description: Short description of token as interpreted by Novellia
-        metadata:
+        initial_mint_tx_metadata:
           type: string
-          description: Onchain metadata
+          description: Onchain metadata attached to the initial mint TX
       required:
         - native_token_id
         - amount
@@ -349,6 +349,9 @@ components:
           description: List of entities to give attribution to for product
           items:
             $ref: '#/components/schemas/Attribution'
+        modified:
+          type: string
+          description: When the product was last modified
       required:
         - pricing
         - organization
