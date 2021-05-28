@@ -9,7 +9,7 @@ info:
     url: https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE
   termsOfService: TODO
   title: novellia
-  version: 0.8.0
+  version: 0.9.0
 servers:
 - description: API Gateway
   url: api.rektangularstudios.com/novellia
@@ -157,9 +157,9 @@ components:
       example:
         native_token_id: native_token_id
         amount: 0
-        metadata: metadata
         name: name
         description: description
+        initial_mint_tx_metadata: initial_mint_tx_metadata
       properties:
         native_token_id:
           description: Token asset ID registered on Cardano
@@ -174,8 +174,8 @@ components:
         description:
           description: Short description of token as interpreted by Novellia
           type: string
-        metadata:
-          description: Onchain metadata
+        initial_mint_tx_metadata:
+          description: Onchain metadata attached to the initial mint TX
           type: string
       required:
       - amount
@@ -409,6 +409,7 @@ components:
           url:
           - url
           - url
+        modified: modified
         stock:
           total_supply: 5.962133916683182
           available: 1.4658129805029452
@@ -434,6 +435,9 @@ components:
           items:
             $ref: '#/components/schemas/Attribution'
           type: array
+        modified:
+          description: When the product was last modified
+          type: string
       required:
       - market
       - metadata
@@ -953,14 +957,14 @@ components:
         tokens:
         - native_token_id: native_token_id
           amount: 0
-          metadata: metadata
           name: name
           description: description
+          initial_mint_tx_metadata: initial_mint_tx_metadata
         - native_token_id: native_token_id
           amount: 0
-          metadata: metadata
           name: name
           description: description
+          initial_mint_tx_metadata: initial_mint_tx_metadata
       properties:
         tokens:
           description: List of tokens returned
