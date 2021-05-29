@@ -329,8 +329,6 @@ components:
         product:
           type: object
           description: 'Immutable '
-          required:
-            - product_id
           properties:
             extended_721_token:
               $ref: '#/components/schemas/Extended721Token'
@@ -739,7 +737,7 @@ components:
       required:
         - products
     ProductListElement:
-      title: ProductsListElement
+      title: ProductListElement
       type: object
       description: Item in an array of product IDs and metadata
       properties:
@@ -754,7 +752,6 @@ components:
           description: Optional token ID returned to associate with product
       required:
         - product_id
-        - modified
     TokenList:
       title: TokenList
       type: object

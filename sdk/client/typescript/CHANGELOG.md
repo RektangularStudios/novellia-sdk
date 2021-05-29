@@ -47,3 +47,7 @@ Initial publish, supports wallet token query.
 - Add support for organization and market descriptions
 - Add generic `status` string to report from `/status` endpoint
 - migrate `/orders` to new `order_fulfillment` service
+
+# v0.9.0
+- Add support for `modified` field on products
+- Overhaul `/wallet` endpoint

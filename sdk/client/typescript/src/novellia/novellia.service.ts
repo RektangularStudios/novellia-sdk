@@ -9,8 +9,9 @@ import {
   Product,
   ProductsList,
   Status,
-  Token,
+  TokenList,
   WorkflowInformation,
+  Wallet,
 } from './_generated/models';
 import { ConfigurationParameters } from './_generated';
 
@@ -39,10 +40,10 @@ export class NovelliaService {
     return this._api.getStatus();
   }
 
-  async wallet(walletAddress: string): Promise<Array<Token>> {
-    return this._api.getWallet({
-      walletAddress: walletAddress,
-    })
+  async wallet(wallet: Wallet): Promise<TokenList> {
+    return this._api.postWallet({
+      wallet: wallet
+    });
   }
 
   async submitCardanoTransaction(cardanoTransaction: CardanoTransaction) {

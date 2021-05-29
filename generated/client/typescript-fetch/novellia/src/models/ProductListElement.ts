@@ -30,7 +30,7 @@ export interface ProductListElement {
      * @type {string}
      * @memberof ProductListElement
      */
-    modified: string;
+    modified?: string;
     /**
      * Optional token ID returned to associate with product
      * @type {string}
@@ -50,7 +50,7 @@ export function ProductListElementFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'productId': json['product_id'],
-        'modified': json['modified'],
+        'modified': !exists(json, 'modified') ? undefined : json['modified'],
         'nativeTokenId': !exists(json, 'native_token_id') ? undefined : json['native_token_id'],
     };
 }

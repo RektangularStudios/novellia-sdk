@@ -67,7 +67,7 @@ export interface ProductProduct {
      * @type {string}
      * @memberof ProductProduct
      */
-    productId: string;
+    productId?: string;
 }
 
 export function ProductProductFromJSON(json: any): ProductProduct {
@@ -84,7 +84,7 @@ export function ProductProductFromJSONTyped(json: any, ignoreDiscriminator: bool
         'novelliaStandardToken': !exists(json, 'novellia_standard_token') ? undefined : NovelliaStandardTokenFromJSON(json['novellia_standard_token']),
         'nativeToken': !exists(json, 'native_token') ? undefined : NativeTokenFromJSON(json['native_token']),
         'novelliaProduct': !exists(json, 'novellia_product') ? undefined : NovelliaProductFromJSON(json['novellia_product']),
-        'productId': json['product_id'],
+        'productId': !exists(json, 'product_id') ? undefined : json['product_id'],
     };
 }
 
