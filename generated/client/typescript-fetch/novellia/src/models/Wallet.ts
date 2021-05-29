@@ -14,41 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Definitions required to reference a native token
+ * Parameters identifying a wallet
  * @export
- * @interface NativeToken
+ * @interface Wallet
  */
-export interface NativeToken {
+export interface Wallet {
     /**
-     * On-chain policy-id
-     * @type {string}
-     * @memberof NativeToken
+     * List of Cardano addresses and/or stake keys
+     * @type {Array<string>}
+     * @memberof Wallet
      */
-    policyId: string;
-    /**
-     * On-chain asset-id
-     * @type {string}
-     * @memberof NativeToken
-     */
-    assetId: string;
+    cardanoIdentifiers: Array<string>;
 }
 
-export function NativeTokenFromJSON(json: any): NativeToken {
-    return NativeTokenFromJSONTyped(json, false);
+export function WalletFromJSON(json: any): Wallet {
+    return WalletFromJSONTyped(json, false);
 }
 
-export function NativeTokenFromJSONTyped(json: any, ignoreDiscriminator: boolean): NativeToken {
+export function WalletFromJSONTyped(json: any, ignoreDiscriminator: boolean): Wallet {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'policyId': json['policy_id'],
-        'assetId': json['asset_id'],
+        'cardanoIdentifiers': json['cardano_identifiers'],
     };
 }
 
-export function NativeTokenToJSON(value?: NativeToken | null): any {
+export function WalletToJSON(value?: Wallet | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function NativeTokenToJSON(value?: NativeToken | null): any {
     }
     return {
         
-        'policy_id': value.policyId,
-        'asset_id': value.assetId,
+        'cardano_identifiers': value.cardanoIdentifiers,
     };
 }
 

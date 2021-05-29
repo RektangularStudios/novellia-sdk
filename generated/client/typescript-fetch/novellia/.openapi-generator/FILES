@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 README.md
 package.json
 src/apis/DefaultApi.ts
@@ -22,6 +21,7 @@ src/models/OccultaNovelliaCharacterProgression.ts
 src/models/OccultaNovelliaCharacterStats.ts
 src/models/OffChainResource.ts
 src/models/Product.ts
+src/models/ProductListElement.ts
 src/models/ProductMarket.ts
 src/models/ProductMetadata.ts
 src/models/ProductOrganization.ts
@@ -32,6 +32,8 @@ src/models/ProductsList.ts
 src/models/Status.ts
 src/models/StatusCardano.ts
 src/models/Token.ts
+src/models/TokenList.ts
+src/models/Wallet.ts
 src/models/WorkflowInformation.ts
 src/models/index.ts
 src/runtime.ts

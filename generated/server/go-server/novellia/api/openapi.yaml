@@ -127,8 +127,7 @@ paths:
           content:
             application/json:
               schema:
-                items: {}
-                type: array
+                $ref: '#/components/schemas/ProductsList'
           description: OK
       summary: Your GET endpoint
       tags: []
@@ -949,7 +948,7 @@ components:
       required:
       - modified
       - product_id
-      title: ProductListElement
+      title: ProductsListElement
       type: object
     TokenList:
       description: List of token information to return

@@ -117,8 +117,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {}
+                $ref: '#/components/schemas/ProductsList'
       operationId: get-products
       parameters:
         - schema:
@@ -740,7 +739,7 @@ components:
       required:
         - products
     ProductListElement:
-      title: ProductListElement
+      title: ProductsListElement
       type: object
       description: Item in an array of product IDs and metadata
       properties:
