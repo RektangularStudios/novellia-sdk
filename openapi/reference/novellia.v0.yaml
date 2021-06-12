@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: novellia
-  version: 0.8.0
+  version: 0.9.0
   license:
     url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
     name: MIT
@@ -14,31 +14,25 @@ servers:
   - url: api.rektangularstudios.com/novellia
     description: API Gateway
 paths:
-  '/wallet/{wallet_address}':
-    get:
-      summary: Your GET endpoint
-      tags: []
+  /wallet:
+    parameters: []
+    post:
+      summary: POST Wallet
+      operationId: post-wallet
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                description: List of tokens held by Cardano wallet
-                items:
-                  $ref: '#/components/schemas/Token'
-        '400':
-          description: Bad Request
-      operationId: get-wallet
+                $ref: '#/components/schemas/TokenList'
       description: Returns the tokens held in a wallet address
-    parameters:
-      - schema:
-          type: string
-        name: wallet_address
-        in: path
-        required: true
-        description: Address of Cardano wallet to use
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+        description: Wallet parameters such as stake keys and addresses
   /workflow/minter/nvla:
     post:
       summary: ''
@@ -163,7 +157,7 @@ components:
       type: object
       description: Generalizes the data required to describe a token in a Cardano wallet.
       properties:
-        asset_id:
+        native_token_id:
           type: string
           description: Token asset ID registered on Cardano
         amount:
@@ -175,8 +169,11 @@ components:
         description:
           type: string
           description: Short description of token as interpreted by Novellia
+        initial_mint_tx_metadata:
+          type: string
+          description: Onchain metadata attached to the initial mint TX
       required:
-        - asset_id
+        - native_token_id
         - amount
     CardanoTransaction:
       title: CardanoTransaction
@@ -255,6 +252,11 @@ components:
         status:
           type: string
           description: Status string. "UP" if everything is fine.
+        errors:
+          type: array
+          description: List of errors for bad statuses
+          items:
+            type: string
       required:
         - cardano
         - maintenance
@@ -327,8 +329,6 @@ components:
         product:
           type: object
           description: 'Immutable '
-          required:
-            - product_id
           properties:
             extended_721_token:
               $ref: '#/components/schemas/Extended721Token'
@@ -346,6 +346,9 @@ components:
           description: List of entities to give attribution to for product
           items:
             $ref: '#/components/schemas/Attribution'
+        modified:
+          type: string
+          description: When the product was last modified
       required:
         - pricing
         - organization
@@ -726,10 +729,48 @@ components:
       type: object
       description: Light-weight list of products for further querying
       properties:
-        product_id:
+        products:
           type: array
           description: List of available products
           items:
-            type: string
+            $ref: '#/components/schemas/ProductListElement'
+      required:
+        - products
+    ProductListElement:
+      title: ProductListElement
+      type: object
+      description: Item in an array of product IDs and metadata
+      properties:
+        product_id:
+          type: string
+          description: Product ID
+        modified:
+          type: string
+          description: Last modified date of the product
+        native_token_id:
+          type: string
+          description: Optional token ID returned to associate with product
       required:
         - product_id
+    TokenList:
+      title: TokenList
+      type: object
+      description: List of token information to return
+      properties:
+        tokens:
+          type: array
+          description: List of tokens returned
+          items:
+            $ref: '#/components/schemas/Token'
+    Wallet:
+      title: Wallet
+      type: object
+      description: Parameters identifying a wallet
+      properties:
+        cardano_identifiers:
+          type: array
+          description: List of Cardano addresses and/or stake keys
+          items:
+            type: string
+      required:
+        - cardano_identifiers

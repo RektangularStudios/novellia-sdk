@@ -74,6 +74,9 @@ components:
       description: Status of microservice, indicating service availabilities
       example:
         maintenance: true
+        errors:
+        - errors
+        - errors
         status: status
       properties:
         maintenance:
@@ -83,6 +86,11 @@ components:
         status:
           description: Status string. "UP" if everything is fine.
           type: string
+        errors:
+          description: List of errors for bad statuses
+          items:
+            type: string
+          type: array
       required:
       - maintenance
       - status
@@ -92,8 +100,10 @@ components:
       description: Describes a single order
       example:
         order_status: order_status
+        reservation_expiry: reservation_expiry
         description: description
         payment:
+          actually_paid: 1.4658129805029452
           payment_address: payment_address
           payment_status: payment_status
           price_amount: 6.027456183070403
@@ -125,12 +135,14 @@ components:
         order_status:
           description: Order status (i.e. awaiting payment, queued, refunded, ...)
           type: string
+        reservation_expiry:
+          description: Expiry time of reservation. The order will no longer be payable
+            after this time.
+          type: string
       required:
       - customer
       - description
       - items
-      - order_id
-      - order_status
       title: Order
       type: object
       x-examples:
@@ -187,6 +199,7 @@ components:
       type: object
     Order_payment:
       example:
+        actually_paid: 1.4658129805029452
         payment_address: payment_address
         payment_status: payment_status
         price_amount: 6.027456183070403
@@ -205,9 +218,10 @@ components:
         payment_status:
           description: Payment status (i.e. waiting, received, ...)
           type: string
+        actually_paid:
+          description: Actual amount paid (for partial payments)
+          type: number
       required:
-      - payment_address
-      - payment_status
       - price_amount
       - price_currency_id
       type: object

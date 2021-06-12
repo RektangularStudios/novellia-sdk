@@ -10,12 +10,13 @@ These SDKs should not be used by clients.
 
 There are some minor changes that need to be made after regenerating the SDK.
 
-- Add the `"mime/multipart"` import to `v0/routers.go`
-- Replace `NewRouter` to use CORS middleware in `routers.go`
+- In `v0/routers.go`
+	- Add the `"mime/multipart"` import to 
+	- Replace `NewRouter` to use CORS middleware in `routers.go`
+	- Remove import `"github.com/gorilla/handlers"`
+- Remove `"github.com/gorilla/mux"` import from `v0/api_default.go`
 
 ```
-// remove import "github.com/gorilla/handlers"
-
 func CORSMiddleware(r *mux.Router) mux.MiddlewareFunc {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
@@ -64,7 +65,5 @@ func NewRouter(routers ...Router) *mux.Router {
   - `NativeToken`
   - `NovelliaProduct`
   - Otherwise JSON responses will return annoying empty objects. (`omitempty` won't work)
-
-## Regenerating Order Fulfillment
-
-- Remove `"github.com/gorilla/mux"` import from `v0/api_default.go`
+- Edit `v0/model_token.go` to use `uint64` for the token quantity field `Amount` (`int32` will overflow)
+	- Amount uint64 `json:"amount"`

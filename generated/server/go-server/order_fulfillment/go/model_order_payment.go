@@ -13,7 +13,7 @@ package order_fulfillment
 type OrderPayment struct {
 
 	// Address to deposit currency
-	PaymentAddress string `json:"payment_address"`
+	PaymentAddress string `json:"payment_address,omitempty"`
 
 	// Policy ID of currency
 	PriceCurrencyId string `json:"price_currency_id"`
@@ -22,5 +22,8 @@ type OrderPayment struct {
 	PriceAmount float32 `json:"price_amount"`
 
 	// Payment status (i.e. waiting, received, ...)
-	PaymentStatus string `json:"payment_status"`
+	PaymentStatus string `json:"payment_status,omitempty"`
+
+	// Actual amount paid (for partial payments)
+	ActuallyPaid float32 `json:"actually_paid,omitempty"`
 }

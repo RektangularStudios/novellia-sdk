@@ -20,11 +20,14 @@ type Order struct {
 	Payment OrderPayment `json:"payment,omitempty"`
 
 	// Order ID for future reference
-	OrderId string `json:"order_id"`
+	OrderId string `json:"order_id,omitempty"`
 
 	// Description of order, useful metadata such as presale that occurred, etc.
 	Description string `json:"description"`
 
 	// Order status (i.e. awaiting payment, queued, refunded, ...)
-	OrderStatus string `json:"order_status"`
+	OrderStatus string `json:"order_status,omitempty"`
+
+	// Expiry time of reservation. The order will no longer be payable after this time.
+	ReservationExpiry string `json:"reservation_expiry,omitempty"`
 }

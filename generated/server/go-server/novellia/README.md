@@ -12,8 +12,8 @@ To see how to make this your own, look here:
 
 [README](https://openapi-generator.tech)
 
-- API version: 0.8.0
-- Build date: 2021-05-08T14:10:27.400024-07:00[America/Vancouver]
+- API version: 0.9.0
+- Build date: 2021-05-28T19:53:39.987368-07:00[America/Vancouver]
 For more information, please visit [https://rektangularstudios.com](https://rektangularstudios.com)
 
 

@@ -18,4 +18,7 @@ type Status struct {
 
 	// Status string. \"UP\" if everything is fine.
 	Status string `json:"status"`
+
+	// List of errors for bad statuses
+	Errors []string `json:"errors,omitempty"`
 }

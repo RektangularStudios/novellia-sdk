@@ -21,6 +21,7 @@ export {
   OccultaNovelliaCharacterStats,
   OffChainResource,
   Product,
+  ProductListElement,
   ProductMarket,
   ProductMetadata,
   ProductOrganization,
@@ -31,6 +32,8 @@ export {
   Status as NovelliaStatus,
   StatusCardano as NovelliaStatusCardano,
   Token,
+  TokenList,
+  Wallet,
   WorkflowInformation,
 } from './_generated/models';
 export {
