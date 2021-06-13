@@ -51,7 +51,7 @@ export function Extended721FileFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'name': !exists(json, 'name') ? undefined : json['name'],
         'mediaType': !exists(json, 'mediaType') ? undefined : json['mediaType'],
-        'src': !exists(json, 'src') ? undefined : string | Array&lt;string&gt;FromJSON(json['src']),
+        'src': !exists(json, 'src') ? undefined : json['src'] as string | Array<string>,
     };
 }
 
@@ -66,7 +66,7 @@ export function Extended721FileToJSON(value?: Extended721File | null): any {
         
         'name': value.name,
         'mediaType': value.mediaType,
-        'src': string | Array&lt;string&gt;ToJSON(value.src),
+        'src': value.src as string | Array<string>,
     };
 }
 
