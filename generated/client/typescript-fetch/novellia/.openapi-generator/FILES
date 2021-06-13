@@ -10,6 +10,7 @@ src/models/CardanoTip.ts
 src/models/CardanoTransaction.ts
 src/models/Commission.ts
 src/models/DescriptionSet.ts
+src/models/Extended721File.ts
 src/models/Extended721Token.ts
 src/models/MinterInfo.ts
 src/models/NativeToken.ts

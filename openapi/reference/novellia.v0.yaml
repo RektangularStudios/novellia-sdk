@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: novellia
-  version: 0.9.0
+  version: 0.9.1
   license:
     url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
     name: MIT
@@ -616,7 +616,9 @@ components:
     Extended721Token:
       title: Extended721Token
       type: object
-      description: Easily parsable data for Extended 721 Token
+      description: |-
+        Easily parsable data for Extended 721 Token
+        See: https://github.com/cardano-foundation/CIPs/pull/85#discussion_r629120254 for updated version
       properties:
         native_token:
           $ref: '#/components/schemas/NativeToken'
@@ -634,6 +636,17 @@ components:
         image:
           type: string
           description: Image URL without source redundancy.
+        files:
+          description: List of token's asset files
+          type: array
+          items:
+            $ref: '#/components/schemas/Extended721File'
+        mediaType:
+          type: string
+          description: MIME type of "image"
+        description:
+          type: string
+          description: short token description
       required:
         - id
         - name
@@ -774,3 +787,22 @@ components:
             type: string
       required:
         - cardano_identifiers
+    Extended721File:
+      title: Extended721File
+      type: object
+      description: 'See: https://github.com/cardano-foundation/CIPs/pull/85#discussion_r629120254'
+      properties:
+        name:
+          type: string
+          description: identifier for file
+        mediaType:
+          type: string
+          description: MIME type of file
+        src:
+          description: either a single file URL or an array of file URLs
+          oneOf:
+            - properties: {}
+              type: string
+            - type: array
+              items:
+                type: string

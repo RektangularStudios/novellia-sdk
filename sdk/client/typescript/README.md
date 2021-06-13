@@ -65,3 +65,36 @@ constructor(configurationParams: ConfigurationParameters = {}) {
     super(new Configuration(configurationParams));
 }
 ```
+
+### Novellia
+
+Fix the union types in `Extended721File.ts`
+
+```
+export function Extended721FileFromJSONTyped(json: any, ignoreDiscriminator: boolean): Extended721File {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'mediaType': !exists(json, 'mediaType') ? undefined : json['mediaType'],
+        'src': !exists(json, 'src') ? undefined : json['src'] as string | Array<string>,
+    };
+}
+
+export function Extended721FileToJSON(value?: Extended721File | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'name': value.name,
+        'mediaType': value.mediaType,
+        'src': value.src as string | Array<string>,
+    };
+}
+```
