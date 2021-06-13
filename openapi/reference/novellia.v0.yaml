@@ -637,8 +637,8 @@ components:
           type: string
           description: Image URL without source redundancy.
         files:
-          type: array
           description: List of token's asset files
+          type: array
           items:
             $ref: '#/components/schemas/Extended721File'
         mediaType:
@@ -799,9 +799,10 @@ components:
           type: string
           description: MIME type of file
         src:
-          type:
-            - string
-            - array
           description: either a single file URL or an array of file URLs
-          items:
-            type: string
+          oneOf:
+            - properties: {}
+              type: string
+            - type: array
+              items:
+                type: string
