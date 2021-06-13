@@ -1,6 +1,6 @@
 {
   "name": "novellia-sdk",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "OpenAPI client for novellia-sdk",
   "author": "OpenAPI-Generator",
   "main": "./dist/index.js",

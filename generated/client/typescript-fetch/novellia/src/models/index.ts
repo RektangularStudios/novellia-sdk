@@ -3,6 +3,7 @@ export * from './CardanoTip';
 export * from './CardanoTransaction';
 export * from './Commission';
 export * from './DescriptionSet';
+export * from './Extended721File';
 export * from './Extended721Token';
 export * from './MinterInfo';
 export * from './NativeToken';

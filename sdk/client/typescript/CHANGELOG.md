@@ -51,3 +51,6 @@ Initial publish, supports wallet token query.
 # v0.9.0
 - Add support for `modified` field on products
 - Overhaul `/wallet` endpoint
+
+# v0.9.1
+- Add support for ["updated" 721 metadata](https://github.com/cardano-foundation/CIPs/pull/85#discussion_r629120254)
