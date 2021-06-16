@@ -20,5 +20,6 @@ type Extended721File struct {
 	MediaType string `json:"mediaType,omitempty"`
 
 	// either a single file URL or an array of file URLs
-	Src OneOfstringarray `json:"src,omitempty"`
+	// code generated is invalid, not used anyway outside of TS
+	//Src OneOfstringarray `json:"src,omitempty"`
 }
