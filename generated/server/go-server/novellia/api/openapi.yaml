@@ -150,14 +150,20 @@ paths:
           description: OK
   /tokens:
     post:
+      description: Returns tokens based on search params
       operationId: post-tokens
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/TokenSearch'
+        description: Parameters for token search
       responses:
         "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenList'
           description: OK
 components:
   schemas:

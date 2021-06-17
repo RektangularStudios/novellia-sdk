@@ -157,11 +157,17 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenList'
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/TokenSearch'
+        description: Parameters for token search
+      description: Returns tokens based on search params
 components:
   schemas:
     Token:
