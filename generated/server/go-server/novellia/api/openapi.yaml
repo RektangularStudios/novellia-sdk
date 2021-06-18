@@ -9,10 +9,10 @@ info:
     url: https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE
   termsOfService: TODO
   title: novellia
-  version: 0.9.0
+  version: 0.9.2
 servers:
 - description: API Gateway
-  url: api.rektangularstudios.com/novellia
+  url: api.rektangularstudios.com/novellia/v0
 paths:
   /wallet:
     post:
@@ -148,6 +148,23 @@ paths:
                   $ref: '#/components/schemas/Product'
                 type: array
           description: OK
+  /tokens:
+    post:
+      description: Returns tokens based on search params
+      operationId: post-tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenSearch'
+        description: Parameters for token search
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenList'
+          description: OK
 components:
   schemas:
     Token:
@@ -177,7 +194,6 @@ components:
           description: Onchain metadata attached to the initial mint TX
           type: string
       required:
-      - amount
       - native_token_id
       title: Token
       type: object
@@ -349,6 +365,15 @@ components:
             native_token:
               policy_id: policy_id
               asset_id: asset_id
+            files:
+            - src: ""
+              name: name
+              mediaType: mediaType
+            - src: ""
+              name: name
+              mediaType: mediaType
+            description: description
+            mediaType: mediaType
             id: 5
           native_token:
             policy_id: policy_id
@@ -737,7 +762,9 @@ components:
       type: object
       x-examples: {}
     Extended721Token:
-      description: Easily parsable data for Extended 721 Token
+      description: |-
+        Easily parsable data for Extended 721 Token
+        See: https://github.com/cardano-foundation/CIPs/pull/85#discussion_r629120254 for updated version
       example:
         image: image
         extension:
@@ -747,6 +774,15 @@ components:
         native_token:
           policy_id: policy_id
           asset_id: asset_id
+        files:
+        - src: ""
+          name: name
+          mediaType: mediaType
+        - src: ""
+          name: name
+          mediaType: mediaType
+        description: description
+        mediaType: mediaType
         id: 5
       properties:
         native_token:
@@ -766,6 +802,17 @@ components:
           type: string
         image:
           description: Image URL without source redundancy.
+          type: string
+        files:
+          description: List of token's asset files
+          items:
+            $ref: '#/components/schemas/Extended721File'
+          type: array
+        mediaType:
+          description: MIME type of "image"
+          type: string
+        description:
+          description: short token description
           type: string
       required:
       - id
@@ -946,9 +993,8 @@ components:
           description: Optional token ID returned to associate with product
           type: string
       required:
-      - modified
       - product_id
-      title: ProductsListElement
+      title: ProductListElement
       type: object
     TokenList:
       description: List of token information to return
@@ -987,6 +1033,44 @@ components:
       required:
       - cardano_identifiers
       title: Wallet
+      type: object
+    Extended721File:
+      description: 'See: https://github.com/cardano-foundation/CIPs/pull/85#discussion_r629120254'
+      example:
+        src: ""
+        name: name
+        mediaType: mediaType
+      properties:
+        name:
+          description: identifier for file
+          type: string
+        mediaType:
+          description: MIME type of file
+          type: string
+        src:
+          description: either a single file URL or an array of file URLs
+          oneOf:
+          - properties: {}
+            type: string
+          - items:
+              type: string
+            type: array
+      title: Extended721File
+      type: object
+    TokenSearch:
+      example:
+        cardano_identifiers:
+        - cardano_identifiers
+        - cardano_identifiers
+      properties:
+        cardano_identifiers:
+          description: List of asset_id, policy_id, or token name
+          items:
+            type: string
+          type: array
+      required:
+      - cardano_identifiers
+      title: TokenSearch
       type: object
     Status_cardano:
       example:
@@ -1144,6 +1228,15 @@ components:
           native_token:
             policy_id: policy_id
             asset_id: asset_id
+          files:
+          - src: ""
+            name: name
+            mediaType: mediaType
+          - src: ""
+            name: name
+            mediaType: mediaType
+          description: description
+          mediaType: mediaType
           id: 5
         native_token:
           policy_id: policy_id
@@ -1200,8 +1293,6 @@ components:
         product_id:
           description: Unique identifier of product
           type: string
-      required:
-      - product_id
       type: object
     OccultaNovelliaCharacter_card:
       description: Metadata relating to card / distribution

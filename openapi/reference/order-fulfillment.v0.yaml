@@ -11,7 +11,7 @@ info:
     name: Rektangular Studios
   termsOfService: TODO
 servers:
-  - url: api.rektangularstudios.com/order-fulfillment
+  - url: api.rektangularstudios.com/order-fulfillment/v0
     description: API Gateway
 paths:
   /status:

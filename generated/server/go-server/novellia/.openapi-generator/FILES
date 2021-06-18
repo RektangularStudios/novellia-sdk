@@ -13,6 +13,7 @@ go/model_cardano_tip.go
 go/model_cardano_transaction.go
 go/model_commission.go
 go/model_description_set.go
+go/model_extended721_file.go
 go/model_extended721_token.go
 go/model_minter_info.go
 go/model_native_token.go
@@ -36,6 +37,7 @@ go/model_status.go
 go/model_status_cardano.go
 go/model_token.go
 go/model_token_list.go
+go/model_token_search.go
 go/model_wallet.go
 go/model_workflow_information.go
 go/routers.go

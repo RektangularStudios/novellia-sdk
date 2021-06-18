@@ -12,8 +12,9 @@ import {
   TokenList,
   WorkflowInformation,
   Wallet,
+  TokenSearch,
 } from './_generated/models';
-import { ConfigurationParameters } from './_generated';
+import { ConfigurationParameters } from './_generated';;
 
 export class NovelliaService {
   private _api: DefaultApi;
@@ -44,6 +45,12 @@ export class NovelliaService {
     return this._api.postWallet({
       wallet: wallet
     });
+  }
+
+  async getTokens(tokenSearch: TokenSearch): Promise<TokenList> {
+    return this._api.postTokens({
+      tokenSearch: tokenSearch,
+    })
   }
 
   async submitCardanoTransaction(cardanoTransaction: CardanoTransaction) {

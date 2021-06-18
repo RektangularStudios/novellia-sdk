@@ -41,3 +41,6 @@ Create SDK
 - Add support for organization and market descriptions
 - Add generic `status` string to report from `/status` endpoint
 - migrate `/orders` to new `order_fulfillment` Go SDK
+
+# v0.9.2
+- Add `/tokens` endpoint for searching tokens by asset_id, policy_id, or name

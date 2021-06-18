@@ -14,34 +14,34 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Returns preconditions relevant to a user wanting to execute a workflow. I.e. costs.
+ * 
  * @export
- * @interface WorkflowInformation
+ * @interface TokenSearch
  */
-export interface WorkflowInformation {
+export interface TokenSearch {
     /**
-     * The lovelace cost to execute the workflow
-     * @type {number}
-     * @memberof WorkflowInformation
+     * List of asset_id, policy_id, or token name
+     * @type {Array<string>}
+     * @memberof TokenSearch
      */
-    feeLovelace?: number;
+    cardanoIdentifiers: Array<string>;
 }
 
-export function WorkflowInformationFromJSON(json: any): WorkflowInformation {
-    return WorkflowInformationFromJSONTyped(json, false);
+export function TokenSearchFromJSON(json: any): TokenSearch {
+    return TokenSearchFromJSONTyped(json, false);
 }
 
-export function WorkflowInformationFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkflowInformation {
+export function TokenSearchFromJSONTyped(json: any, ignoreDiscriminator: boolean): TokenSearch {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'feeLovelace': !exists(json, 'fee_lovelace') ? undefined : json['fee_lovelace'],
+        'cardanoIdentifiers': json['cardano_identifiers'],
     };
 }
 
-export function WorkflowInformationToJSON(value?: WorkflowInformation | null): any {
+export function TokenSearchToJSON(value?: TokenSearch | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -50,7 +50,7 @@ export function WorkflowInformationToJSON(value?: WorkflowInformation | null): a
     }
     return {
         
-        'fee_lovelace': value.feeLovelace,
+        'cardano_identifiers': value.cardanoIdentifiers,
     };
 }
 

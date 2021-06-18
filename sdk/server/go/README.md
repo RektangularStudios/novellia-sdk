@@ -67,3 +67,10 @@ func NewRouter(routers ...Router) *mux.Router {
   - Otherwise JSON responses will return annoying empty objects. (`omitempty` won't work)
 - Edit `v0/model_token.go` to use `uint64` for the token quantity field `Amount` (`int32` will overflow)
 	- Amount uint64 `json:"amount"`
+
+- Edit `model_extended721_file.go` to comment out bad generated code (that's not used in Go)
+```
+// either a single file URL or an array of file URLs
+// code generated is invalid, not used anyway outside of TS
+//Src OneOfstringarray `json:"src,omitempty"`
+```

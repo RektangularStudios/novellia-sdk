@@ -33,6 +33,7 @@ export {
   StatusCardano as NovelliaStatusCardano,
   Token,
   TokenList,
+  TokenSearch,
   Wallet,
   WorkflowInformation,
 } from './_generated/models';
