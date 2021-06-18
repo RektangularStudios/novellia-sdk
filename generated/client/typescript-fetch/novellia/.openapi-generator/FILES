@@ -1,5 +1,6 @@
 .gitignore
 .npmignore
+.openapi-generator-ignore
 README.md
 package.json
 src/apis/DefaultApi.ts
@@ -34,6 +35,7 @@ src/models/Status.ts
 src/models/StatusCardano.ts
 src/models/Token.ts
 src/models/TokenList.ts
+src/models/TokenSearch.ts
 src/models/Wallet.ts
 src/models/WorkflowInformation.ts
 src/models/index.ts
