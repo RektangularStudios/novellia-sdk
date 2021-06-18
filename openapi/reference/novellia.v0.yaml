@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: novellia
-  version: 0.9.1
+  version: 0.9.2
   license:
     url: 'https://raw.githubusercontent.com/RektangularStudios/novellia-sdk/main/LICENSE'
     name: MIT
@@ -11,7 +11,7 @@ info:
     name: Rektangular Studios
   termsOfService: TODO
 servers:
-  - url: api.rektangularstudios.com/novellia
+  - url: api.rektangularstudios.com/novellia/v0
     description: API Gateway
 paths:
   /wallet:
@@ -150,6 +150,24 @@ paths:
             schema:
               $ref: '#/components/schemas/ProductsList'
       description: Returns product information for a specific list of products
+  /tokens:
+    post:
+      summary: ''
+      operationId: post-tokens
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenList'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenSearch'
+        description: Parameters for token search
+      description: Returns tokens based on search params
 components:
   schemas:
     Token:
@@ -174,7 +192,6 @@ components:
           description: Onchain metadata attached to the initial mint TX
       required:
         - native_token_id
-        - amount
     CardanoTransaction:
       title: CardanoTransaction
       type: object
@@ -806,3 +823,14 @@ components:
             - type: array
               items:
                 type: string
+    TokenSearch:
+      title: TokenSearch
+      type: object
+      properties:
+        cardano_identifiers:
+          type: array
+          description: 'List of asset_id, policy_id, or token name'
+          items:
+            type: string
+      required:
+        - cardano_identifiers

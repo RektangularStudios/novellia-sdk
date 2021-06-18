@@ -27,5 +27,6 @@ export * from './Status';
 export * from './StatusCardano';
 export * from './Token';
 export * from './TokenList';
+export * from './TokenSearch';
 export * from './Wallet';
 export * from './WorkflowInformation';
